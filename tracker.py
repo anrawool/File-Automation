@@ -30,8 +30,8 @@ def track(path, created_func=None, moved_func=None, deleted_func=None, modified_
     if moved_func != None:
         event_handler.on_moved = moved_func
     try:
-        print("Monitoring")
         while True:
+            print("tracking")
             time.sleep(1)
     finally:
         observer.stop()
