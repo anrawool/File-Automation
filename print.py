@@ -1,40 +1,45 @@
 from tracker import track
 import os
-import time
-import subprocess
+from data import *
+import re
 
-def sterilize(path):
-    if path.endswith('.crdownload'):
-        print("This is a invalid file")
-        os.system("python3 print.py")
+class Printer:
+    def __init__(self):
+        self.incompatible = ['.rtf', '.crdownload', '.docx']
+    def sterilize(self, object):
+        path, file, ext = [object.path, object.file, object.ext]
+        # Checking if Path is valid or Ghost
+        for extension in self.incompatible:
+            if extension in ext:
+                self.incompatible = True
+                pass
+        
+        os.chdir(path)
+        temp_file = file.replace(ext, "")
+        temp_file = temp_file.replace(".", "_")
+        temp_file = temp_file + ext
+        final_file = temp_file.replace(" ", '_')
+        final_file = re.sub("_+", "_", final_file)
+        os.rename(file, final_file)
+        return final_file
 
-    os.chdir("/Users/abhijitrawool/Documents/Print/")
-    ext = os.path.splitext(path)
-    temp_path = path.replace(ext[1], "")
-    new_path = temp_path.replace(".", "_")
-    final_path = new_path + ext[1]
-    final_path = final_path.replace(" ", '_')
-    rename_path = temp_path+ext[1]
-    os.rename(rename_path, final_path)
-    return final_path
-def created(event):
-    cmd = ['lpstat', '-p']
-    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()[0]
-    output = output.decode()
-    if "offline" in output:
-        print("The Printer Is Not Swtiched On.")
-        print("Waiting...")
-        time.sleep(60)
-        pass
-    else:
-        pass
-    try:
-        path = sterilize(event.src_path)
-        final = path.replace("/Users/abhijitrawool/Documents/Print/", "")
-        os.chdir("/Users/abhijitrawool/Documents/Print/")
-        print("Printed")
-        os.system(f"lpr {final}")
-        print("Printed")
-    except Exception:
-        print("The Printer May Be Offline...")
-track("/Users/abhijitrawool/Documents/Print", created_func=created)
+    def created(self, event):
+        datamaker = DataMaker()
+        path_obj = datamaker.make_path(path=event.src_path, path_file=False)
+        # Chekcing if Printer is working
+        print("Adding to Printing Queue...")
+        try:
+            final_file = self.sterilize(path_obj)
+            # Making Path Compatible For Printing
+            os.chdir("/Users/abhijitrawool/Documents/Print/")
+            os.system(f"lpr {final_file}")
+            if self.incompatible:
+                print("This File is incompatible...")
+            else:
+                print("Added to Queue!!")
+        except Exception as e:
+            print("The Printer May Be Offline...")
+            print(e)
+
+printer = Printer()
+track("/Users/abhijitrawool/Documents/Print", created_func=printer.created)
