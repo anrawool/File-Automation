@@ -1,18 +1,24 @@
 import os 
 from sys import argv
+from data import *
 
 folder = argv[1]
 target = argv[2]
 
 class FileSearch():
-    def __init__(self, target, folder):
+    def __init__(self, folder, target):
+        self.DataMakerObj = DataMaker()
+        self.sub_folders = []
         self.target = target.lower()
-        self.folder = folder
+        self.target_folder = folder.lower()
         if "." in  self.target:
             self.func = "ext"
         else:
             self.func = "name"
         self.match = False
+        self.results = []
+        #TODO: Remove Extra results
+        # TODO: Fix Undetection due to Double word searches
     
     def name(self):
         final_files_name = []
@@ -35,46 +41,43 @@ class FileSearch():
         
         return final_files_ext
     
-    def folder_iterate(self):
-        self.folders = ['Documents', 'Downloads']
-        for i in self.folders:
-            if self.target in i.lower():
-                self.match = True
-                print(f"Match Found: {i}")
-                # break
+    def folder_trim(self, fold_list):
+        self.temp_folds = []
+        self.ignore_folds = ['Public', 'Movies', 'Applications', 'opt', 'Library', 'Desktop', 'Pictures', 'Music', 'Sites']
+        for folder in fold_list:
+            if not "." in folder.name and not folder.name in self.ignore_folds:
+                self.temp_folds.append(folder.name)
             else:
-                self.match = False
-        if self.match == True:
-            return self.match
-        self.sub_folders = []
-        self.dynamic_path = "Users/abhijitrawool"
-        self.path_folders = [] # TODO: Used to store paths
-        self.counter = 0
-        while self.match != True:
-            for i in self.folders:
-                sub_dir = os.scandir(f"/{self.dynamic_path}/{i}")
-                for folder in sub_dir:
-                    if not "." in folder.name.lower():
-                        if not self.target in folder.name.lower():
-                            self.sub_folders.append(folder.name)
-                        else:
-                            print("Match Found:", folder.name)
-                            print("In Folder:", i)
-                            self.match = True
-                            break
-                    if self.match == True:
-                        break
-                self.counter+=1
-                if self.match == True:
-                        break
-                if self.counter >= len(self.folders):
-                    self.folders.clear()
-                    for i in self.sub_folders:
-                        self.folders.append(i)
-                    self.sub_folders.clear()
-                    print("Sub Folders:", self.sub_folders)
-                    print("Folders:", self.folders)
-                    exit()
+                pass
+        return self.temp_folds
+
+    def folder_iterate(self):
+        self.folders = os.scandir("/Users/abhijitrawool/")
+        self.folders = [folder for folder in self.folders]
+        self.folders = self.folder_trim(self.folders)
+        self.folders = [self.DataMakerObj.make_folder_path(path=f'/Users/abhijitrawool/{fold}') for fold in self.folders]
+        for fold in self.folders:
+            if self.target_folder == fold.folder.lower():
+                # print("Match Found:", fold)
+                # self.match = True
+                self.results.append(fold)
+            else:
+                pass
+        for i in range(0, 2):
+            try:
+                for each_folder in self.folders:
+                    dirs = [dir for dir in os.scandir(f"{each_folder.path}/")]
+                    dirs = self.folder_trim(dirs)
+                    for dir in dirs:
+                        if self.target_folder == dir.lower():
+                            # print(f"Match Found!!! {each_folder.path}/{dir}")
+                            self.results.append(each_folder)
+                        self.sub_folders.append(self.DataMakerObj.make_folder_path(path=f'{each_folder.path}/{dir}'))
+                self.folders = self.sub_folders
+            except NotADirectoryError:
+                pass
+        print("Final:", self.results)
+        exit()
 
     def folder_finder(self):
         while self.match != True:
@@ -89,4 +92,5 @@ class FileSearch():
         return files
 
 search_method = FileSearch(folder, target)
-search_method.folder_finder()
+obj = search_method.folder_finder()
+print("Result:", obj)
