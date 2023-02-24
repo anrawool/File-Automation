@@ -6,12 +6,13 @@ import re
 class Printer:
     def __init__(self):
         self.incompatible = ['.rtf', '.crdownload', '.docx']
+        self.incompatible_file = False
     def sterilize(self, object):
         path, file, ext = [object.path, object.file, object.ext]
         # Checking if Path is valid or Ghost
         for extension in self.incompatible:
             if extension in ext:
-                self.incompatible = True
+                self.incompatible_file = True
                 pass
         
         os.chdir(path)
@@ -27,16 +28,16 @@ class Printer:
         datamaker = DataMaker()
         path_obj = datamaker.make_path(path=event.src_path, path_file=False)
         # Chekcing if Printer is working
-        print("Adding to Printing Queue...")
         try:
             final_file = self.sterilize(path_obj)
             # Making Path Compatible For Printing
             os.chdir("/Users/abhijitrawool/Documents/Print/")
-            os.system(f"lpr {final_file}")
-            if self.incompatible:
-                print("This File is incompatible...")
+            if self.incompatible_file != True:
+                os.system(f"lpr {final_file}")
+                print("Added to Printing Queue")
             else:
-                print("Added to Queue!!")
+                print("This File Is Incompatible")
+                self.incompatible_file = False
         except Exception as e:
             print("The Printer May Be Offline...")
             print(e)

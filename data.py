@@ -13,11 +13,9 @@ class DataMaker:
         # Formatting
         if file == 'auto':
             remove = os.path.dirname(self.path)
-            print("remove:", remove)
             self.file = self.path.replace(f"{remove}/", "")
         if ext == 'auto':
             auto_ext = os.path.splitext(self.file)
-            print(auto_ext)
             self.ext = auto_ext[1]
         if not path_file:
             self.path = self.path.replace(self.file, "")
