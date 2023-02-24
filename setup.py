@@ -3,6 +3,8 @@ import sys
 import subprocess
 from data import *
 
+# Currently in Development
+
 class Setup():
     def __init__(self):
         self.platform = sys.platform
@@ -36,10 +38,9 @@ class Setup():
     def _execute_shell_script_unix(self):
         find_path = subprocess.check_output("which python3", shell=True)
         make_path = input("Please provide the entire path to which you want all your programming projects to be stored in: ")
-        make_path = self.DataMaker.make_path(path=make_path, path_file=False)
-        print("Path Object", make_path)
+        print("Path Object:", make_path)
         self.python_path = find_path.decode()
-        os.system(f"./setup.sh {self.python_path}")
+        os.system(f"./setup.sh {self.python_path} {make_path.path}")
 
 
 Setup  = Setup()

@@ -10,9 +10,9 @@ Every project has a purpose. This is one's purpose is to make my life better. If
 
 ## Project requirements:
 1. Any version of python higher than 3.8 or 3.8 itself. Other python versions are not tested.
-2. Access to computer files to modify files to setup the file automation project.
+2. Terminal or Bash Access to File System
 
-# Usage
+# Usage [Under Development]
 
 There are some steps to making your life better. They are:
 1. Clone this Repository
