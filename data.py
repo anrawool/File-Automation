@@ -7,6 +7,10 @@ class NexusPathObject():
     file : str
     ext : str
 
+@dataclass
+class NexusFolderPathObject(NexusPathObject):
+    folder: str
+
 class DataMaker:
     def make_path(self, path, file='auto', ext='auto', path_file=True):
         self.path = path
@@ -21,6 +25,17 @@ class DataMaker:
             self.path = self.path.replace(self.file, "")
         object = NexusPathObject(path=self.path, file=self.file, ext=self.ext)
         return object
+    
+    def make_folder_path(self, path, folder='auto', ext=None, file=None):
+        if folder == 'auto':
+            remove= os.path.dirname(path)
+            folder = path.replace(f"{remove}/", "")
+        else:
+            folder = folder
+        self.fold_path = path
+        fold_object = NexusFolderPathObject(path=self.fold_path,  folder=folder, file=file, ext=ext)
+        return fold_object
+
 
 
 # Example Instance
