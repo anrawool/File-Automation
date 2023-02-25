@@ -15,7 +15,7 @@ class FileSearch():
             self.func = "ext"
         else:
             self.func = "name"
-        self.match = False
+        self.control = False
         self.results = []
         #TODO: Remove Extra results
         # TODO: Fix Undetection due to Double word searches
@@ -26,7 +26,7 @@ class FileSearch():
         folder_files = os.scandir(f"/Users/abhijitrawool/{folder_loc}")
         for i in folder_files:
             if self.target in i.name.lower():
-                print(f"Target Found: {i.name}")
+                # print(f"Target Found: {i.name}")
                 final_files_name.append(i.name)
         return final_files_name
     
@@ -36,7 +36,7 @@ class FileSearch():
         folder_files = os.scandir(f"/Users/abhijitrawool/{folder_loc}")
         for i in folder_files:
             if i.name.endswith(target):
-                print(f"Target Found: {i.name}")
+                # print(f"Target Found: {i.name}")
                 final_files_ext.append(i.name)
         
         return final_files_ext
@@ -51,19 +51,17 @@ class FileSearch():
                 pass
         return self.temp_folds
 
-    def folder_iterate(self):
+    def search_folder(self):
         self.folders = os.scandir("/Users/abhijitrawool/")
         self.folders = [folder for folder in self.folders]
         self.folders = self.folder_trim(self.folders)
         self.folders = [self.DataMakerObj.make_folder_path(path=f'/Users/abhijitrawool/{fold}') for fold in self.folders]
         for fold in self.folders:
             if self.target_folder == fold.folder.lower():
-                # print("Match Found:", fold)
-                # self.match = True
                 self.results.append(fold)
             else:
                 pass
-        for i in range(0, 2):
+        while self.control != True:
             try:
                 for each_folder in self.folders:
                     dirs = [dir for dir in os.scandir(f"{each_folder.path}/")]
@@ -74,14 +72,15 @@ class FileSearch():
                             self.results.append(each_folder)
                         self.sub_folders.append(self.DataMakerObj.make_folder_path(path=f'{each_folder.path}/{dir}'))
                 self.folders = self.sub_folders
+                self.sub_folders = []
             except NotADirectoryError:
                 pass
-        print("Final:", self.results)
-        exit()
+                self.control = True
+        return self.results
 
     def folder_finder(self):
-        while self.match != True:
-            folder_loc = self.folder_iterate()
+        while self.control != True:
+            folder_loc = self.search_folder()
         return folder_loc
 
     def search(self):
