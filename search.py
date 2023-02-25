@@ -1,6 +1,7 @@
 import os 
 from sys import argv
 from data import *
+import re
 
 folder = argv[1]
 target = argv[2]
@@ -9,25 +10,30 @@ class FileSearch():
     def __init__(self, folder, target):
         self.DataMakerObj = DataMaker()
         self.sub_folders = []
+        self.search_name_instance_folder = folder
         self.target = target.lower()
-        self.target_folder = folder.lower()
+        self.target_folder = self.folder_sterilize(folder)
         if "." in  self.target:
             self.func = "ext"
         else:
             self.func = "name"
         self.control = False
         self.results = []
-        #TODO: Remove Extra results
         # TODO: Fix Undetection due to Double word searches
+    def folder_sterilize(self, folder):
+        folder = re.sub('_+', ' ', folder)
+        return folder.lower()
     
-    def name(self):
+    def name(self, folder_loc):
         final_files_name = []
-        folder_loc = self.folder_finder()
-        folder_files = os.scandir(f"/Users/abhijitrawool/{folder_loc}")
-        for i in folder_files:
-            if self.target in i.name.lower():
-                # print(f"Target Found: {i.name}")
-                final_files_name.append(i.name)
+        # folder_loc = self.folder_finder()
+        try:
+            folder_files = os.scandir(f'{folder_loc}/{self.search_name_instance_folder}')
+            for i in folder_files:
+                if self.target in i.name.lower():
+                    final_files_name.append(i.name)
+        except FileNotFoundError:
+            pass
         return final_files_name
     
     def ext(self):
@@ -57,7 +63,8 @@ class FileSearch():
         self.folders = self.folder_trim(self.folders)
         self.folders = [self.DataMakerObj.make_folder_path(path=f'/Users/abhijitrawool/{fold}') for fold in self.folders]
         for fold in self.folders:
-            if self.target_folder == fold.folder.lower():
+            search_fold = self.folder_sterilize(fold.folder)
+            if self.target_folder == search_fold:
                 self.results.append(fold)
             else:
                 pass
@@ -67,7 +74,8 @@ class FileSearch():
                     dirs = [dir for dir in os.scandir(f"{each_folder.path}/")]
                     dirs = self.folder_trim(dirs)
                     for dir in dirs:
-                        if self.target_folder == dir.lower():
+                        search_dir = self.folder_sterilize(dir)
+                        if self.target_folder == search_dir:
                             # print(f"Match Found!!! {each_folder.path}/{dir}")
                             self.results.append(each_folder)
                         self.sub_folders.append(self.DataMakerObj.make_folder_path(path=f'{each_folder.path}/{dir}'))
@@ -80,8 +88,11 @@ class FileSearch():
 
     def folder_finder(self):
         while self.control != True:
-            folder_loc = self.search_folder()
-        return folder_loc
+            results = self.search_folder()
+        for result in results:
+            if self.func == 'name':
+                files = self.name(folder_loc=result.path)
+        return files
 
     def search(self):
         if self.func == "ext":
@@ -92,4 +103,4 @@ class FileSearch():
 
 search_method = FileSearch(folder, target)
 obj = search_method.folder_finder()
-print("Result:", obj)
+print("Result:", obj[0])
