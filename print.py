@@ -5,7 +5,7 @@ import re
 
 class Printer:
     def __init__(self):
-        self.incompatible = ['.rtf', '.crdownload', '.docx']
+        self.incompatible = ['.rtf', '.crdownload', '.docx', '.mov', '.mp4', '.mp3', '.wav']
         self.incompatible_file = False
     def sterilize(self, object):
         path, file, ext = [object.path, object.file, object.ext]
