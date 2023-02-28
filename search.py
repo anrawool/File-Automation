@@ -149,7 +149,7 @@ class FileSearch():
                 self.control = True
         return self.results
 
-
+    # Search Controller
 
     def search(self):
         result_files = []
