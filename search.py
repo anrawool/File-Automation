@@ -1,21 +1,21 @@
 import os 
 from sys import argv
 from data import *
-import re
-import time 
+import re 
 
 class FileSearch():
-    def __init__(self, folder, target='', mode=None):
+    def __init__(self, folder, target='', mode=None, file_path=True):
         self.mode = mode
         self.DataMakerObj = DataMaker()
         self.sub_folders = []
         self.target = target.lower()
         self.target_folder = self.folder_sterilize(folder)
+        self.file_path = file_path
         if "." in  self.target:
             self.func = "ext"
-        elif "_all_folders" == self.target:
+        elif "--all-folders" == self.target:
             self.func = 'all_folders'
-        elif "_all_files" == self.target:
+        elif "--all-files" == self.target:
             self.func = 'all_files'
         else:
             self.func = "name"
@@ -60,34 +60,37 @@ class FileSearch():
 
     # Search Target Functions
 
-    def name(self, folder_loc, folder_obj):
+    def name(self, folder_loc):
         final_files_name = []
         folder_objs = []
         self.target_folder = self.parent_folder_trim()
-        try:
-            folder_files = os.scandir(f'{folder_loc}/{self.target_folder}')
-            for i in folder_files:
-                if self.target in i.name.lower():
-                    folder_obj.file = i.name.replace(os.path.splitext(i.name)[1], '')
-                    folder_obj.ext = os.path.splitext(i.name)[1]
-                    folder_objs.append(folder_obj)
-                    final_files_name.append(i.name)
-        except FileNotFoundError:
-            pass
+        path = f'{folder_loc}/{self.target_folder}'
+        folder_files = os.scandir(path)
+        for i in folder_files:
+            if self.target in i.name.lower():
+                ext = os.path.splitext(i.name)[1]
+                if ext == '':
+                    folder_append = self.DataMakerObj.make_folder_path(path=f'{folder_loc}/{self.target_folder}', file_path=self.file_path)
+                else:
+                    folder_append = self.DataMakerObj.make_folder_path(path=f'{folder_loc}/{self.target_folder}/{i.name}', file_path=self.file_path)
+                folder_objs.append(folder_append)
+                final_files_name.append(i.name)
+
         return (final_files_name, folder_objs)
     
-    def ext(self, folder_loc, folder_obj):
+    def ext(self, folder_loc):
         final_files_ext = []
-        folder_objs = []
+        folder_objs_ext = []
         self.target_folder = self.parent_folder_trim()
         folder_files = os.scandir(f"{folder_loc}/{self.target_folder}")
         for i in folder_files:
-            if i.name.endswith(target):
-                folder_obj.file = i.name.replace(os.path.splitext(i.name)[1], '')
-                folder_obj.ext = os.path.splitext(i.name)[1]
-                folder_objs.append(folder_obj)
+            if i.name.endswith(self.target):
+                file = i.name.replace(os.path.splitext(i.name)[1], '')
+                ext = os.path.splitext(i.name)[1]
+                file_append = self.DataMakerObj.make_folder_path(path=f'{folder_loc}/{self.target_folder}', file=file, ext=ext)
+                folder_objs_ext.append(file_append)
                 final_files_ext.append(i.name)
-        return (final_files_ext, folder_objs)
+        return (final_files_ext, folder_objs_ext)
     
     def all_folders(self, folder_obj):
         final_folder_objs_all = []
@@ -99,7 +102,7 @@ class FileSearch():
             set_path = f'{folder_obj.path}/{self.target_folder}/{folder}'
             set_path = re.sub("/+", '/', set_path)
             folder = self.folder_sterilize(folder=folder)
-            folder_object = self.DataMakerObj.make_folder_path(path=set_path)
+            folder_object = self.DataMakerObj.make_folder_path(path=set_path, file_path=self.file_path)
             final_folder_objs_all.append(folder_object)
         return (final_folders_all, final_folder_objs_all)
 
@@ -112,7 +115,7 @@ class FileSearch():
         for file in final_files_all:
             set_path = f'{folder_obj.path}/{file}'
             set_path = re.sub("/+", '/', set_path)
-            folder_object = self.DataMakerObj.make_path(path=set_path)
+            folder_object = self.DataMakerObj.make_path(path=f'{set_path}', file_path = self.file_path)
             final_files_objs_all.append(folder_object)
         return (final_files_all, final_files_objs_all)
 
@@ -160,13 +163,13 @@ class FileSearch():
             return results
         for result in results:
             if self.func == 'name':
-                (files, folder_obj) = self.name(folder_loc=result.path, folder_obj=result)
+                (files, folder_obj) = self.name(folder_loc=result.path)
             elif self.func == 'all_folders':
                 (files, folder_obj) = self.all_folders(folder_obj=result)
             elif self.func == 'all_files':
                 (files, folder_obj) = self.all_files(folder_obj=result)
             else:
-                (files, folder_obj) = self.ext(folder_loc=result.path, folder_obj=result)
+                (files, folder_obj) = self.ext(folder_loc=result.path)
             if files != []:
                 result_files.append(files)
                 result_folder_objs.append(folder_obj)

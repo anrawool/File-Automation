@@ -12,30 +12,46 @@ class NexusFolderPathObject(NexusPathObject):
     folder: str
 
 class DataMaker:
-    def make_path(self, path, file='auto', ext='auto', path_file=True):
-        self.path = path
+    def make_path(self, path, file='auto', ext='auto', file_path=True):
         # Formatting
         if file == 'auto':
-            remove = os.path.dirname(self.path)
-            self.file = self.path.replace(f"{remove}/", "")
+            remove = os.path.dirname(path)
+            file = path.replace(f"{remove}/", "")
+        if not file_path:
+            path = path.replace(file, "")
         if ext == 'auto':
-            auto_ext = os.path.splitext(self.file)
-            self.ext = auto_ext[1]
-        if not path_file:
-            self.path = self.path.replace(self.file, "")
-        object = NexusPathObject(path=self.path, file=self.file, ext=self.ext)
+            auto_ext = os.path.splitext(file)
+            ext = auto_ext[1]
+            file = file.replace(auto_ext[1], "")
+        
+        object = NexusPathObject(path=path, file=file, ext=ext)
         return object
     
-    def make_folder_path(self, path, folder='auto', ext=None, file=None):
+    def make_folder_path(self, path, folder='auto', ext='auto', file='auto', file_path=True):
+        if file == 'auto':
+            if "." in path:
+                path_replace = os.path.dirname(path)
+                file = path.replace(f'{path_replace}/', "")
+            else:
+                file = None
+                ext = None
+        if file_path == False:
+            path = path.replace(f"{'/'+file}", "")
         if folder == 'auto':
             remove= os.path.dirname(path)
             folder = path.replace(f"{remove}/", "")
+            if "." in folder:
+                folder = path.replace(f'/{folder}', "")
+                folder = folder.replace(f'{os.path.dirname(folder)}/', "")
         else:
             folder = folder
+        if ext == 'auto':
+            if file != None:
+                ext = os.path.splitext(file)[1]
+                file = file.replace(ext, "")
         self.fold_path = path
         fold_object = NexusFolderPathObject(path=self.fold_path,  folder=folder, file=file, ext=ext)
         return fold_object
-
 
 
 # Example Instance
