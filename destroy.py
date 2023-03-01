@@ -3,6 +3,7 @@ import sys
 import json
 from github import Github
 import shutil
+from info import Github_Token
 
 sure = input("Are you sure? [Y/n]: ")
 if sure != "Y":
@@ -14,8 +15,9 @@ delete_obj = sys.argv[1]
 
 class Delete_Project():
 
-  def __init__(self, project_delete):
+  def __init__(self, project_delete, token):
     self.project_delete = project_delete
+    self.Github_Token = token
   
   def delete(self):
     try:
@@ -26,8 +28,7 @@ class Delete_Project():
         repo_exists = data['github_repo']
         if repo_exists == 'true':
           # Login
-          Github_Token = "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"
-          github = Github(Github_Token)
+          github = Github(self.Github_Token)
           user = github.get_user('anrawool')
           print("Logged into Github Account")
           authed = github.get_user()
@@ -45,5 +46,8 @@ class Delete_Project():
     except Exception as e:
       print(f"An Problem Has Occured: {e}")
 
-deleter = Delete_Project(delete_obj)
-deleter.delete()
+try:
+  deleter = Delete_Project(delete_obj, token=Github_Token)
+  deleter.delete()
+except Exception:
+  print("This Folder Does Not Exist")
