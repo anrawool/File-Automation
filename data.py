@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import os
+from dataclasses import replace
 
 @dataclass
 class NexusPathObject():
@@ -7,9 +8,16 @@ class NexusPathObject():
     file : str
     ext : str
 
+    @property
+    def list_return(self):
+        return self.path, self.file, self.ext
 @dataclass
 class NexusFolderPathObject(NexusPathObject):
     folder: str
+
+    @property
+    def list_return(self):
+        return self.path, self.file, self.ext, self.folder
 
 class DataMaker:
     def make_path(self, path, file='auto', ext='auto', file_path=True):
@@ -17,13 +25,25 @@ class DataMaker:
         if file == 'auto':
             remove = os.path.dirname(path)
             file = path.replace(f"{remove}/", "")
+        else:
+            path_check = path.replace(f'{os.path.dirname(path)}/', "")
+            temp_file = os.path.splitext(path_check)[0]
+            if temp_file != file:
+                path = path.replace(temp_file, file)
         if not file_path:
             path = path.replace(file, "")
         if ext == 'auto':
             auto_ext = os.path.splitext(file)
             ext = auto_ext[1]
             file = file.replace(auto_ext[1], "")
-        
+        else:
+            path_check = path.replace(f'{os.path.dirname(path)}/', "")
+            temp_ext = os.path.splitext(path_check)[1]
+            if temp_ext != ext:
+                path = path.replace(temp_ext, ext)
+        if ext == '':
+            file = None
+            ext = None
         object = NexusPathObject(path=path, file=file, ext=ext)
         return object
     
@@ -52,8 +72,26 @@ class DataMaker:
         self.fold_path = path
         fold_object = NexusFolderPathObject(path=self.fold_path,  folder=folder, file=file, ext=ext)
         return fold_object
-
+    def change_path(self, object, **change_vals):
+        changeable_vals = list(object.__annotations__)
+        obj_list_vals = list(object.list_return)
+        key_val = zip(changeable_vals, obj_list_vals)
+        key_val = dict(key_val)
+        for key, val in change_vals.items():
+            if key in changeable_vals:
+                if key in key_val.keys():
+                    key_val[f'{key}'] = val
+        if 'path' in change_vals:
+            if 'file' in change_vals:
+                object = self.make_path(path=key_val['path'], file=key_val['file'])
+            else:
+                object = self.make_path(path=key_val['path'])
+        else:
+            object = self.make_path(path=key_val['path'], file=key_val['file'], ext=key['ext'])
+        return object
 
 # Example Instance
 # datamaker = DataMaker()
-# object = datamaker.make_path(path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/data.py', path_file=False)
+# object = datamaker.make_path(path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation')
+# object = datamaker.change_path(object=object, path ='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Test')
+# print(object)
