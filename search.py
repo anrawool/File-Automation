@@ -1,4 +1,4 @@
-import os 
+import os
 from sys import argv
 from data import *
 import re 

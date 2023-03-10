@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import os
 from dataclasses import replace
+from dataclasses import dataclass
 
 @dataclass
 class NexusPathObject():
@@ -26,8 +26,6 @@ class DataMaker:
             remove = os.path.dirname(path)
             file = path.replace(f"{remove}/", "")
         else:
-            path_check = path.replace(f'{os.path.dirname(path)}/', "")
-            temp_file = os.path.splitext(path_check)[0]
             if temp_file != file:
                 path = path.replace(temp_file, file)
         if not file_path:
