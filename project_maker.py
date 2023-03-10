@@ -122,6 +122,8 @@ try:
     folder = 'Automation'
     folder_loc = folder
     details = MakeController(mode=mode, folder_loc = folder_loc)
-except Exception:
+except Exception as e:
+    print(e)
+    exit()
     folder_loc = None
     details = MakeController(mode)
