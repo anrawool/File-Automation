@@ -1,28 +1,41 @@
-# FIle for experimentation
+# File for experimentation
+import os
+import time
+from search import *
 
-from functools import wraps
-from time import perf_counter, sleep
+def search_using_os_walk(target_file):
+    found_files = []
+    for root, dirs, files in os.walk('/Users/abhijitrawool/'):
+        if target_file in files:
+            found_files.append(os.path.join(root, target_file))
+    return found_files
 
-def get_time(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start_time = perf_counter()
+# Replace 'YourCodeSearchFunction' with the name of your search function.
+def search_using_your_code(target_file):
+    instance = FileSearch('TEST_TIMER', target_file)
+    results = instance.search()
+    return results
 
-        func(*args, **kwargs)
+target_file = "Test_time.jpg"
+print("Started")
+start_time = time.time()
+print("Your code")
+result_your_code = search_using_your_code(target_file)
+print(result_your_code)
+end_time = time.time()
+print("Ended")
+your_code_time = end_time - start_time
 
-        end_time = perf_counter()
-        total_time = round(end_time-start_time, 2)
+# Measure the time taken by os.walk implementation.
+start_time = time.time()
+print("Started OS")
+result_os_walk = search_using_os_walk(target_file)
+print("ended")
+end_time = time.time()
+os_walk_time = end_time - start_time
 
-        print("Time:", total_time, "seconds")
-
-    return wrapper
-
-@get_time
-def do_something(param: str):
-    sleep(1)
-    print(param)
+# Measure the time taken by your code implementation.
 
 
-
-if __name__ == "__main__":
-    do_something('Hello')
+print(f"os.walk time: {os_walk_time} seconds")
+print(f"Your code time: {your_code_time} seconds")

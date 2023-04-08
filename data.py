@@ -1,5 +1,4 @@
 import os
-from dataclasses import replace
 from dataclasses import dataclass
 
 @dataclass
@@ -26,6 +25,7 @@ class DataMaker:
             remove = os.path.dirname(path)
             file = path.replace(f"{remove}/", "")
         else:
+            temp_file = path.replace(f"{os.path.dirname(path)}/", "")
             if temp_file != file:
                 path = path.replace(temp_file, file)
         if not file_path:
@@ -53,8 +53,15 @@ class DataMaker:
             else:
                 file = None
                 ext = None
-        if file_path == False:
-            path = path.replace(f"{'/'+file}", "")
+        if ext == 'auto':
+            if file != None:
+                ext = os.path.splitext(file)[1]
+                file = file.replace(ext, "")
+        if file != None:
+            if file_path == False:
+                path = path.replace(f"{'/'+file+ext}", "")
+        else:
+            pass
         if folder == 'auto':
             remove= os.path.dirname(path)
             folder = path.replace(f"{remove}/", "")
@@ -63,10 +70,6 @@ class DataMaker:
                 folder = folder.replace(f'{os.path.dirname(folder)}/', "")
         else:
             folder = folder
-        if ext == 'auto':
-            if file != None:
-                ext = os.path.splitext(file)[1]
-                file = file.replace(ext, "")
         self.fold_path = path
         fold_object = NexusFolderPathObject(path=self.fold_path,  folder=folder, file=file, ext=ext)
         return fold_object
