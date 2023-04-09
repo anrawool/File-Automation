@@ -4,7 +4,9 @@ import sys
 path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir)
 sys.path.append(path)
 from settings import *
-import datetime
+import datetime as dt
+
+
 def init_db(db_path):
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -19,11 +21,24 @@ def init_db(db_path):
 def create_new_test(conn, cur, subject, date, type='CR'):
     conn = sqlite3.connect(path)
     cur = conn.cursor()
-    sql = f"INSERT INTO Tests VALUES (NULL, '{subject}','{date}', '{type}');"
-    cur.execute(sql)
-    conn.commit()
+    details = (subject, date, type)
+    sql = f"INSERT OR IGNORE INTO Tests VALUES (NULL, '{subject}','{date}', '{type}');"
+    insert_permission = check_duplicates(details, conn, cur)
+    if insert_permission:
+        cur.execute(sql)
+        conn.commit()
+    else:
+        pass
     return conn, cur
 
+def check_duplicates(details : tuple, conn, cur):
+    sql = f'SELECT * FROM Tests WHERE subject = ? AND date = ? AND type = ?;'
+    cur.execute(sql, details)
+    row = cur.fetchone()
+    if row == None:
+        return True
+    else:
+        return False
 def check_input(type, subject):
     set_subjects = ['math','ai',  "biology", "chemistry", "hindi", "physics", "history", "geography", "civics", "telugu", "english"]
     if subject.lower() in set_subjects:
@@ -36,15 +51,15 @@ def check_input(type, subject):
     else:
         final_type=''
     return final_subject.upper(), final_type.upper()
-today  = datetime.date.today()
+today  = dt.date.today()
 year = today.year
 subject, day, month, type, year = get_shell_input(3, sys.argv, ['', year])
 
 date  = f"{day} {month}, {year}"
-converted_date = datetime.datetime.strptime(date, '%d %B, %Y')
-final_date = datetime.datetime.strftime(converted_date, '%Y-%m-%d')
+converted_date = dt.datetime.strptime(date, '%d %B, %Y')
+final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
 
-path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/School/Tests/tests.sqlite'
+path = './tests.sqlite'
 if not os.path.exists(path):
     conn, cur = init_db(path)
 else:
