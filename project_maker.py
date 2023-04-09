@@ -4,7 +4,7 @@ import sys
 import json
 from info import Github_Token
 from search import *
-from config import get_shell_input
+from settings import get_shell_input
 
 class Project_Maker():
     def __init__(self, project_name, token, repo='', mode='yes_repo'):

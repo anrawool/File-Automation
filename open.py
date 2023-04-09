@@ -1,7 +1,7 @@
 from search import *
 from sys import argv
 import os
-from config import get_shell_input
+from settings import get_shell_input
 
 class Opener:
     def __init__(self, folder, target=None, mode=None):

@@ -1,7 +1,7 @@
 from search import FileSearch
 from sys import argv
 import os
-from config import get_shell_input
+from settings import get_shell_input
 import shutil
 
 in_folder, del_file = get_shell_input(2, argv)
