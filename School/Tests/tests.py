@@ -3,7 +3,7 @@ import os
 import sys
 path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir)
 sys.path.append(path)
-from config import *
+from settings import *
 import datetime
 def init_db(db_path):
     conn = sqlite3.connect(db_path)
