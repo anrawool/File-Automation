@@ -11,7 +11,7 @@ except Exception:
     exit()
 def create(in_folder, new_folder):
     incompat = ['documents', 'downloads']
-    search_method = FileSearch(folder=in_folder, mode='folder', file_path=True)
+    search_method = FileSearcher(folder=in_folder, mode='folder', file_path=True)
     results = search_method.search()
     top_result_path= results[0].path
     if in_folder.lower() in incompat:
