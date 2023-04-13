@@ -3,6 +3,7 @@ from sys import argv
 import os
 from settings import get_shell_input
 
+
 class Opener:
     def __init__(self, folder, target=None, mode=None):
         self.folder = folder
@@ -12,22 +13,23 @@ class Opener:
             self.open_folders()
         else:
             self.open_files()
-        
+
     def open_files(self):
-        search_object = FileSearch(folder=self.folder, target=f'{target}', file_path=False)
+        search_object = FileSearcher(
+            folder=self.folder, target=f'{target}', file_path=False)
         (files, folder_objs) = search_object.search()
         for folder_obj in folder_objs[0]:
             os.chdir(f'{folder_obj.path}')
             os.system(f'open {folder_obj.file + folder_obj.ext}')
-    
+
     def open_folders(self):
-        search_object = FileSearch(folder=self.folder, target=f'{target}', file_path=False)
+        search_object = FileSearcher(
+            folder=self.folder, target=f'{target}', file_path=False)
         (folders, folder_objs) = search_object.search()
         print(folder_objs)
         for folder in folder_objs[0]:
             path = folder.path
             os.system(f'open {path}')
-
 
 
 if __name__ == '__main__':
