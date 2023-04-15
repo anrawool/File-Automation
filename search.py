@@ -46,9 +46,9 @@ class FileSearcher():
             self.inputs[0] = ''
         # Setting Parent Folders List Using Custom Data-type
         self.folders = list(map(lambda x: self.DataMaker.make_folder_path(
-            f'{settings.ROOT_DIR}{x}', file_path=self.inputs[3]), folders))
+            f'{settings.ROOT_DIR}/{x}', file_path=self.inputs[3]), folders))
         self.folders = list(map(lambda x: self.DataMaker.make_folder_path(
-            f'{settings.ROOT_DIR}{x}', file_path=self.inputs[3]), folders))
+            f'{settings.ROOT_DIR}/{x}', file_path=self.inputs[3]), folders))
         for parent in self.folders:
             # Path Normalization
             sterilized_search = self.sterilize(parent.folder)
@@ -82,7 +82,7 @@ class FileSearcher():
     def search_folder(self) -> list:
         """Searches Folder location on the computer files and returns complete details"""
         self.folders = os.scandir(
-            f'{settings.ROOT_DIR}')  # Root Directory Scan
+            f'{settings.ROOT_DIR}/')  # Root Directory Scan
         self.folders = self.convert_scan(self.folders, 'folders') # Folder Extraction
         # Checking Parent Exceptions
         self.check_parents(self.folders)
@@ -174,12 +174,12 @@ if __name__ == '__main__':
     if mode == '':
         search_instance = FileSearcher(folder, target, record_time=True)
         files, objects, final_time = search_instance.search()
-        # print("FILES:", files, '\n')
+        print("FILES:", files, '\n')
 
-        # print('OBJECTS:', objects, '\n')
-        # print("TIME:", final_time)
+        print('OBJECTS:', objects, '\n')
+        print("TIME:", final_time)
     else:
         search_instance = FileSearcher(folder, mode=mode, record_time=True)
         folders, final_time = search_instance.search()
-        # print("FOLDER OBJECT:", folders)
-        # print("TIME:", final_time)
+        print("FOLDER OBJECT:", folders)
+        print("TIME:", final_time)

@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from settings import ROOT_DIR
 
 @dataclass
 class NexusPathObject():
@@ -93,6 +94,6 @@ class DataMaker:
 
 # Example Instance
 # datamaker = DataMaker()
-# object = datamaker.make_path(path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation')
-# object = datamaker.change_path(object=object, path ='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Test')
+# object = datamaker.make_path(path=f'{ROOT_DIR}/Documents/Sarthak/Programming_Projects/Automation')
+# object = datamaker.change_path(object=object, path = f'{ROOT_DIR}/Documents/Sarthak/Programming_Projects/Test')
 # print(object)

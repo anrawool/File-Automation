@@ -4,7 +4,7 @@ import sys
 import json
 from info import Github_Token
 from search import *
-from settings import get_shell_input
+from settings import *
 
 class Project_Maker():
     def __init__(self, project_name, token, repo='', mode='yes_repo'):
@@ -23,14 +23,14 @@ class Project_Maker():
     def make_base(self, project_name):
         try:
             # print("Project Loc not Available...")
-            os.mkdir(f"/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/{project_name}")
+            os.mkdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
             print(f"Making {project_name}...")
         except Exception:
-            os.system(f"code /Users/abhijitrawool/Documents/Sarthak/Programming_Projects/{project_name}")
+            os.system(f"code {ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
             print(f"Opening {project_name}")
             exit()
 
-        os.chdir(f"/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/{project_name}")
+        os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
         os.system("touch main.py")
         os.system("touch folder_details.json")
         os.system("touch README.md")
@@ -69,7 +69,7 @@ class Project_Maker():
             pass
         with open("folder_details.json", "w") as outfile:
             json.dump(details, outfile)
-        os.system(f"code /Users/abhijitrawool/Documents/Sarthak/Programming_Projects/{self.project_name}")
+        os.system(f"code {ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_name}")
         return details
 
 project_name, repo = get_shell_input(1, sys.argv, [None, ])
