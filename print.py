@@ -2,6 +2,7 @@ from tracker import track
 import os
 from data import *
 import re
+from settings import ROOT_DIR
 
 class Printer:
     def __init__(self):
@@ -31,7 +32,7 @@ class Printer:
         try:
             final_file = self.sterilize(path_obj)
             # Making Path Compatible For Printing
-            os.chdir("/Users/abhijitrawool/Documents/Print/")
+            os.chdir(f"{ROOT_DIR}/Documents/Print/")
             if self.incompatible_file != True:
                 os.system(f"lpr {final_file}")
                 print("Added to Printing Queue")
@@ -43,4 +44,4 @@ class Printer:
             print(e)
 
 printer = Printer()
-track("/Users/abhijitrawool/Documents/Print", created_func=printer.created)
+track(f"{ROOT_DIR}/Documents/Print", created_func=printer.created)

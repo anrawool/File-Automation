@@ -51,22 +51,29 @@ def check_input(type, subject):
     else:
         final_type=''
     return final_subject.upper(), final_type.upper()
-today  = dt.date.today()
-year = today.year
-subject, day, month, type, year = get_shell_input(3, sys.argv, ['', year])
 
-date  = f"{day} {month}, {year}"
-converted_date = dt.datetime.strptime(date, '%d %B, %Y')
-final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
-
-path = './tests.sqlite'
-if not os.path.exists(path):
-    conn, cur = init_db(path)
-else:
+def connect_to_db(path):
     conn = sqlite3.connect(path)
     cur = conn.cursor()
-subject, type = check_input(type, subject)
-if type != '':
-    conn, cur = create_new_test(conn, cur, subject, final_date, type)
-else:
-    conn, cur = create_new_test(conn, cur, subject, final_date)
+    return conn, cur
+
+if __name__ == '__main__':
+    today  = dt.date.today()
+    year = today.year
+    subject, day, month, type, year = get_shell_input(3, sys.argv, ['', year])
+
+    date  = f"{day} {month}, {year}"
+    converted_date = dt.datetime.strptime(date, '%d %B, %Y')
+    final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
+
+    path = './tests.sqlite'
+    if not os.path.exists(path):
+        conn, cur = init_db(path)
+    else:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
+    subject, type = check_input(type, subject)
+    if type != '':
+        conn, cur = create_new_test(conn, cur, subject, final_date, type)
+    else:
+        conn, cur = create_new_test(conn, cur, subject, final_date)

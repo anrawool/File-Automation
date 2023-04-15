@@ -3,6 +3,7 @@ import sys
 import json
 from github import Github
 import shutil
+from settings import ROOT_DIR
 from info import Github_Token
 
 sure = input("Are you sure? [Y/n]: ")
@@ -21,7 +22,7 @@ class Delete_Project():
   
   def delete(self):
     try:
-      os.chdir(f"/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/{self.project_delete}")
+      os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_delete}")
       with open('folder_details.json') as f:
         data = json.load(f)
         repo_name = data['repo_name']
@@ -36,11 +37,11 @@ class Delete_Project():
           repo = authed.get_repo(repo_name)
           repo.delete()
           print("Repository Deleted")
-          os.chdir("/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/")
+          os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
           shutil.rmtree(f"{self.project_delete}")
           print("Folder Deleted")
         else:
-          os.chdir("/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/")
+          os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
           shutil.rmtree(f"{self.project_delete}")
           print("Folder Deleted")
     except Exception as e:
