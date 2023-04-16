@@ -1,10 +1,9 @@
 # CONSTANTS
 ROOT_DIR = '/Users/abhijitrawool'
 
-
-
-
 # Classes
+
+# Shell Input
 class ShellInput():
     @property
     def req(self):

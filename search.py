@@ -6,8 +6,19 @@ import settings
 from settings import get_shell_input
 import time
 
+# TODO: Check whether appended list results can be modified with yield returns
+
 class FileSearcher():
     def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False) -> None:
+        """
+        Initiation of global variables
+
+        :param folder: str, Folder to use path of
+        :param target: str, Target item to be found in (param) folder path
+        :param mode: str, Type of preset mode available [folder/other]
+        :param file_path: bool, Decides whether final result name should be included in the complete path to the item
+        :param record_time: bool, Records time if True        
+        """
         self.record_time = record_time
         if self.record_time == True:
             self.start = time.time()
@@ -21,8 +32,15 @@ class FileSearcher():
         self.sub_folders = []
         self.results = []
 
+    # Global Variable Setter Functions
     def get_function(self, target: str) -> str:
-        """Sets the type of function to be used in conjunction with the search_folder function"""
+        """
+        Sets the type of function to be used in conjunction with the search_folder function
+        
+        :param target: str, Global target variable
+
+        :return: str, Containing preset function types [--all-folders/--all-files/file_search]
+        """
         if "--all-folders" == target:
             function = 'all_folders'
         elif '--all-files' == target:
@@ -30,18 +48,70 @@ class FileSearcher():
         else:
             function = 'file_search'
         return function
+    
+    # Normalization Functions
+    
+    def trim(self, item_list: list, mode: str = 'folders') -> list:
+        """
+        Gets valid folders out of a list passed into the function
+
+        :param item_list: list, Containing items of the datatype DirEntry
+        :param mode: str, Type of trimming to be done [folder/files]
+
+        :return: list, Containing trimmed items in the form of strings of names
+        """
+        if mode != 'folders':
+            temp_files = [file.name for file in item_list if '.' in file.name and not file.name.startswith('.')]
+            return temp_files
+        self.ignore_folders = ['Public', 'opt', 'Library', 'Pictures', 'Music', 'Sites']
+        # List comprehension for getting all folders not in the ignore list
+        temp_folds = [
+            folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
+        return temp_folds
 
     def sterilize(self, ster_str: str) -> str:
-        """Easy Normalizer for all inputs and outputs of the FileSearcher script"""
+        """
+        Easy Normalizer for all inputs and outputs of the FileSearcher script
+        
+        :param ster_str: str, The string to be normalized
+        
+        :return: str, In normalized format
+        """
         # Replacing all spaces and extra underscores with only underscores
         str_obj = ster_str.replace(" ", "_")
         str_obj = re.sub(" +", " ", str_obj)
         str_obj = re.sub("_+", "_", str_obj)
         str_obj = re.sub("/+", "/", str_obj)
         return str_obj.lower()  # Final Normalization
+    
+    def convert_scan(self, scanned: list, trimmer = 'files') -> list:
+        """
+        Converts Scan to fit the needs of the user function
 
+        :param scanned: list, Containing items of the datatype DirEntry
+        :param trimmer: str, Type of trimmed items required [folder/files]
+
+        :return: list, Containing items in the form of strings of names
+        """
+        if trimmer == 'files':
+            trimmed = self.trim(scanned, 'files')
+            return trimmed
+        elif trimmer == 'folders':
+            scanned = self.trim(scanned, 'folders')
+            return scanned
+        else:
+            scanned = [item.name for item in scanned if not item.name.startswith('.')]
+            return scanned
+
+    # Formatting Functions
     def check_parents(self, folders: list) -> None:
-        """Sets the first iteration folder list for the program"""
+        """
+        Sets the first iteration folder list for the program
+
+        :param folders: list, Containing only folder names in form of strings
+
+        :return: {Indirect} Conversion of folder names to preset NexusFolderPathObject forms
+        """
         if self.inputs[0] in folders:
             self.inputs[0] = ''
         # Setting Parent Folders List Using Custom Data-type
@@ -57,30 +127,40 @@ class FileSearcher():
             else:
                 pass
 
-    def trim(self, item_list: list, mode: str = 'folders') -> list:
-        """Gets valid folders out of a list passed into the function"""
-        if mode != 'folders':
-            temp_files = [file.name for file in item_list if '.' in file.name and not file.name.startswith('.')]
-            return temp_files
-        self.ignore_folders = ['Public', 'opt', 'Library', 'Pictures', 'Music', 'Sites']
-        # List comprehension for getting all folders not in the ignore list
-        temp_folds = [
-            folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
-        return temp_folds
-
     def check_with_result(self, object: str, target: str) -> bool:
+        """
+        Checks Result using normalized form
+
+        :param object: str, The string to checked for
+        :param target: str, The string to search target in
+
+        :return: bool, True for match found and vice-versa
+        """
         if self.sterilize(object) == self.sterilize(target):
             return True
         else:
             return False
 
     def change_for_results(self, object: NexusFolderPathObject, result_name: str):
+        """
+        Formatting of objects to suit for final result representation
+
+        :param object: NexusFolderPathObject, The object to be formatted
+        :param result_name: str, The string to be added to be added into the object
+
+        :return: object: NexusFolderPathObject
+        """
         object.path = os.path.join(object.path, result_name)
         object.folder = result_name
         return object
 
+    # Search Functions
     def search_folder(self) -> list:
-        """Searches Folder location on the computer files and returns complete details"""
+        """
+        Searches Folder location on the computer files and returns complete details
+
+        :return: results: list, Containing NexusFolderPathObjects
+        """
         self.folders = os.scandir(
             f'{settings.ROOT_DIR}/')  # Root Directory Scan
         self.folders = self.convert_scan(self.folders, 'folders') # Folder Extraction
@@ -105,19 +185,14 @@ class FileSearcher():
                 pass
                 self.control = True
         return self.results
-
-    def convert_scan(self, scanned: list, trimmer = 'files') -> list:
-        if trimmer == 'files':
-            trimmed = self.trim(scanned, 'files')
-            return trimmed
-        elif trimmer == 'folders':
-            scanned = self.trim(scanned, 'folders')
-            return scanned
-        else:
-            scanned = [item.name for item in scanned if not item.name.startswith('.')]
-            return scanned
     
     def global_search(self) -> tuple:
+        """
+        Global search for a file of folder in a given path
+
+        :return: item_names: list, Containing strings of names of items
+        :return: item_objects: list, Containing NexusFolderPathObjects of each given item in item_names
+        """
         item_names = []
         item_objects = []
         target = self.inputs[1]
@@ -132,6 +207,12 @@ class FileSearcher():
         return item_names, item_objects
     
     def all(self, mode='files') -> tuple:
+        """
+        All items in a given path are extracted
+
+        :return: item_names: list, Containing strings of names of all items
+        :return: item_objects: list, Containing NexusFolderPathObjects of each given item in item_names
+        """
         item_objects = []
         item_names = []
         paths = [object.path for object in self.results]
@@ -145,6 +226,7 @@ class FileSearcher():
                 item_objects.append(self.DataMaker.make_folder_path(f'{path}/{item}', file_path=self.inputs[3]))
         return item_names, item_objects
     
+    # Search Controller
     def search(self):
         results = self.search_folder()
         if self.inputs[2] == 'folder':
