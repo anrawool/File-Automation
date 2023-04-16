@@ -66,7 +66,7 @@ if __name__ == '__main__':
     converted_date = dt.datetime.strptime(date, '%d %B, %Y')
     final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
 
-    path = './tests.sqlite'
+    path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/School/Tests/tests.sqlite'
     if not os.path.exists(path):
         conn, cur = init_db(path)
     else:

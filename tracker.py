@@ -35,4 +35,4 @@ def track(path, created_func=None, moved_func=None, deleted_func=None, modified_
     finally:
         observer.stop()
         observer.join()
-        print("Stopped")
+        # print("Stopped")
