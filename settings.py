@@ -1,5 +1,5 @@
 # CONSTANTS
-ROOT_DIR = 'C:/Users/ntraw'
+ROOT_DIR = '/Users/abhijitrawool'
 
 # Classes
 
