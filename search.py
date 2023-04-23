@@ -6,8 +6,6 @@ import settings
 from settings import get_shell_input
 import time
 
-# TODO: Check whether appended list results can be modified with yield returns
-
 class FileSearcher():
     def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False) -> None:
         """
@@ -181,7 +179,8 @@ class FileSearcher():
                             f'{parent_dir.path}/{sub_directory}', file_path=self.inputs[3]))
                 self.folders = self.sub_folders  # Setting up for next iteration
                 self.sub_folders = []  # Resetting the Sub folders list for easy transition
-            except Exception:
+            except Exception as e:
+                # print(e)
                 pass
                 self.control = True
         return self.results
