@@ -3,15 +3,20 @@ path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardi
 import sys
 import math
 import random
+import pandas as pd
 sys.path.append(path)
+
 from settings import *
 from School.Tests.tests import connect_to_db
 
 conn, cur = connect_to_db('../Tests/tests.sqlite')
 
 def get_lrs(cur):
-    sql = '''SELECT subject, date, type FROM Tests'''
-    result = cur.execute(sql)
+    try:
+        sql = '''SELECT subject, date, type FROM Tests'''
+        result = cur.execute(sql)
+    except Exception:
+        return ''
     return result
 
 class PlanCreator():
@@ -21,16 +26,14 @@ class PlanCreator():
         self.num_subjects = num_subjects
         if type(lrs) != 'list':
             self.lrs = list(lrs)
-            # self.lrs = list(map(lambda x: list(x), lrs))
         self.priority_list = self.priority_set()
     
     def priority_set(self):
-        priority_list = {'math': 0.85, 'physics':0.80, 'chemistry': 0.75, 'biology':0.70, 'ai': 0.65, 'history':0.60, 'civics':0.55, 'geography':0.50, 'economics':0.45, "english":0.40, 'hindi':0.35, 'telugu': 0.20}
+        priority_list = {'math': 90, 'physics':80, 'chemistry': 70, 'biology':60, 'ai': 50, 'history':40, 'civics':30, 'geography':20, 'economics':10, "english":5, 'hindi':3, 'telugu': 2}
         for subject, priority_score in priority_list.items():
             for lr_instance in self.lrs:
                 if subject.upper() in lr_instance:
-                    priority_list[subject] += 1
-        print(priority_list)
+                    priority_list[subject] += 30
         return priority_list
 
     def get_num_instances(self):
@@ -53,7 +56,7 @@ class PlanCreator():
             choice =random.choice(self.chosen_list)
             final_choices.append(choice)
         plan = self.review_plan(final_choices)
-        return final_choices
+        return plan
     
     def review_plan(self, plan):
         try:
@@ -72,7 +75,11 @@ class PlanCreator():
         
         
 lrs = get_lrs(cur)
-
 creator = PlanCreator(lrs, 5)
-choices = creator.make_plan()
-print(choices)
+def create_plans():
+    for i in range(1000):
+        choices = creator.make_plan()
+        yield choices
+choices = create_plans()
+df = pd.DataFrame(choices, columns=['sub_1', 'sub_2', "sub_3", "sub_4", "sub_5"])
+df.to_csv('train.csv')
