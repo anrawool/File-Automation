@@ -53,8 +53,11 @@ def check_input(type, subject):
     return final_subject.upper(), final_type.upper()
 
 def connect_to_db(path):
-    conn = sqlite3.connect(path)
-    cur = conn.cursor()
+    if not os.path.exists(path):
+        conn, cur = init_db(path)
+    else:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
     return conn, cur
 
 if __name__ == '__main__':
