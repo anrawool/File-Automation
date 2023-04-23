@@ -2,6 +2,7 @@ import os
 from sys import argv
 from data import *
 import re
+from pathlib import Path
 import settings
 from settings import get_shell_input
 import time
@@ -63,7 +64,7 @@ class FileSearcher():
         if mode != 'folders':
             temp_files = [file.name for file in item_list if '.' in file.name and not file.name.startswith('.')]
             return temp_files
-        self.ignore_folders = ['Public', 'opt', 'Library', 'Pictures', 'Music', 'Sites']
+        self.ignore_folders = ['Public', 'opt', 'Library', 'Application Data', 'Local Settings', 'Cookies', 'Pictures', 'Music', 'Sites']
         # List comprehension for getting all folders not in the ignore list
         temp_folds = [
             folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
@@ -82,6 +83,7 @@ class FileSearcher():
         str_obj = re.sub(" +", " ", str_obj)
         str_obj = re.sub("_+", "_", str_obj)
         str_obj = re.sub("/+", "/", str_obj)
+        str_obj = re.sub('\+', '/', str_obj)
         return str_obj.lower()  # Final Normalization
     
     def convert_scan(self, scanned: list, trimmer = 'files') -> list:
@@ -150,7 +152,7 @@ class FileSearcher():
 
         :return: object: NexusFolderPathObject
         """
-        object.path = os.path.join(object.path, result_name)
+        object.path = Path(os.path.join(object.path, result_name))
         object.folder = result_name
         return object
 
@@ -171,6 +173,7 @@ class FileSearcher():
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
                     subdirectories = self.convert_scan(subdirectories, 'folders')
+                    print(parent_dir)
                     for sub_directory in subdirectories:
                         sterilized_search = self.sterilize(sub_directory)
                         if self.check_with_result(self.inputs[0], sterilized_search):
@@ -181,7 +184,8 @@ class FileSearcher():
                             f'{parent_dir.path}/{sub_directory}', file_path=self.inputs[3]))
                 self.folders = self.sub_folders  # Setting up for next iteration
                 self.sub_folders = []  # Resetting the Sub folders list for easy transition
-            except Exception:
+            except Exception as e:
+                print(e)
                 pass
                 self.control = True
         return self.results
