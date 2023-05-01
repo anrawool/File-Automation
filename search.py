@@ -8,7 +8,7 @@ from settings import get_shell_input
 import time
 
 class FileSearcher():
-    def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False) -> None:
+    def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False, posix_path: bool = False) -> None:
         """
         Initiation of global variables
 
@@ -23,7 +23,7 @@ class FileSearcher():
             self.start = time.time()
         # Initializing inputs along with preformatting
         # Undused Variables to be used in the future
-        self.inputs = [self.sterilize(folder), target.lower(), mode, file_path]
+        self.inputs = [self.sterilize(folder), target.lower(), mode, file_path, posix_path]
         self.DataMaker = DataMaker()
         # Setting function variable
         self.function = self.get_function(self.inputs[1])
@@ -151,6 +151,8 @@ class FileSearcher():
         :return: object: NexusFolderPathObject
         """
         object.path = Path(os.path.join(object.path, result_name))
+        if self.inputs[-1] != True:
+            object.path = str(object.path)
         object.folder = result_name
         return object
 
@@ -171,7 +173,6 @@ class FileSearcher():
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
                     subdirectories = self.convert_scan(subdirectories, 'folders')
-                    print(parent_dir)
                     for sub_directory in subdirectories:
                         sterilized_search = self.sterilize(sub_directory)
                         if self.check_with_result(self.inputs[0], sterilized_search):
