@@ -40,6 +40,7 @@ class Project_Maker():
                 with open(".folder_details.json", "w") as outfile:
                     json.dump(details, outfile)
             print(f"Opening {project_name}")
+            
             exit()
 
         os.chdir(
