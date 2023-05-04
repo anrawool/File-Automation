@@ -69,12 +69,15 @@ class RepoMerger:
         elif base != None and head == None:
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(self.merge_branch)
+            commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         elif head != None and base == None:
             base = self.repo_obj.get_branch(self.merge_to_branch).name
             head = self.repo_obj.get_branch(head)
+            commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         else:
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(head)
+            commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
 
     
     def get_all_branches(self):
@@ -91,7 +94,7 @@ class RepoMerger:
             title[-1] = self.merge_to_branch
         if all == False:
             self.pull_details = self.create_pull_request(title, body)
-            self.merge_branches(self.pull_details[2])
+            self.merge_branches(self.pull_details[2], self.pull_details[3])
         else:
             all_branches = self.get_all_branches()
             print(all_branches)
