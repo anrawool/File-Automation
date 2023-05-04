@@ -2,6 +2,7 @@ from settings import *
 from github import Github
 from github.GithubException import GithubException
 import os
+from github.GithubException import GithubException
 from itertools import combinations
 import sys
 import json
@@ -37,18 +38,21 @@ class RepoMerger:
 
     
     def create_pull_request(self, title, body='', base = None, head = None):
-        if base == None and head == None:
-            base = self.repo_obj.get_branch(self.merge_to_branch).name
-            self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
-        elif base != None:
-            base = self.repo_obj.get_branch(base).name
-            self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
-        elif head != None:
-            base = self.repo_obj.get_branch(self.merge_to_branch).name
-            self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
-        else:
-            base = self.repo_obj.get_branch(base).name
-            self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
+        try:
+            if base == None and head == None:
+                base = self.repo_obj.get_branch(self.merge_to_branch).name
+                self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
+            elif base != None:
+                base = self.repo_obj.get_branch(base).name
+                self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
+            elif head != None:
+                base = self.repo_obj.get_branch(self.merge_to_branch).name
+                self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
+            else:
+                base = self.repo_obj.get_branch(base).name
+                self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
+        except GithubException:
+            pass
         return self.head, base, title, body
 
     def get_head(self) -> str:
@@ -107,7 +111,6 @@ class RepoMerger:
             self.merge_branches(self.pull_details[2], self.merge_to_branch, self.merge_branch)
         else:
             all_branches = self.get_all_branches()
-            print(all_branches)
             final_execution_list = {}
             for cur_branch in all_branches:
                 temp_head_list = [branch for branch in all_branches if branch != cur_branch]
@@ -116,13 +119,11 @@ class RepoMerger:
                 print(f"Current base:", base)
                 for head in heads:
                     try:
-                        print("Pull requested for branch:", head)
                         pull_details = self.create_pull_request(f'Merge to {base}', body, base, head)
                         self.merge_branches(f'Merge to {base}', base, head)
                         print(f'Merged head: ', head)
                     except GithubException:
-                        print("PROBLEM OCCURED")
-
+                        pass
 
 
 path = os.path.abspath(os.getcwd())
