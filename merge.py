@@ -1,5 +1,6 @@
 from settings import *
 from github import Github
+from github.GithubException import GithubException
 import os
 from github.GithubException import GithubException
 from itertools import combinations
@@ -61,24 +62,33 @@ class RepoMerger:
             for result in results:
                 if "*" in result:
                     self.merge_branch = result.replace("* ", "")
+                    self.merge_branch = self.merge_branch.strip()
                     return self.merge_branch
                 else:
                     pass
 
     def merge_branches(self, title, base=None, head=None):
         if base == None and head == None:
+            print("BASE NORMAL:", self.merge_to_branch)
+            print("HEAD NORMAL:", self.merge_branch)
             base = self.repo_obj.get_branch(self.merge_to_branch).name
             head = self.repo_obj.get_branch(self.merge_branch)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         elif base != None and head == None:
+            print("BASE AVAILABLE:", base)
+            print("HEAD NORMAL:", self.merge_branch)
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(self.merge_branch)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         elif head != None and base == None:
+            print("HEAD AVAILABLE:", head)
+            print("BASE NORMAL:", self.merge_to_branch)
             base = self.repo_obj.get_branch(self.merge_to_branch).name
             head = self.repo_obj.get_branch(head)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         else:
+            print("BASE AVAILABLE:", base)
+            print('HEAD AVAILABLE:', head)
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(head)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
@@ -94,8 +104,8 @@ class RepoMerger:
         return results
     
     def merge(self, title, body, all=False):
-        if self.merge_to_branch != 'master':
-            title[-1] = self.merge_to_branch
+        # if self.merge_to_branch != 'master':
+        #     title[-1] = self.merge_to_branch
         if all == False:
             self.pull_details = self.create_pull_request(title, body)
             self.merge_branches(self.pull_details[2], self.merge_to_branch, self.merge_branch)
@@ -125,4 +135,4 @@ if repo_name == '':
 else:
     pass
 
-RepoMerger(repo_name, merge_branch, merge_to_branch, all=True)
+RepoMerger(repo_name, merge_branch, merge_to_branch)
