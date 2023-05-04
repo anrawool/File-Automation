@@ -100,11 +100,11 @@ class RepoMerger:
         return results
     
     def merge(self, title, body, all=False):
-        if self.merge_to_branch != 'master':
-            title[-1] = self.merge_to_branch
+        # if self.merge_to_branch != 'master':
+        #     title[-1] = self.merge_to_branch
         if all == False:
             self.pull_details = self.create_pull_request(title, body)
-            self.merge_branches(self.pull_details[2], self.pull_details[3])
+            self.merge_branches(self.pull_details[2], self.merge_to_branch, self.merge_branch)
         else:
             all_branches = self.get_all_branches()
             print(all_branches)
@@ -116,7 +116,7 @@ class RepoMerger:
                 print(f"Current base:", base)
                 for head in heads:
                     try:
-                        print("Pull reuested for branch:", head)
+                        print("Pull requested for branch:", head)
                         pull_details = self.create_pull_request(f'Merge to {base}', body, base, head)
                         self.merge_branches(f'Merge to {base}', base, head)
                         print(f'Merged head: ', head)
