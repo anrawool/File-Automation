@@ -1,5 +1,6 @@
 from settings import *
 from github import Github
+from github.GithubException import GithubException
 import os
 from itertools import combinations
 import sys
@@ -57,24 +58,33 @@ class RepoMerger:
             for result in results:
                 if "*" in result:
                     self.merge_branch = result.replace("* ", "")
+                    self.merge_branch = self.merge_branch.strip()
                     return self.merge_branch
                 else:
                     pass
 
     def merge_branches(self, title, base=None, head=None):
         if base == None and head == None:
+            print("BASE NORMAL:", self.merge_to_branch)
+            print("HEAD NORMAL:", self.merge_branch)
             base = self.repo_obj.get_branch(self.merge_to_branch).name
             head = self.repo_obj.get_branch(self.merge_branch)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         elif base != None and head == None:
+            print("BASE AVAILABLE:", base)
+            print("HEAD NORMAL:", self.merge_branch)
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(self.merge_branch)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         elif head != None and base == None:
+            print("HEAD AVAILABLE:", head)
+            print("BASE NORMAL:", self.merge_to_branch)
             base = self.repo_obj.get_branch(self.merge_to_branch).name
             head = self.repo_obj.get_branch(head)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
         else:
+            print("BASE AVAILABLE:", base)
+            print('HEAD AVAILABLE:', head)
             base = self.repo_obj.get_branch(base).name
             head = self.repo_obj.get_branch(head)
             commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
@@ -105,9 +115,13 @@ class RepoMerger:
             for base, heads in final_execution_list.items():
                 print(f"Current base:", base)
                 for head in heads:
-                    pull_details = self.create_pull_request(f'Merge to {base}', body, base, head)
-                    self.merge_branches(f'Merge to {base}', base, head)
-                    print(f'Merged head: ', head)
+                    try:
+                        print("Pull reuested for branch:", head)
+                        pull_details = self.create_pull_request(f'Merge to {base}', body, base, head)
+                        self.merge_branches(f'Merge to {base}', base, head)
+                        print(f'Merged head: ', head)
+                    except GithubException:
+                        print("PROBLEM OCCURED")
 
 
 
@@ -120,4 +134,4 @@ if repo_name == '':
 else:
     pass
 
-RepoMerger(repo_name, merge_branch, merge_to_branch, all=True)
+RepoMerger(repo_name, merge_branch, merge_to_branch)
