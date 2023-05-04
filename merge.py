@@ -1,13 +1,10 @@
 from settings import *
 from github import Github
 import os
+from itertools import combinations
 import sys
 import json
 from info import Github_Token, Github_User
-
-path = os.path.abspath(os.getcwd())
-github = Github(Github_Token)
-merge_to_branch, repo_name, merge_branch = get_shell_input(0, sys.argv, ['master', '', 'head'])
 
 def get_repository(path):
     os.chdir(path)
@@ -25,25 +22,32 @@ def get_repository(path):
         except Exception:
             raise Exception("There are no details available for this folder.")
 
-if repo_name == '':
-    repo_name = get_repository(path)
-else:
-    pass
-
 class RepoMerger:
-    def __init__(self, repository, merge_branch = 'head', merge_to_branch = 'master'):
+
+    def __init__(self, repository, merge_branch = 'head', merge_to_branch = 'master', title = 'Merge to Master', body = '', all = False):
         self.merge_branch = merge_branch
         self.merge_to_branch = merge_to_branch 
         self.repo_obj = github.get_repo(f"{Github_User}/{repository}")
-        repo = self.repo_obj.full_name
-        self.repo_name = repo.replace(f'{Github_User}/', "")
+        self.repo_name = self.repo_obj.full_name.replace(f'{Github_User}/', "")
         self.head = self.get_head()
-        self.pull_details = self.create_pull_request("Merge Script In Development", "This is a test to check if merge script is up and running...")
-        self.merge_branches(self.pull_details[2])
+        if all == True:
+            self.merge(title, body, True)
+        self.merge(title, body)
+
     
-    def create_pull_request(self, title, body=''):
-        base = self.repo_obj.get_branch(self.merge_to_branch).name
-        self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
+    def create_pull_request(self, title, body='', base = None, head = None):
+        if base == None and head == None:
+            base = self.repo_obj.get_branch(self.merge_to_branch).name
+            self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
+        elif base != None:
+            base = self.repo_obj.get_branch(base).name
+            self.repo_obj.create_pull(title=title, body=body, head=self.head, base=base)
+        elif head != None:
+            base = self.repo_obj.get_branch(self.merge_to_branch).name
+            self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
+        else:
+            base = self.repo_obj.get_branch(base).name
+            self.repo_obj.create_pull(title=title, body=body, head=head, base=base)
         return self.head, base, title, body
 
     def get_head(self) -> str:
@@ -60,9 +64,41 @@ class RepoMerger:
     def merge_branches(self, title):
         base = self.repo_obj.get_branch(self.merge_to_branch).name
         head = self.repo_obj.get_branch(self.merge_branch)
-        print(base)
-        print(head)
-        merge_to_master = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
-        print(merge_to_master)
+        commit_code = self.repo_obj.merge(base, head.commit.sha, title + ' [Merge] ')
+    
+    def get_all_branches(self):
+        command_result = os.popen('git branch').read()
+        results = command_result.split('\n')
+        for idx, result in enumerate(results):
+            results[idx] = result.replace("*", "").strip()
+            if result == '':
+                del results[idx]
+        return results
+    
+    def merge(self, title, body, all=False):
+        if self.merge_to_branch != 'master':
+            title[-1] = self.merge_to_branch
+        if all == False:
+            self.pull_details = self.create_pull_request(title, body)
+            self.merge_branches(self.pull_details[2])
+        else:
+            all_branches = self.get_all_branches()
+            all_combinations  =list(combinations(all_branches, 2))
+            for base, head in all_combinations:
+                title_words = title.split(' ')
+                title_words[-1] = base
+                title = ''.join(word + ' ' for idx, word in enumerate(title_words) if idx != -1)
+                title = title.strip()
+                self.pull_details = self.create_pull_request(title, body, base, head)
+                self.merge_branches(self.pull_details[2])
 
-RepoMerger(repo_name, merge_branch, merge_to_branch)
+path = os.path.abspath(os.getcwd())
+github = Github(Github_Token)
+merge_branch, repo_name, merge_to_branch = get_shell_input(0, sys.argv, ['head', '', 'master'])
+
+if repo_name == '':
+    repo_name = get_repository(path)
+else:
+    pass
+
+RepoMerger(repo_name, merge_branch, merge_to_branch, all=True)
