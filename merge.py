@@ -25,7 +25,6 @@ def get_repository(path):
             raise Exception("There are no details available for this folder.")
 
 class RepoMerger:
-
     def __init__(self, repository, merge_branch = 'head', merge_to_branch = 'master', title = 'Merge to Master', body = '', all = False):
         self.merge_branch = merge_branch
         self.merge_to_branch = merge_to_branch 
@@ -134,5 +133,9 @@ if repo_name == '':
     repo_name = get_repository(path)
 else:
     pass
+if merge_branch == '--all':
+    all = True
+else:
+    all = False
 
-RepoMerger(repo_name, merge_branch, merge_to_branch)
+RepoMerger(repo_name, merge_branch, merge_to_branch, all)
