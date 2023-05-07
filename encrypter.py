@@ -4,93 +4,115 @@ import time
 import json
 import os
 
-ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits + " ")
+ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits + " " + "\n" + '\t')
 KEY_INORDER = ALL_CHARACTERS.copy()
 
-def shuffle_key(key):
-    original_copy = key
-    random.shuffle(key)
-    for idx, char in enumerate(key):
-        char += key[idx-random.randint(1, 5)]
-        key[idx] = char
-    
-    return key, original_copy
+class AEA:
+    def __init__(self, max_chars=None) -> None:
+        self.max_chars = max_chars
+    def shuffle_key(self, key):
+        original_copy = key
+        random.shuffle(key)
+        for idx, char in enumerate(key):
+            char += key[idx-random.randint(1, 5)]
+            key[idx] = char
+        
+        return key, original_copy
 
-def get_max_characters(key):
-    char_len = []
-    max_cur_length = 0
-    for item in key:
-        length_of_character = len(item)
-        if length_of_character > max_cur_length:
-            max_cur_length = length_of_character
-    return max_cur_length
+    def get_max_characters(self, key):
+        char_len = []
+        max_cur_length = 0
+        for item in key:
+            length_of_character = len(item)
+            if length_of_character > max_cur_length:
+                max_cur_length = length_of_character
+        return max_cur_length
 
 
-def normalize_characters(key, max_chars):
-    for index_of_item, item in enumerate(key):
-        chracters_to_increase = max_chars - len(item)
-        for x in range(0, chracters_to_increase):
-            rand_index = random.randint(0, len(ALL_CHARACTERS)-1)
-            item += ALL_CHARACTERS[rand_index]
-        key[index_of_item] = item
-    return key
+    def normalize_characters(self, key):
+        for index_of_item, item in enumerate(key):
+            chracters_to_increase = self.max_chars - len(item)
+            for x in range(0, chracters_to_increase):
+                rand_index = random.randint(0, len(ALL_CHARACTERS)-1)
+                item += ALL_CHARACTERS[rand_index]
+            key[index_of_item] = item
+        return key
 
-def check_num_chars(key, max_chars):
-    for item in key:
-        if len(item) == max_chars:
-            pass
+    def check_num_chars(self):
+        for item in self.final_key:
+            if len(item) == self.max_chars:
+                pass
+            else:
+                print("CHARACTERS NOT NORMALIZED PROPERLY...")
+                return False
+            return True
+
+    def encrypt_text(self, text, characters=ALL_CHARACTERS):
+        cipher = ''
+        for index, character in enumerate(text):
+            character_encryption = self.final_key[characters.index(character)]
+            cipher += character_encryption
+        
+        return cipher
+
+    def decrypt_text(self, text, all_characters=ALL_CHARACTERS):
+        chunks = [text[i:i+self.max_chars] for i in range(0, len(text), self.max_chars)]
+        decipher_text = ''
+        for chunk in chunks:
+            index = self.final_key.index(chunk)
+            decipher_text += all_characters[index]
+        
+        return decipher_text
+
+    def save_key(self, file_name):
+        with open(file_name, "w+") as file:
+            json.dump(self.final_key, file)
+
+    def use_key(self, file_name):
+        with open(file_name, 'r+') as file:
+            key = json.load(file)
+        return key
+
+    def encrypter_setup(self):
+        if os.path.exists('encrypter_key.json'):
+            self.final_key = self.use_key('encrypter_key.json')
+            maximum_chars = self.get_max_characters(self.final_key)
+            if self.max_chars == None:
+                self.max_chars = maximum_chars
         else:
-            print("CHARACTERS NOT NORMALIZED PROPERLY...")
-            return False
-        return True
+            shuffled, original = self.shuffle_key(KEY_INORDER)
+            if original == KEY_INORDER:
+                # print("Original copy is correct!!")
+                pass
+            maximum_chars = self.get_max_characters(shuffled)
+            if self.max_chars == None:
+                self.max_chars = maximum_characters
+            self.final_key = self.normalize_characters(shuffled)
+            check = self.check_num_chars()
+            if not check:
+                exit()
+        return self.final_key, self.max_chars
 
-def encrypt_text(text, key, characters):
-    cipher = ''
-    for index, character in enumerate(text):
-        character_encryption = key[characters.index(character)]
-        cipher += character_encryption
-    
-    return cipher
-
-def decrypt_text(text, key, max_length_chars, all_characters):
-    n = max_length_chars
-    chunks = [text[i:i+n] for i in range(0, len(text), n)]
-    decipher_text = ''
-    for chunk in chunks:
-        index = key.index(chunk)
-        decipher_text += all_characters[index]
-    
-    return decipher_text
-
-def save_key(file_name, key):
-    with open(file_name, "w+") as file:
-        json.dump(key, file)
-
-def use_key(file_name):
-    with open(file_name, 'r+') as file:
-        key = json.load(file)
-    return key
-
-if os.path.exists('encrypter_key.json'):
-    final_key = use_key('encrypter_key.json')
-    maximum_chars = get_max_characters(final_key)
-else:
-    shuffled, original = shuffle_key(KEY_INORDER)
-    if original == KEY_INORDER:
-        # print("Original copy is correct!!")
-        pass
-    maximum_chars = get_max_characters(shuffled)
-    final_key = normalize_characters(shuffled, maximum_chars)
-    check = check_num_chars(final_key, maximum_chars)
-    if not check:
-        exit()
-
-
+    def encrypt_file(self, file_path, file_name, extension):
+        with open(file_path + '/' + file_name + extension, 'r') as encryption_file:
+            file_data = encryption_file.read()
+            encrypted_data = self.encrypt_text(file_data)
+            with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
+                encrypted_file.write(encrypted_data)
+    def decrypt_file(self, file_path, file_name, extension):
+        with open(file_path+'/' + file_name + extension, 'r') as decryption_file:
+            file_data = decryption_file.read()
+            for i in range(0, 1):
+                max_characters = len(self.final_key[i])
+            decrypted_data = self.decrypt_text(file_data)
+            with open(file_path + '/' + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
+                decrypted_file.write(decrypted_data)
 
 if __name__ == '__main__':
+    encrypter = AEA(40)
+    final_key, maximum_characters = encrypter.encrypter_setup()
     text = input("Enter a message to encrypt: ")
-    encryption = encrypt_text(text, final_key, ALL_CHARACTERS)
-    save_key('encrypter_key.json', final_key)
-    print(f'The text was encrypted into: {encryption}')
+    encryption = encrypter.encrypt_text(text)
+    encrypter.save_key('encrypter_key.json')
     with open('test_file.txt', 'w+') as write_file:
         write_file.write(encryption)
