@@ -4,26 +4,13 @@ import sys
 path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir)
 sys.path.append(path)
 from settings import *
+from Managers.database_manager import DBManager
 import datetime as dt
 
-
-def init_db(db_path):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    sql = """CREATE TABLE Tests (
-        testid INTEGER PRIMARY KEY AUTOINCREMENT,
-        subject varchar(255),
-        date DATE,
-        type varchar(255));"""
-    cur.execute(sql)
-    return conn, cur
-
 def create_new_test(conn, cur, subject, date, type='CR'):
-    conn = sqlite3.connect(path)
-    cur = conn.cursor()
     details = (subject, date, type)
     sql = f"INSERT OR IGNORE INTO Tests VALUES (NULL, '{subject}','{date}', '{type}');"
-    insert_permission = check_duplicates(details, conn, cur)
+    insert_permission = check_duplicates(details, cur)
     if insert_permission:
         cur.execute(sql)
         conn.commit()
@@ -31,7 +18,7 @@ def create_new_test(conn, cur, subject, date, type='CR'):
         pass
     return conn, cur
 
-def check_duplicates(details : tuple, conn, cur):
+def check_duplicates(details : tuple, cur):
     sql = f'SELECT * FROM Tests WHERE subject = ? AND date = ? AND type = ?;'
     cur.execute(sql, details)
     row = cur.fetchone()
@@ -52,13 +39,14 @@ def check_input(type, subject):
         final_type=''
     return final_subject.upper(), final_type.upper()
 
-def connect_to_db(path):
-    if not os.path.exists(path):
-        conn, cur = init_db(path)
-    else:
-        conn = sqlite3.connect(path)
-        cur = conn.cursor()
-    return conn, cur
+def setup_db(path, cur):
+    sql = """CREATE TABLE Tests (
+        testid INTEGER PRIMARY KEY AUTOINCREMENT,
+        subject varchar(255),
+        date DATE,
+        type varchar(255));"""
+    cur.execute(sql)
+    return cur
 
 if __name__ == '__main__':
     today  = dt.date.today()
@@ -69,12 +57,14 @@ if __name__ == '__main__':
     converted_date = dt.datetime.strptime(date, '%d %B, %Y')
     final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
 
-    path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/School/Tests/tests.sqlite'
+    path = './tests.sqlite'
     if not os.path.exists(path):
-        conn, cur = init_db(path)
+        DBM = DBManager(path)
+        conn, cur = DBM.get_connection
+        cur = setup_db(path, cur)
     else:
-        conn = sqlite3.connect(path)
-        cur = conn.cursor()
+        DBM = DBManager(path)
+        conn, cur = DBM.get_connection
     subject, type = check_input(type, subject)
     if type != '':
         conn, cur = create_new_test(conn, cur, subject, final_date, type)

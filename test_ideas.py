@@ -2,7 +2,6 @@
 import encrypter
 
 encrypter_AEA = encrypter.AEA()
-encrypter_AEA.encrypter_setup()
 with open('test_file.txt', 'r') as file:
     text = file.read()
 
