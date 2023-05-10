@@ -10,6 +10,7 @@ KEY_INORDER = ALL_CHARACTERS.copy()
 class AEA:
     def __init__(self, max_chars=None) -> None:
         self.max_chars = max_chars
+        self.encrypter_setup()
     def shuffle_key(self, key):
         original_copy = key
         random.shuffle(key)
@@ -52,7 +53,6 @@ class AEA:
         for index, character in enumerate(text):
             character_encryption = self.final_key[characters.index(character)]
             cipher += character_encryption
-        
         return cipher
 
     def decrypt_text(self, text, all_characters=ALL_CHARACTERS):
@@ -110,7 +110,6 @@ class AEA:
 
 if __name__ == '__main__':
     encrypter = AEA(40)
-    final_key, maximum_characters = encrypter.encrypter_setup()
     text = input("Enter a message to encrypt: ")
     encryption = encrypter.encrypt_text(text)
     encrypter.save_key('encrypter_key.json')

@@ -3,3 +3,4 @@ info.py
 .*
 train.csv
 encrypter_key.json
+test_file.txt
