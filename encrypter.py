@@ -8,8 +8,10 @@ ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits 
 KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
-    def __init__(self, max_chars=None) -> None:
+    def __init__(self, max_chars=None, key_name='encrypter_key.json', key_path='./') -> None:
         self.max_chars = max_chars
+        self.key_name = key_name
+        self.key_path = key_path
         self.encrypter_setup()
     def shuffle_key(self, key):
         original_copy = key
@@ -64,8 +66,8 @@ class AEA:
         
         return decipher_text
 
-    def save_key(self, file_name):
-        with open(file_name, "w+") as file:
+    def save_key(self):
+        with open(f"{self.key_path}{self.key_name}", "w+") as file:
             json.dump(self.final_key, file)
 
     def use_key(self, file_name):
@@ -74,8 +76,8 @@ class AEA:
         return key
 
     def encrypter_setup(self):
-        if os.path.exists('encrypter_key.json'):
-            self.final_key = self.use_key('encrypter_key.json')
+        if os.path.exists(self.key_path + self.key_name):
+            self.final_key = self.use_key(self.key_path + self.key_name)
             maximum_chars = self.get_max_characters(self.final_key)
             if self.max_chars == None:
                 self.max_chars = maximum_chars
@@ -86,7 +88,7 @@ class AEA:
                 pass
             maximum_chars = self.get_max_characters(shuffled)
             if self.max_chars == None:
-                self.max_chars = maximum_characters
+                self.max_chars = maximum_chars
             self.final_key = self.normalize_characters(shuffled)
             check = self.check_num_chars()
             if not check:
@@ -110,8 +112,8 @@ class AEA:
 
 if __name__ == '__main__':
     encrypter = AEA(40)
+    encrypter.save_key()
     text = input("Enter a message to encrypt: ")
     encryption = encrypter.encrypt_text(text)
-    encrypter.save_key('encrypter_key.json')
     with open('test_file.txt', 'w+') as write_file:
         write_file.write(encryption)

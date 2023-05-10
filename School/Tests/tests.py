@@ -39,7 +39,7 @@ def check_input(type, subject):
         final_type=''
     return final_subject.upper(), final_type.upper()
 
-def setup_db(path, cur):
+def setup_db(cur):
     sql = """CREATE TABLE Tests (
         testid INTEGER PRIMARY KEY AUTOINCREMENT,
         subject varchar(255),
@@ -57,11 +57,11 @@ if __name__ == '__main__':
     converted_date = dt.datetime.strptime(date, '%d %B, %Y')
     final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
 
-    path = './tests.sqlite'
+    path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/School/Tests/tests.sqlite'
     if not os.path.exists(path):
         DBM = DBManager(path)
         conn, cur = DBM.get_connection
-        cur = setup_db(path, cur)
+        cur = setup_db(cur)
     else:
         DBM = DBManager(path)
         conn, cur = DBM.get_connection
