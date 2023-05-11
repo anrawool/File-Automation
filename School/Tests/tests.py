@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import sys
-path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir)
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
 sys.path.append(path)
 from settings import *
 from Managers.database_manager import DBManager

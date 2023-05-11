@@ -1,11 +1,10 @@
 import os
-path = os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir)
 import sys
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 import math
 import random
 import pandas as pd
-sys.path.append(path)
-
 from settings import *
 from School.Tests.tests import connect_to_db
 
