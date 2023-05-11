@@ -1,5 +1,8 @@
 import os
+import sys
 from sys import argv
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 from data import *
 import re
 from pathlib import Path

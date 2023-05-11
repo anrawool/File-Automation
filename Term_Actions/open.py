@@ -1,6 +1,9 @@
+import os
+import sys
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 from search import *
 from sys import argv
-import os
 from settings import get_shell_input
 
 

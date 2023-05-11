@@ -1,5 +1,7 @@
 import os
 import sys
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 import json
 from github import Github
 import shutil
