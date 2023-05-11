@@ -1,6 +1,9 @@
 from search import FileSearcher
 from sys import argv
 import os
+import sys
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 from settings import get_shell_input
 import shutil
 
