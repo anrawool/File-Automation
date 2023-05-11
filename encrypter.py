@@ -3,16 +3,24 @@ import string
 import time
 import json
 import os
+import data
 
 ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits + " " + "\n" + '\t')
 KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
-    def __init__(self, max_chars=None, key_name='encrypter_key.json', key_path='./') -> None:
+    def __init__(self, max_chars=None, key_path='./encrypter_key.json') -> None:
+        self.DataMaker = data.DataMaker()
         self.max_chars = max_chars
-        self.key_name = key_name
-        self.key_path = key_path
+        self.key_path, self.key_name = self.set_keys(key_path)
         self.encrypter_setup()
+
+    def set_keys(self, key_path):
+        key_obj = self.DataMaker.make_path(key_path, file_path=False)
+        key_path = key_obj.path
+        key_name = key_obj.file + key_obj.ext
+        return key_path, key_name
+
     def shuffle_key(self, key):
         original_copy = key
         random.shuffle(key)
@@ -95,19 +103,27 @@ class AEA:
                 exit()
         return self.final_key, self.max_chars
 
-    def encrypt_file(self, file_path, file_name, extension):
-        with open(file_path + '/' + file_name + extension, 'r') as encryption_file:
+    def encrypt_file(self, file_path):
+        path_object = self.DataMaker.make_path(file_path, file_path=False)
+        file_path = path_object.path
+        file_name = path_object.file
+        extension = path_object.ext
+        with open(file_path + file_name + extension, 'r') as encryption_file:
             file_data = encryption_file.read()
             encrypted_data = self.encrypt_text(file_data)
             with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
                 encrypted_file.write(encrypted_data)
-    def decrypt_file(self, file_path, file_name, extension):
-        with open(file_path+'/' + file_name + extension, 'r') as decryption_file:
+    def decrypt_file(self, file_path):
+        path_object = self.DataMaker.make_path(file_path, file_path=False)
+        file_path = path_object.path
+        file_name = path_object.file
+        extension = path_object.ext
+        with open(file_path + file_name + extension, 'r') as decryption_file:
             file_data = decryption_file.read()
             for i in range(0, 1):
                 max_characters = len(self.final_key[i])
             decrypted_data = self.decrypt_text(file_data)
-            with open(file_path + '/' + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
+            with open(file_path + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
                 decrypted_file.write(decrypted_data)
 
 if __name__ == '__main__':
