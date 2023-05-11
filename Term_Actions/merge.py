@@ -1,10 +1,12 @@
 from settings import *
+import sys
+import os
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+sys.path.append(path)
 from github import Github
 from github.GithubException import GithubException
-import os
 from github.GithubException import GithubException
 from itertools import combinations
-import sys
 import json
 from info import Github_Token, Github_User
 
