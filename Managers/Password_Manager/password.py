@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+path = os.path.join('/home/sarthak/Documents/Automation')
 sys.path.append(path)
 import encrypter
 from sqlite3 import OperationalError
