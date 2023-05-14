@@ -1,7 +1,7 @@
 import os
 import sys
 from sys import argv
-path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+path = os.path.join('/home/sarthak/Documents/Automation')
 sys.path.append(path)
 from data import *
 import re
