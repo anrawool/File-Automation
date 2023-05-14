@@ -24,11 +24,3 @@ There are some steps to making your life better. They are:
 
 ## Manual Installation
 If you are going for manual installation and do not want to give access to the python program to computer files, the steps will be uploaded soon...
-
-## Project Structure
- - Automation
- 	- School
-	  1. Tests
-	  2. Study Planner
-	- Setup
-	- Terminal Actions

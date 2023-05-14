@@ -14,6 +14,7 @@ class FileSearcher():
     def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False, posix_path: bool = False) -> None:
         """
         Initiation of global variables
+
         :param folder: str, Folder to use path of
         :param target: str, Target item to be found in (param) folder path
         :param mode: str, Type of preset mode available [folder/other]
