@@ -9,11 +9,45 @@ ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits 
 KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
+    # Initialization Function
     def __init__(self, max_chars=None, key_path='./encrypter_key.json') -> None:
+        """
+        Encryption Algorithm Code Snippet:
+
+        AEA = AEA(Maximum Characters, Path_to_Save_to)
+        encryption = AEA.encrypt_text(text)
+        decryption = AEA.decrypt_text(encryption)
+        encrypt_file(file_path)
+        decrypt_file(file_path)
+        """
         self.DataMaker = data.DataMaker()
         self.max_chars = max_chars
         self.key_path, self.key_name = self.set_keys(key_path)
         self.encrypter_setup()
+
+    # Encrypter Setup Function
+
+    def encrypter_setup(self):
+        if os.path.exists(self.key_path + self.key_name):
+            self.final_key = self.use_key(self.key_path + self.key_name)
+            maximum_chars = self.get_max_characters(self.final_key)
+            if self.max_chars == None:
+                self.max_chars = maximum_chars
+        else:
+            shuffled, original = self.shuffle_key(KEY_INORDER)
+            if original == KEY_INORDER:
+                # print("Original copy is correct!!")
+                pass
+            maximum_chars = self.get_max_characters(shuffled)
+            if self.max_chars == None:
+                self.max_chars = maximum_chars
+            self.final_key = self.normalize_characters(shuffled)
+            check = self.check_num_chars()
+            if not check:
+                exit()
+        return self.final_key, self.max_chars
+
+    # New Key Creation Functions
 
     def set_keys(self, key_path):
         key_obj = self.DataMaker.make_path(key_path, file_path=False)
@@ -58,6 +92,19 @@ class AEA:
                 return False
             return True
 
+    # Save and Use Options
+
+    def save_key(self):
+        with open(f"{self.key_path}{self.key_name}", "w+") as file:
+            json.dump(self.final_key, file)
+
+    def use_key(self, file_name):
+        with open(file_name, 'r+') as file:
+            key = json.load(file)
+        return key
+    
+    # Text Encrypters
+
     def encrypt_text(self, text, characters=ALL_CHARACTERS):
         cipher = ''
         for index, character in enumerate(text):
@@ -73,35 +120,6 @@ class AEA:
             decipher_text += all_characters[index]
         
         return decipher_text
-
-    def save_key(self):
-        with open(f"{self.key_path}{self.key_name}", "w+") as file:
-            json.dump(self.final_key, file)
-
-    def use_key(self, file_name):
-        with open(file_name, 'r+') as file:
-            key = json.load(file)
-        return key
-
-    def encrypter_setup(self):
-        if os.path.exists(self.key_path + self.key_name):
-            self.final_key = self.use_key(self.key_path + self.key_name)
-            maximum_chars = self.get_max_characters(self.final_key)
-            if self.max_chars == None:
-                self.max_chars = maximum_chars
-        else:
-            shuffled, original = self.shuffle_key(KEY_INORDER)
-            if original == KEY_INORDER:
-                # print("Original copy is correct!!")
-                pass
-            maximum_chars = self.get_max_characters(shuffled)
-            if self.max_chars == None:
-                self.max_chars = maximum_chars
-            self.final_key = self.normalize_characters(shuffled)
-            check = self.check_num_chars()
-            if not check:
-                exit()
-        return self.final_key, self.max_chars
 
     def encrypt_file(self, file_path):
         path_object = self.DataMaker.make_path(file_path, file_path=False)

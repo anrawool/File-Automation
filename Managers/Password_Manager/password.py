@@ -23,6 +23,27 @@ class PasswordManager:
             self.setup_db()
         except OperationalError:
             pass
+        self.authenticate()
+    
+    
+    def authenticate(self):
+        correct = False
+        for chances in range(0,3):
+            if correct == True:
+                break
+            master_input = input("Please enter your master password: ")
+            password_master = self.retrieve_password('master')
+            master = password_master[0]
+            if master_input == master:
+                print("Authenticated, Welcome!!!")
+                correct = True
+            else:
+                print("The Master Password was Wrong")
+        if correct != True:
+            print("All your chances are over, thank you!!!")        
+            exit()
+        else:
+            pass
 
     def set_paths(self, db_path, key_path):
         db_obj = self.DataMaker.make_path(db_path, file_path=False)
@@ -32,6 +53,11 @@ class PasswordManager:
 
         return db_obj.path, db_name, key_obj.path, key_name
 
+    # Creating a Master Password
+
+    def master_password_maker(self):
+        self.insert_password("Warrior@09", 'master')
+ 
     def setup_db(self):
         sql = """CREATE TABLE Passwords (
         passid INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +65,8 @@ class PasswordManager:
         encryption TEXT
         );"""
         self.cursor.execute(sql)
-
+        self.master_password_maker()
+        
     def insert_password(self, plain_text_password, website):
         encrypted_password = self.AEA.encrypt_text(plain_text_password)
         insert_sql = f"""INSERT INTO Passwords VALUES (NULL, ?, ?);"""
@@ -56,14 +83,12 @@ class PasswordManager:
             results = list(results)
         else:
             pass
+        decrypted_passwords = []
         for encryption in results:
             decrypted = self.AEA.decrypt_text(encryption[0])
-            print(f"The passoword for {website} is {decrypted}")
+            decrypted_passwords.append(decrypted)
+        return decrypted_passwords 
         
 
 manager = PasswordManager(64)
-website = input("What is the name of the site that you are creating a new password for: ")
-password = input("What is the password: ")
-manager.insert_password(password, website)
-manager.retrieve_password(website)
-
+manager.insert_password("Warrior@09", "GeeksForGeeks")
