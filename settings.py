@@ -1,6 +1,5 @@
 # CONSTANTS
-ROOT_DIR = '/Users/abhijitrawool'
-
+ROOT_DIR = '/home/sarthak'
 # Classes
 
 # Shell Input
