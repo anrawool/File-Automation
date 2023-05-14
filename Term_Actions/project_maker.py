@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/home/sarthak/Documents/Automation/')
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
 sys.path.append(path)
 from github import Github
 from search import *
@@ -28,17 +28,17 @@ class Project_Maker():
         try:
             # print("Project Loc not Available...")
             os.mkdir(
-                f"{ROOT_DIR}/Documents/{project_name}")
+                f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
             print(f"Making {project_name}...")
         except Exception:
             os.system(
-                f"code {ROOT_DIR}/Documents/{project_name}")
+                f"code {ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
             if not os.path.exists('.folder_details.json'):
                 if self.mode != 'yes_repo':
                     details = self.create_details('', 'false', project_name)
                 else:
                     details = self.create_details(self.repo_name, 'true', project_name)
-                os.chdir(f'{ROOT_DIR}/Documents/{project_name}')
+                os.chdir(f'{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}')
                 with open(".folder_details.json", "w") as outfile:
                     json.dump(details, outfile)
             print(f"Opening {project_name}")
@@ -46,7 +46,7 @@ class Project_Maker():
             exit()
 
         os.chdir(
-            f"{ROOT_DIR}/Documents/{project_name}")
+            f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{project_name}")
         os.system("touch main.py")
         os.system("touch .folder_details.json")
         os.system("touch README.md")
@@ -60,7 +60,7 @@ class Project_Maker():
             os.system(
                 f"git remote add origin https://github.com/anrawool/{self.repo_name}.git")
             os.system("git push -u origin master")
-            print("Github Repository Created and Setup")
+            print("Github Rpeository Created and Setup")
             repo_exists = "true"
             return repo_exists
         else:
@@ -90,7 +90,7 @@ class Project_Maker():
         with open(".folder_details.json", "w") as outfile:
             json.dump(details, outfile)
         os.system(
-            f"code {ROOT_DIR}/Documents/{self.project_name}")
+            f"code {ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_name}")
         return details
 
 
