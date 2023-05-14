@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
 sys.path.append(path)
 import json
 from github import Github
@@ -26,7 +26,7 @@ class Delete_Project():
     def delete(self):
         try:
             os.chdir(
-                f"{ROOT_DIR}/Documents/{self.project_delete}")
+                f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_delete}")
             with open('.folder_details.json') as f:
                 data = json.load(f)
                 repo_name = data['repo_name']
@@ -42,16 +42,16 @@ class Delete_Project():
                     repo.delete()
                     print("Repository Deleted")
                     os.chdir(
-                        f"{ROOT_DIR}/Documents/")
+                        f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
                     shutil.rmtree(f"{self.project_delete}")
                     print("Folder Deleted")
                 else:
                     os.chdir(
-                        f"{ROOT_DIR}/Documents/")
+                        f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
                     shutil.rmtree(f"{self.project_delete}")
                     print("Folder Deleted")
         except Exception as e:
-            print(f"An Problem Has Occurred: {e}")
+            print(f"An Problem Has Occured: {e}")
 
 
 try:
