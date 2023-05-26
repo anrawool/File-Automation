@@ -29,7 +29,7 @@ class AEA:
 
     def encrypter_setup(self):
         if os.path.exists(self.key_path + self.key_name):
-            self.final_key = self.use_key(self.key_path + self.key_name)
+            self.final_key = self.use_key()
             maximum_chars = self.get_max_characters(self.final_key)
             if self.max_chars == None:
                 self.max_chars = maximum_chars
@@ -98,9 +98,14 @@ class AEA:
         with open(f"{self.key_path}{self.key_name}", "w+") as file:
             json.dump(self.final_key, file)
 
-    def use_key(self, file_name):
-        with open(file_name, 'r+') as file:
-            key = json.load(file)
+    def use_key(self):
+        if not os.path.exists(self.key_path + self.key_name):
+            self.save_key()
+            with open(self.key_path + self.key_name, 'r+') as file:
+                key = json.load(file)
+        else:
+            with open(self.key_path + self.key_name, 'r+') as file:
+                key = json.load(file)
         return key
     
     # Text Encrypters

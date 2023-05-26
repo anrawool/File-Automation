@@ -35,4 +35,3 @@ def get_shell_input(req : int, args : list, exceptions : list = []):
     shell_exec = ShellInput()
     inputs = shell_exec.shell_input(req, args, exceptions)
     return inputs
-
