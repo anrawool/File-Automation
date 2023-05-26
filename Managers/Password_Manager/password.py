@@ -6,9 +6,10 @@ import encrypter
 from sqlite3 import OperationalError
 from Managers.database_manager import DBManager
 from data import *
+from getpass import getpass
 
 class PasswordManager:
-    def __init__(self, max_characters, db_path='./passwords.sqlite', key_path='./passwords_key.json') -> None:
+    def __init__(self, max_characters=None, db_path='./passwords.sqlite', key_path='./passwords_key.json') -> None:
         self.DataMaker = DataMaker()
         db_path, db_name, key_path, key_name = self.set_paths(db_path, key_path)
         self.DBM = DBManager(db_path=f'{db_path}{db_name}')
@@ -31,7 +32,7 @@ class PasswordManager:
         for chances in range(0,3):
             if correct == True:
                 break
-            master_input = input("Please enter your master password: ")
+            master_input = getpass()
             password_master = self.retrieve_password('master')
             master = password_master[0]
             if master_input == master:
@@ -72,6 +73,7 @@ class PasswordManager:
         insert_sql = f"""INSERT INTO Passwords VALUES (NULL, ?, ?);"""
         self.cursor.execute(insert_sql, (website, encrypted_password))
         self.apply_changes()
+        print("Password Inserted")
 
     def apply_changes(self):
         self.conn.commit()
@@ -89,6 +91,8 @@ class PasswordManager:
             decrypted_passwords.append(decrypted)
         return decrypted_passwords 
         
-
-manager = PasswordManager(64)
-manager.insert_password("Warrior@09", "GeeksForGeeks")
+if __name__ == '__main__':
+    manager = PasswordManager(64)
+    website = input("Please enter the name of the website: ")
+    password = getpass()
+    manager.insert_password(password, website)
