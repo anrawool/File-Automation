@@ -2,4 +2,5 @@ from django.shortcuts import render
 
 # Create your views here.
 def Login(request, email):
-    return render('users/login.html')
+    context = {'userdata': [{'id': 1, 'email': email}]}
+    return render(request, 'users/login.html', context)
