@@ -4,5 +4,4 @@ from . import views
 
 urlpatterns = [
     path('login/<str:email>', views.Login, name='login'),
-    # path('user/', views.RenderUserInfo, name='userinfo')
 ]

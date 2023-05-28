@@ -9,5 +9,8 @@
 </head>
 <body>
     <h1>Hello World: Home Page</h1>  
+    {% for servicename in services %}
+    <h5><a href="{% url 'service' servicename.webpage %}">{{ servicename }}</a></h5>
+    {% endfor %}
 </body>
 </html>
