@@ -33,6 +33,7 @@ def Decrypt(request, webpage, encryption):
 
 
 def UploadFile(request):
+    context = {'form': FileUploadForm}
     if request.method == 'POST' and request.FILES:
         uploaded_file = request.FILES['file']
         
@@ -40,9 +41,9 @@ def UploadFile(request):
         my_file.file.save(uploaded_file.name, uploaded_file)
         my_file.save()
         
-        return render(request, 'base/upload.html')
+        return render(request, 'base/upload.html', context)
     
-    return render(request, 'base/upload.html')
+    return render(request, 'base/upload.html', context)
 
 
 
