@@ -4,6 +4,7 @@ from .forms import FileUploadForm
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.conf import settings
+from django.http import JsonResponse
 import os
 
 serviceAvailable = Service.objects.all()
@@ -32,14 +33,17 @@ def Decrypt(request, webpage, encryption):
 
 
 def UploadFile(request):
-    if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-    else:
-        form = FileUploadForm()
-    context = {'form': form, 'files': File.objects.all()}
-    return render(request, 'base/upload.html', context)
+    if request.method == 'POST' and request.FILES:
+        uploaded_file = request.FILES['file']
+        
+        my_file = File()
+        my_file.file.save(uploaded_file.name, uploaded_file)
+        my_file.save()
+        
+        return JsonResponse({'message': 'File uploaded and saved successfully'})
+    
+    return JsonResponse({'message': 'No file found or invalid request'})
+
 
 
 def download_file(request, file_id):
