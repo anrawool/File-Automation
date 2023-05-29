@@ -16,11 +16,11 @@
   </head>
   <body>
     <div class="uploadform">
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' %}">
         {% csrf_token %}
+        <input type="text" name="name" required>
         <input type="file" name="file" required>
-        <input type="text" name="name" placeholder="Enter a name" required>
-        <button type="submit">Upload</button>
+        <input type="submit" value="Upload">
       </form>
     </div>
 

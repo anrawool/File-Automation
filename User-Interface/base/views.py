@@ -32,21 +32,21 @@ def Decrypt(request, webpage, encryption):
     return render(request, 'base/index.html')
 
 
-def UploadFile(request):
-    context = {'form': FileUploadForm}
-    if request.method == 'POST' and request.FILES:
-        uploaded_file = request.FILES['file']
-        name = request.POST.get('name', '')  # Get the value of the 'name' input
+def upload_file(request):
+    if request.method == 'POST' and request.FILES.get('file') and request.POST.get('name'):
+        file = request.FILES['file']
+        name = request.POST['name']
+        file_path = os.path.join('../media/uploads/', file.name)
         
-        # Create a new instance of the model
-        my_file = File()
-        my_file.name = name
-        my_file.file.save(uploaded_file.name, uploaded_file)
-        my_file.save()
+        with open(file_path, 'wb') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        # Save the name and file_path to your model or perform other actions
         
-        return render(request, 'base/upload.html', context)
+        return HttpResponse('File uploaded successfully.')
     
-    return render(request, 'base/upload.html', context)
+    return HttpResponse('No file or invalid request.')
 
 
 
