@@ -32,7 +32,7 @@ def Decrypt(request, webpage, encryption):
     return render(request, 'base/index.html')
 
 
-def upload_file(request):
+def UploadFile(request):
     if request.method == 'POST' and request.FILES.get('file') and request.POST.get('name'):
         file = request.FILES['file']
         name = request.POST['name']
