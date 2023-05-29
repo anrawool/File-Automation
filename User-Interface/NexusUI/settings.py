@@ -70,8 +70,6 @@ TEMPLATES = [
     },
 ]
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10737418240  # 10 GB in bytes
-
 WSGI_APPLICATION = 'NexusUI.wsgi.application'
 
 
