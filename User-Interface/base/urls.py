@@ -7,6 +7,5 @@ urlpatterns = [
     path('service/<str:servicename>/', views.GetService, name='service'),
     path('decrypt/<str:webpage>/<str:encryption>/', views.Decrypt, name='decrypt'),
     path('upload/', views.UploadFile, name='upload_file'),
-    path('download/<int:file_id>/', views.download_file, name='download_file'),
-    path('download/', views.download_page, name='download_page'),
+    path('download/<int:file_id>/', views.download_file, name='download'),
 ]

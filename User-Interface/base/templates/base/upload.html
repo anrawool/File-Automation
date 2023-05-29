@@ -1,6 +1,54 @@
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table, th {
+      border: 2px solid black;
+      padding: 5px;
+      margin: 20px;
+    }
+
+    form {
+      padding: 20px;
+      background-color: rgb(2, 10, 27);
+      color: white;
+    }
+
+    th{
+      margin: 3px;
+    }
+
+    form {
+      margin : 20px;
+    }
+  </style>
+</head>
+<body>
+  <h3><a href="{% url 'home' %}">Return Home</a></h3>
+  <br>
+  <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
   
+  <table>
+    <tr>
+      <th>File ID</th>
+      <th>File Name</th>
+      <th>Download</th>
+    </tr>
+    {% for file in files %}
+      <tr>
+        <td> {{file.id}} </td> 
+        <td> {{file.name}} </td> 
+        <td><a href="{% url 'download' file_id=file.id %}">Download File</a></td> 
+      </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

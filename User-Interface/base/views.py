@@ -38,8 +38,8 @@ def UploadFile(request):
             form.save()
     else:
         form = FileUploadForm()
-
-    return render(request, 'base/upload.html', {'form': form})
+    context = {'form': form, 'files': File.objects.all()}
+    return render(request, 'base/upload.html', context)
 
 
 def download_file(request, file_id):
@@ -49,7 +49,3 @@ def download_file(request, file_id):
         response = HttpResponse(file.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_obj.file.name)
         return response
-
-def download_page(request):
-    context = {'files': File.objects.all()}
-    return render(request, 'base/download.html', context)
