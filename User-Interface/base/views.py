@@ -44,7 +44,7 @@ def UploadFile(request):
 
         # Save the name and file_path to your model or perform other actions
         
-        return render(request, 'base/upload.html')
+        return HttpResponse('File uploaded successfully.')
     
     return render(request, 'base/upload.html')
 
