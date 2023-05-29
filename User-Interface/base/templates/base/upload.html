@@ -16,9 +16,9 @@
   </head>
   <body>
     <div class="uploadform">
-      <form method="post" enctype="multipart/form-data">
+      <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        <input type="file" name="file">
         <button type="submit">Upload</button>
       </form>
     </div>
