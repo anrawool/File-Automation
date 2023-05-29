@@ -36,8 +36,11 @@ def UploadFile(request):
     context = {'form': FileUploadForm}
     if request.method == 'POST' and request.FILES:
         uploaded_file = request.FILES['file']
+        name = request.POST.get('name', '')  # Get the value of the 'name' input
         
+        # Create a new instance of the model
         my_file = File()
+        my_file.name = name
         my_file.file.save(uploaded_file.name, uploaded_file)
         my_file.save()
         
