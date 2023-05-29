@@ -40,9 +40,9 @@ def UploadFile(request):
         my_file.file.save(uploaded_file.name, uploaded_file)
         my_file.save()
         
-        return JsonResponse({'message': 'File uploaded and saved successfully'})
+        return render(request, 'base/upload.html')
     
-    return JsonResponse({'message': 'No file found or invalid request'})
+    return render(request, 'base/upload.html')
 
 
 
