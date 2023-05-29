@@ -1,54 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    table, th {
-      border: 2px solid black;
-      padding: 5px;
-      margin: 20px;
-    }
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/carousel.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/upload_bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/upload_style.css' %}">
 
-    form {
-      padding: 20px;
-      background-color: rgb(2, 10, 27);
-      color: white;
-    }
+    <!-- Style -->
 
-    th{
-      margin: 3px;
-    }
+    <title>Table #8</title>
+  </head>
+  <body>
+    <div class="uploadform">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+      </form>
+    </div>
 
-    form {
-      margin : 20px;
-    }
-  </style>
-</head>
-<body>
-  <h3><a href="{% url 'home' %}">Return Home</a></h3>
-  <br>
-  <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Upload</button>
-    </form>
-  
-  <table>
-    <tr>
-      <th>File ID</th>
-      <th>File Name</th>
-      <th>Download</th>
-    </tr>
-    {% for file in files %}
-      <tr>
-        <td> {{file.id}} </td> 
-        <td> {{file.name}} </td> 
-        <td><a href="{% url 'download' file_id=file.id %}">Download File</a></td> 
-      </tr>
-    {% endfor %}
-</table>
-</body>
+  <div class="content">
+    
+    <div class="container">
+      <h2 class="mb-5">Table #8</h2>
+      
+
+      <div class="table-responsive custom-table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>  
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in files %}
+              <tr scope="row">
+                <td> {{file.id}} </td> 
+                <td> {{file.name}} </td> 
+                <td><b><a href="{% url 'download' file_id=file.id %}">Download File</a></b></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+
+  </div>
+    
+    
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
