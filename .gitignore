@@ -5,5 +5,4 @@ train.csv
 test_file.txt
 *.json
 *.sqlite
-*.sqlite3
 media/
