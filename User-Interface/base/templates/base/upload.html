@@ -27,6 +27,12 @@
             </label>
         </div>
         <div class="inputField">
+            <label for="nameInput">
+                Username:
+                <input type="text" name="user" autocomplete="off">
+            </label>
+        </div>
+        <div class="inputField">
             <label for="fileInput" id="fileInputLabel">
                 Select File
                 <input type="file" id="fileInput" name="file" required autocomplete="off">
@@ -51,7 +57,9 @@
             <tr>
             {% for file in files %}
                 <td> {{file.id}} </td> 
-                <td> {{file.name}} </td> 
+                <td> {{file.name}} </td>
+                <td> {{file.user}} </td>
+                <td> {{file.available_until}} </td>
                 <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
             {% endfor %}
             </tr>

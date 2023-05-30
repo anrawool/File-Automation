@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 # Create your models here
 
 
@@ -25,5 +25,6 @@ class File(models.Model):
     user = models.CharField(max_length = 200, default='Sarthak')
     name = models.CharField(max_length=200, null=True)
     file = models.FileField(upload_to='uploads/')        
+    available_until = models.DateField(default = datetime.date.today() + datetime.timedelta(days=7))
 
     
