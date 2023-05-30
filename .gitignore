@@ -5,3 +5,6 @@ train.csv
 test_file.txt
 *.json
 *.sqlite
+
+./User-Interface/media/uploads
+*.sqlite3

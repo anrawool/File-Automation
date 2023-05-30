@@ -54,15 +54,15 @@
             </tr>   
         </thead>
         <tbody>
-            <tr>
             {% for file in files %}
-                <td> {{file.id}} </td> 
-                <td> {{file.name}} </td>
-                <td> {{file.user}} </td>
-                <td> {{file.available_until}} </td>
-                <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
+                <tr>
+                    <td> {{file.id}} </td> 
+                    <td> {{file.name}} </td>
+                    <td> {{file.user}} </td>
+                    <td> {{file.available_until}} </td>
+                    <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
+                </tr>
             {% endfor %}
-            </tr>
         </tbody>
     </table>
     
