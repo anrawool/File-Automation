@@ -39,7 +39,7 @@ def UploadFile(request):
     else:
         form = FileUploadForm()
     context = {'form': form, 'files': File.objects.all()}
-    return render(request, 'base/upload_copy.html', context)
+    return render(request, 'base/upload.html', context)
 
 
 def download_file(request, file_id):

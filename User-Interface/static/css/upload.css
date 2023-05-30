@@ -1,3 +1,54 @@
+body {
+    background-color: #F5EDF0;
+}
+
+
+.upload-form {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -20%);
+    border-collapse: collapse;
+    background-color: #7161EF;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.button {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid black;
+    font-family: "Montserrat" sans-serif;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px 0 10px 0;
+
+}
+
+.inputField label {
+    display: inline-block;
+    width: 200px;
+}
+
+label {
+    cursor: pointer;
+}
+
+#fileInput {
+    display: none;
+}
+
+#fileInputLabel {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0 5px 0;
+}
 
 .content-table {
     position: absolute;
@@ -14,7 +65,7 @@
 }
 
 .content-table thead tr {
-    background-color: #8a4fff;
+    background-color: #190933;
     color: white;
     text-align: left;
     font-weight: bold;

@@ -1,5 +1,0 @@
-{% for uploaded_file in files %}
-    <h3> {{uploaded_file.name}} --<a href="{% url 'download_file' file_id=uploaded_file.id %}">Download File</a></h3>
-{% endfor %}
-
-
