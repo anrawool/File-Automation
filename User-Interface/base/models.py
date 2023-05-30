@@ -1,5 +1,4 @@
 from django.db import models
-from django.http import JsonResponse
 
 # Create your models here
 
@@ -25,3 +24,9 @@ class Service(models.Model):
 class File(models.Model):
     name = models.CharField(max_length=200, null=True)
     file = models.FileField(upload_to='uploads/')        
+    user = models.CharField(max_length=40, default='Sarthak')
+
+class Encryption(models.Model):
+    encryption = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)

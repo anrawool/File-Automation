@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/css/upload.css' %}">
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif;
+        }
+    </style>
+    <title>Upload and Download | Nexus</title>
+</head>
+<body>
+    <table class="content-table">
+        <thead>
+            <tr id="header">
+                <th>ID</th>
+                <th>Name</th>
+                <td>Uploaded By</td>
+                <td>Available until</td>
+                <th>Download</th>
+            </tr>   
+        </thead>
+        <tbody>
+            <tr>
+            {% for file in files %}
+                <td> {{file.id}} </td> 
+                <td> {{file.name}} </td> 
+                <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    
+</body>
+</html>
