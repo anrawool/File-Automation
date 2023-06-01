@@ -21,27 +21,8 @@
     <div class="upload-form">
       <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' %}">
         {% csrf_token %}
-        <div class="inputField">
-            <label for="nameInput">
-                File Name:
-                <input id="nameInput" type="text" name="name" required autocomplete="off">
-            </label>
-        </div>
-        <div class="inputField">
-            <label for="nameInput">
-                Username:
-                <input type="text" name="user" autocomplete="off">
-            </label>
-        </div>
-        <div class="inputField">
-            <label for="fileInput" id="fileInputLabel">
-                Select File
-                <input type="file" id="fileInput" name="file" required autocomplete="off">
-            </label>
-        </div>
-        <div class="inputField">
-            <input class="button" type="submit" value="Upload">
-        </div>
+        {{ form.as_p }} 
+        <input type="submit" value="submit">
       </form>
     </div>
     <table class="content-table">
@@ -59,7 +40,7 @@
                 <tr>
                     <td> {{forloop.counter}} </td> 
                     <td> {{file.name}} </td>
-                    <td> {{file.user}} </td>
+                    <td> {{file.owner}} </td>
                     <td> {{file.available_until}} </td>
                     <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
                 </tr>

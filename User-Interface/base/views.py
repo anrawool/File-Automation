@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from .models import Service, Password, File
+from .models import NexusService, NexusPassword, File
 from .forms import FileUploadForm
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.conf import settings
 import os
 
-serviceAvailable = Service.objects.all()
+serviceAvailable = NexusService.objects.all()
 # Create your views here.
 
 def Home(request):
@@ -15,7 +15,7 @@ def Home(request):
 
 def GetService(request, servicename):
     if servicename == 'passwords':
-        data = Password.objects.all()
+        data = NexusPassword.objects.all()
     elif servicename == 'upload':
         response = redirect('/upload/')
         return response
@@ -23,7 +23,7 @@ def GetService(request, servicename):
         response = redirect('/download/')
         return response
     else:
-        data = Service.objects.get(webpage=servicename)
+        data = NexusService.objects.get(webpage=servicename)
     context = {"data" : data}
     return render(request, f'base/{servicename}.html', context)
 
