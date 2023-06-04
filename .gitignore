@@ -1,8 +1,10 @@
 _*
+!__init__.py
 info.py
 .*
 train.csv
 test_file.txt
 *.json
 *.sqlite
-media/
+User-Interface/media/uploads/
+User-Interface/databases/*.sqlite3
