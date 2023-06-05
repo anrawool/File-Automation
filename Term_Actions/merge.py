@@ -1,6 +1,6 @@
 import sys
 import os
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join('../')
 sys.path.append(path)
 from settings import *
 from github import Github

@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join('../')
 sys.path.append(path)
 from search import *
 from sys import argv

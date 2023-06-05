@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import sys
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join('../../')
 sys.path.append(path)
 from settings import *
 from Managers.database_manager import DBManager
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     converted_date = dt.datetime.strptime(date, '%d %B, %Y')
     final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
 
-    path = '/home/sarthak/Documents/Automation/School/Tests/test.sqlite'
+    path = '/home/nexus/Documents/Nexus/School/Tests/test.sqlite'
     if not os.path.exists(path):
         DBM = DBManager(path)
         conn, cur = DBM.get_connection

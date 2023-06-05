@@ -1,7 +1,7 @@
 import os
 import sys
 from sys import argv
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join('../')
 sys.path.append(path)
 from data import *
 import re
@@ -24,7 +24,7 @@ class FileSearcher():
         if self.record_time == True:
             self.start = time.time()
         # Initializing inputs along with preformatting
-        # Undused Variables to be used in the future
+        # Unused Variables to be used in the future
         self.inputs = [self.sterilize(folder), target.lower(), mode, file_path, posix_path]
         self.DataMaker = DataMaker()
         # Setting function variable
