@@ -9,8 +9,7 @@
 </head>
 <body>
     <h1>Hello World: Home Page</h1>  
-    {% for servicename in services %}
-    <h5><a href="{% url 'service' servicename.webpage %}">{{ servicename }}</a></h5>
-    {% endfor %}
+    <h3><a href="{% url 'upload-page' %}">Upload File</a></h3>
+    <h3><a href="{% url 'passwords-page' %}">Password Manager</a></h3>
 </body>
 </html>

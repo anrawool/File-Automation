@@ -1,34 +1,27 @@
 from django.shortcuts import render
-from .models import NexusService, NexusPassword, File
+from .models import NexusPassword, File
 from .forms import FileUploadForm
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.conf import settings
 import os
 
-serviceAvailable = NexusService.objects.all()
 # Create your views here.
 
 def Home(request):
-    context = {'services': serviceAvailable}
-    return render(request, "base/index.html", context)
+    return render(request, "base/index.html")
 
-def GetService(request, servicename):
-    if servicename == 'passwords':
-        data = NexusPassword.objects.all()
-    elif servicename == 'upload':
-        response = redirect('/upload/')
-        return response
-    elif servicename == 'download':
-        response = redirect('/download/')
-        return response
-    else:
-        data = NexusService.objects.get(webpage=servicename)
-    context = {"data" : data}
-    return render(request, f'base/{servicename}.html', context)
 
 def Decrypt(request, webpage, encryption):
     return render(request, 'base/index.html')
+
+def PasswordsPage(request):
+    context = {"passwords": NexusPassword.objects.all()}
+    return render(request, 'base/passwords.html', context)
+
+def UploadPage(request):
+    context = {'files': File.objects.all()}
+    return render(request, 'base/uploads.html', context)
 
 
 def UploadFile(request):
@@ -36,11 +29,13 @@ def UploadFile(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            return redirect('upload-page')
     else:
         form = FileUploadForm()
-    context = {'form': form, 'files': File.objects.all()}
-    return render(request, 'base/upload.html', context)
+    context = {'form': form}
+    return render(request, 'base/upload_file.html', context)
     
+
 def UpdateFile(request, file_id):
     file_instance = File.objects.get(id=file_id)
 
@@ -54,7 +49,7 @@ def UpdateFile(request, file_id):
 
     context = {'form': form, 'files':File.objects.all()}
 
-    return render(request, 'base/upload.html', context)
+    return render(request, 'base/uploads.html', context)
 
 def download_file(request, file_id):
     file_obj = get_object_or_404(File, id=file_id)

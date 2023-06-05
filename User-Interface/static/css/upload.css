@@ -44,6 +44,7 @@ body {
 }
 
 .content-table tbody tr:last-of-type{
+    text-align: center;
     border-bottom: 2px solid #001011;
 }
 
@@ -51,7 +52,16 @@ body {
     font-weight: bold;
     color: #3a4454;
 }
+.newFile {
+    box-shadow: 10px rgba(0, 0, 0, 0.15) inset;
+}
 
 a {
     color: #001011;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #4947e7;
 }
