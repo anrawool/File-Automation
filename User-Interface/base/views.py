@@ -38,18 +38,17 @@ def UploadFile(request):
 
 def UpdateFile(request, file_id):
     file_instance = File.objects.get(id=file_id)
-
     form = FileUploadForm(instance=file_instance)
     
     if request.method == 'POST':
-        form = FileUploadForm(request.POST, instance=file_instance)
+        form = FileUploadForm(request.POST, request.FILES, instance=file_instance)
         if form.is_valid():
             form.save()
             return redirect('home')
 
-    context = {'form': form, 'files':File.objects.all()}
+    context = {'form': form}
 
-    return render(request, 'base/uploads.html', context)
+    return render(request, 'base/upload_file.html', context)
 
 def download_file(request, file_id):
     file_obj = get_object_or_404(File, id=file_id)

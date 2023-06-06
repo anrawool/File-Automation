@@ -1,8 +1,16 @@
 body {
-    background-color: #F5EDF0;
+    background-color:rgb(26, 25, 29);
+    background-image: linear-gradient(to right, rgb(42, 44, 50), rgb(26, 25, 29));
+
 }
 
-
+h1 {
+    text-align: center;
+    text-decoration: underline;
+    color:#fffffc;
+    margin: 70px;
+    font-size: 4em;
+}
 
 .content-table {
     position: absolute;
@@ -11,15 +19,16 @@ body {
     transform: translate(-50%, -50%);
     border-collapse: collapse;
     margin: 25px 0px;
-    font-size: 0.9em;
-    min-width: 400px;
+    font-size: 18px;
+    min-width: 800px;
+    height: 170px;
     border-radius: 5px 5px 0 0 ;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .content-table thead tr {
-    background-color: #190933;
+    background-color: rgb(48, 50, 66);
     color: white;
     text-align: left;
     font-weight: bold;
@@ -27,7 +36,9 @@ body {
 
 .content-table th,
 .content-table td {
-    padding: 12px 15px;
+    padding: 22px 25px;
+    text-align: center;
+    font-size: 1.3em;
 
 }
 
@@ -45,23 +56,29 @@ body {
 
 .content-table tbody tr:last-of-type{
     text-align: center;
-    border-bottom: 2px solid #001011;
+    border-bottom: 2px solid #454ADE;
 }
 
 .content-table tbody tr.active-row {
     font-weight: bold;
     color: #3a4454;
 }
-.newFile {
-    box-shadow: 10px rgba(0, 0, 0, 0.15) inset;
+
+
+#newFile {
+    color: white;
+}
+
+#newFile:hover {
+    color:#454ADE;
 }
 
 a {
     color: #001011;
-    font-weight: 800;
+    font-weight: bold;
     text-decoration: none;
 }
 
 a:hover {
-    color: #4947e7;
+    color: #454ADE;
 }

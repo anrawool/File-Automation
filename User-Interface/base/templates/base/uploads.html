@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
-    {% load custom_filters %}
     <link rel="stylesheet" href="{% static '/css/upload.css' %}">
     <style>
         body {
@@ -18,6 +17,7 @@
     <title>Upload and Download | Nexus</title>
 </head>
 <body>
+    <h1>Uploaded Files</h1>
     <table class="content-table">
         <thead>
             <tr id="header">
@@ -39,7 +39,7 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td colspan=5><a href="{% url 'upload-file' %}" class="newFile"> + Add New File</a></td>
+                <td colspan=5><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
             </tr>
         </tbody>
     </table>

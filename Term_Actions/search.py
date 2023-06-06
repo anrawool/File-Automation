@@ -174,7 +174,7 @@ class FileSearcher():
             try:
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
-                    subdirectories = self.convert_scan(subdirectories, 'folders')
+                    rectories = self.convert_scan(subdirectories, 'folders')
                     for sub_directory in subdirectories:
                         sterilized_search = self.sterilize(sub_directory)
                         if self.check_with_result(self.inputs[0], sterilized_search):
@@ -186,8 +186,7 @@ class FileSearcher():
                 self.folders = self.sub_folders  # Setting up for next iteration
                 self.sub_folders = []  # Resetting the Sub folders list for easy transition
             except Exception as e:
-                # print(e)
-                pass
+                #         pass
                 self.control = True
         return self.results
     

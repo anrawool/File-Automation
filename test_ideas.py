@@ -1,8 +1,6 @@
 # File for experimentation
+import os
+def is_executable(file_path):
+    return os.access(file_path, os.X_OK)
 
-import datetime
-
-today = datetime.date.today()
-tomorrow = today + datetime.timedelta(days=1)
-print(today)
-print(tomorrow)
+print(is_executable('/home/nexus/Documents/Nexus/User-Interface/Server/bin/python3'))
