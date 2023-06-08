@@ -4,6 +4,7 @@ from .forms import FileUploadForm
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.auth.models import User
 import os
 
 # Create your views here.
@@ -28,28 +29,16 @@ def UploadFile(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
+            print("SAVED")
             form.save()
             return redirect('upload-page')
+        else:
+            print(form.errors)
     else:
         form = FileUploadForm()
-    context = {'form': form}
+    context = {'form': form, 'users': User.objects.all()}
     return render(request, 'base/upload_file.html', context)
     
-
-def UpdateFile(request, file_id):
-    file_instance = File.objects.get(id=file_id)
-    form = FileUploadForm(instance=file_instance)
-    
-    if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES, instance=file_instance)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-    context = {'form': form}
-
-    return render(request, 'base/upload_file.html', context)
-
 def download_file(request, file_id):
     file_obj = get_object_or_404(File, id=file_id)
     file_path = os.path.join(settings.MEDIA_ROOT, str(file_obj.file))
