@@ -7,42 +7,42 @@
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
-    <link rel="stylesheet" href="{% static '/css/upload.css' %}">
-    <style>
-        body {
-            font-family: "Montserrat", sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static '/css/upload.css' %}"> 
+    <script src="{% static '/js/table.js' %}"></script>
     <title>Upload and Download | Nexus</title>
 </head>
 <body>
-    <h1>Uploaded Files</h1>
-    <table class="content-table">
-        <thead>
-            <tr id="header">
-                <th>ID</th>
-                <th>Name</th>
-                <td>Uploaded By</td>
-                <td>Available until</td>
-                <th>Download</th>
-            </tr>   
-        </thead>
-        <tbody>
-            {% for file in files %}
+    <main>
+        <div class="wrapper">
+            <h1>Uploaded Files</h1>
+            <table>
+                <caption>Available Files</caption>
+
                 <tr>
-                    <td> {{forloop.counter}} </td> 
-                    <td> {{file.name}} </td>
-                    <td> {{file.owner}} </td>
-                    <td> {{file.available_until}} </td>
-                    <td><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Uploaded By</th>
+                    <th>Available Until</th>
+                    <th>Download</th>
                 </tr>
-            {% endfor %}
-            <tr>
-                <td colspan=5><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
-            </tr>
-        </tbody>
-    </table>
+
+                {% for file in files %}
+                    <tr>
+                        <td data-cell="id"> {{forloop.counter}} </td> 
+                        <td data-cell="file-name"> {{file.name}} </td>
+                        <td data-cell="owner"> {{file.owner}} </td>
+                        <td data-cell="availability"> {{file.available_until}} </td>
+                        <td class="download"><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan=5 class="upload"><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
+                </tr>
+
+            </table> 
+        </div>
+    </main>
     
+
 </body>
 </html>
