@@ -1,3 +1,4 @@
+from .custom_logic.logic import get_file_size
 from django.shortcuts import render
 from .models import NexusPassword, File
 from .forms import FileUploadForm
@@ -21,7 +22,10 @@ def PasswordsPage(request):
     return render(request, 'base/passwords.html', context)
 
 def UploadPage(request):
-    context = {'files': File.objects.all()}
+    files = File.objects.all()
+    file_sizes = get_file_size(files)
+    context = {'items':zip(files, file_sizes)}
+    print(context)
     return render(request, 'base/uploads.html', context)
 
 

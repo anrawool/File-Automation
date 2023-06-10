@@ -23,20 +23,22 @@
                     <th>Name</th>
                     <th>Uploaded By</th>
                     <th>Available Until</th>
+                    <th>File Size</th>
                     <th>Download</th>
                 </tr>
 
-                {% for file in files %}
+                {% for file, size in items %}
                     <tr>
                         <td data-cell="id"> {{forloop.counter}} </td> 
                         <td data-cell="file-name"> {{file.name}} </td>
                         <td data-cell="owner"> {{file.owner}} </td>
                         <td data-cell="availability"> {{file.available_until}} </td>
+                        <td data-cell="file-size" class="file-size">{{size}}</td>
                         <td class="download"><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
                     </tr>
                 {% endfor %}
                 <tr>
-                    <td colspan=5 class="upload"><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
+                    <td colspan=6 class="upload"><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
                 </tr>
 
             </table> 
