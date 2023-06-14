@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat");
 
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotation {
+    0% {--gradient-angle: 0deg;}
+    100% {--gradient-angle: 360deg;}
+}
+
 body {
     background-color:rgb(31, 29, 39);
     color: #eee;
@@ -8,20 +19,38 @@ body {
     font-family: "Montserrat", sans-serif;
 }
 
+
 .wrapper {
     width: min(900px, 100% - 3rem);
     margin-inline: auto;
+    border-radius: 20px;
 }
 
 table {
+    margin-top: 5rem;
     width: 100%;
     background-color: #323232;
     border-collapse: collapse;
-    border-radius: 20px;
+    border-radius: inherit;
+    position: relative;
+}
 
+table::after, table::before {
+    content: "";
+    position: absolute;
+    inset: -.5rem;
+    z-index: -1;
+    background: conic-gradient(from var(--gradient-angle), #64afff, #7399fb, #5154f9, #64afff, #7399fb);
+    border-radius:20px; 
+    animation: rotation 5s linear infinite;
+}
+
+table::after {
+    filter: blur(2rem);
 }
 
 h1 {
+    margin-top: 5rem;
     text-align: center;
     text-decoration: underline;
 }
@@ -42,8 +71,8 @@ caption {
     text-decoration: underline;
 }
 
-th {
-    background: hsl(0 0% 0% / .5);
+thead {
+    background: hsl(0 0% 0%);
 }
 
 tr:nth-of-type(2n) {
@@ -64,36 +93,51 @@ a:active {
 }
 
 .upload {
-    background-color: rgba(31, 29, 39, .6);
+    background-color: rgb(31, 29, 39);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.table-heading {
+    background-color: hsl(222, 35%, 10%);
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 @media (max-width: 650px) {
+    table {
+        border-radius: 0px;
+    }
+
     th, [data-cell="id"], [data-cell="owner"], [data-cell="availability"] {
         display: none;
     }
-
+    
     [data-cell="name"] {
         content: "File Name:";
     }
-
+    
     td {
         display: block;
         gap: .5rem;
         padding: .75rem 1rem;
     }
-
-
+    
+    
     td:first-child {
-        padding-top: 1rem
+        padding-top: 1rem;
     }
-
+    
     td:last-child {
         padding-bottom: 1rem;
     }
-
+    
     td:not(.upload, .download)::before {
         content: attr(data-cell) ": ";
         font-weight: 700;
         text-transform: capitalize;
+    }
+    .upload-col {
+        background-color: transparent;
     }
 }

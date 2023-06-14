@@ -16,16 +16,17 @@
         <div class="wrapper">
             <h1>Uploaded Files</h1>
             <table>
-                <caption>Available Files</caption>
-
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Uploaded By</th>
-                    <th>Available Until</th>
-                    <th>File Size</th>
-                    <th>Download</th>
-                </tr>
+               <caption class="table-heading">Available Files</caption> 
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Uploaded By</th>
+                        <th>Available Until</th>
+                        <th>File Size</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
 
                 {% for file, size in items %}
                     <tr>
@@ -37,7 +38,7 @@
                         <td class="download"><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
                     </tr>
                 {% endfor %}
-                <tr>
+                <tr class="upload-col">
                     <td colspan=6 class="upload"><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
                 </tr>
 
