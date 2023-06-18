@@ -1,6 +1,6 @@
 import sys
 import os
-path = os.path.join('../')
+path = os.path.join(os.path.abspath('../'))
 sys.path.append(path)
 from settings import *
 from github import Github

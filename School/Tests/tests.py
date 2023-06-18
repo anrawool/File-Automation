@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import sys
-path = os.path.join('../../')
+path = os.path.join(os.path.abspath('../../'))
 sys.path.append(path)
 from settings import *
 from Managers.database_manager import DBManager

@@ -25,7 +25,7 @@ def UploadPage(request):
     files = File.objects.all()
     file_sizes = get_file_size(files)
     context = {'items':zip(files, file_sizes)}
-    print(context)
+    # print(context)
     return render(request, 'base/uploads.html', context)
 
 
@@ -33,11 +33,8 @@ def UploadFile(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            print("SAVED")
             form.save()
             return redirect('upload-page')
-        else:
-            print(form.errors)
     else:
         form = FileUploadForm()
     context = {'form': form, 'users': User.objects.all()}

@@ -12,7 +12,7 @@
 }
 
 body {
-    background-color:rgb(31, 29, 39);
+    background-color: #24252A;
     color: #eee;
     font-size: 1.125rem;
     line-height: 1.5;
@@ -26,6 +26,15 @@ body {
     border-radius: 20px;
 }
 
+table::after, table::before {
+    content: "";
+    position: absolute;
+    inset: -.5rem;
+    z-index: -10;
+    background: conic-gradient(from var(--gradient-angle), #82b0ff, #4075fc, #75ccff, #4075fc, #82b0ff);
+    border-radius:20px; 
+    animation: rotation 5s linear infinite;
+}
 table {
     margin-top: 5rem;
     width: 100%;
@@ -35,15 +44,6 @@ table {
     position: relative;
 }
 
-table::after, table::before {
-    content: "";
-    position: absolute;
-    inset: -.5rem;
-    z-index: -1;
-    background: conic-gradient(from var(--gradient-angle), #64afff, #7399fb, #5154f9, #64afff, #7399fb);
-    border-radius:20px; 
-    animation: rotation 5s linear infinite;
-}
 
 table::after {
     filter: blur(2rem);
