@@ -23,6 +23,9 @@ class Opener:
     def open_files(self):
         search_object = FileSearcher(folder=self.folder, target=f'{target}', file_path=False)
         (_, file_objects) = search_object.search()
+        if len(file_objects) == 0 :
+            print("No such files found...")
+            exit()
         try:
             for file_object in file_objects:
                 os.chdir(f'{file_object.path}')

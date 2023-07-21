@@ -138,8 +138,8 @@ class RepoMerger:
                         pull_details = self.create_pull_request(title=f'Merge to {base}', body=body, base=base, head=head)
                         self.merge_branches(f'Merge to {base}', base, head)
                         print(f'Merged head: ', head)
-                    except GithubException:
-                        pass
+                    except (GithubException, Exception):
+                        print("An error occurred...")
 
 
 path = os.path.abspath(os.getcwd())
