@@ -59,8 +59,8 @@ class Project_Maker():
             repo = authed.create_repo(self.repo_name)
             os.system(
                 f"git remote add origin https://github.com/anrawool/{self.repo_name}.git")
-            os.system("git push -u origin master")
-            print("Github Rpeository Created and Setup")
+            os.system("git push -u origin main")
+            print("Github Repository Created and Setup")
             repo_exists = "true"
             return repo_exists
         else:
