@@ -1,7 +1,7 @@
 import os
 import sys
 from sys import argv
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join(os.path.abspath('../'))
 sys.path.append(path)
 from data import *
 import re
@@ -24,7 +24,7 @@ class FileSearcher():
         if self.record_time == True:
             self.start = time.time()
         # Initializing inputs along with preformatting
-        # Undused Variables to be used in the future
+        # Unused Variables to be used in the future
         self.inputs = [self.sterilize(folder), target.lower(), mode, file_path, posix_path]
         self.DataMaker = DataMaker()
         # Setting function variable
@@ -174,7 +174,7 @@ class FileSearcher():
             try:
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
-                    subdirectories = self.convert_scan(subdirectories, 'folders')
+                    rectories = self.convert_scan(subdirectories, 'folders')
                     for sub_directory in subdirectories:
                         sterilized_search = self.sterilize(sub_directory)
                         if self.check_with_result(self.inputs[0], sterilized_search):
@@ -186,8 +186,7 @@ class FileSearcher():
                 self.folders = self.sub_folders  # Setting up for next iteration
                 self.sub_folders = []  # Resetting the Sub folders list for easy transition
             except Exception as e:
-                # print(e)
-                pass
+                #         pass
                 self.control = True
         return self.results
     

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/base/navbar.css' %}">
+    <script src="{% static '/js/base/navbar.js' %}"></script>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <ul class="nav-links">
+		    <li><a href="{% url 'home' %}">Home</a></li>
+		    <li><a href="{% url 'upload-page' %}">Upload Files</a></li>
+                <li><a href="#">Passwords</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="logout"><button>Logout</button></a>
+    </header>
+
+    <div class="hamburger">
+        <div class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+
+</body>
+</html>

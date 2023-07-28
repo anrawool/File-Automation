@@ -1,6 +1,6 @@
 import sys
 import os
-path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+path = os.path.join(os.path.abspath('../'))
 sys.path.append(path)
 from settings import *
 from github import Github
@@ -38,6 +38,7 @@ class RepoMerger:
         if all == True:
             self.merge(title, body, True)
         self.merge(title, body)
+        os.system("git pull --all")
 
     def create_pull_request(self, title, body='', base=None, head=None):
         try:

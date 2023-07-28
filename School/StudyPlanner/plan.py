@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/home/sarthak/Documents/Automation')
+path = os.path.join(os.path.abspath('../../'))
 sys.path.append(path)
 import math
 import random

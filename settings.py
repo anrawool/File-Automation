@@ -1,6 +1,5 @@
 # CONSTANTS
-ROOT_DIR = '/Users/abhijitrawool'
-
+ROOT_DIR = '/home/nexus'
 # Classes
 
 # Shell Input

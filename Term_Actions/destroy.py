@@ -1,6 +1,6 @@
 import os
 import sys
-path = os.path.join('/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/')
+path = os.path.join(os.path.abspath('../'))
 sys.path.append(path)
 import json
 from github import Github
