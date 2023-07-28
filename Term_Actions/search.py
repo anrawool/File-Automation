@@ -2,7 +2,6 @@ import os
 import sys
 from sys import argv
 path = os.path.join(os.path.abspath('../'))
-print(path)
 sys.path.append(path)
 from data import *
 import re
