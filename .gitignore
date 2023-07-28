@@ -4,4 +4,5 @@ info.py
 train.csv
 test_file.txt
 *.json
+User-Interface/
 *.sqlite
