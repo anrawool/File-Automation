@@ -1,2 +1,3 @@
 PyGithub==1.57
 watchdog==2.2.1
+django==4.2.3

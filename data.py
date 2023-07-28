@@ -1,6 +1,5 @@
 import os
 from dataclasses import dataclass
-from settings import ROOT_DIR
 
 @dataclass
 class NexusPathObject():
