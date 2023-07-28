@@ -11,9 +11,14 @@
     100% {--gradient-angle: 360deg;}
 }
 
+* {
+    color: #F2F4F3;
+}
+
 body {
-    background-color: #24252A;
+    background-color: #232228;
     color: #eee;
+    overflow-x: hidden;
     font-size: 1.125rem;
     line-height: 1.5;
     font-family: "Montserrat", sans-serif;
@@ -82,14 +87,17 @@ tr:nth-of-type(2n) {
 a {
     color: #eee;
     text-decoration: underline;
+    transition: color .3s ease-in-out;
 }
 
 a:hover {
+    transition: color .3s ease-in-out;
     color: #4b9aef;
 }
 
 a:active {
-    color:#4977ec
+    color:#4977ec;
+    transition: color .3s ease-in-out;
 }
 
 .upload {

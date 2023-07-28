@@ -38,6 +38,7 @@ class RepoMerger:
         if all == True:
             self.merge(title, body, True)
         self.merge(title, body)
+        os.system("git pull --all")
 
     def create_pull_request(self, title, body='', base=None, head=None):
         try:
