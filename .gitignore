@@ -8,3 +8,4 @@ test_file.txt
 *.sqlite
 User-Interface/media/uploads/
 User-Interface/databases/*.sqlite3
+User-interface/static/fonts/

@@ -1,140 +1,82 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat");
+body {
+    color: var(--white);
+}
 
-li, a, button {
+a {
+    color: var(--white);
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+}
+
+a:hover, a:focus {
+    color: var(--primary-indication-text);
+    transition: color .3s ease-in-out;
+}
+
+nav {
+    font-size: 24px; /* approx 1.2 vw for responsive text*/
+    z-index: 10000000000000000000;
+    background-color: var(--grey);
+    position: absolute;
+    text-align: center;
+    min-width: 10%;
+    max-width: 10%;
+    height: 100%;
+    padding: 2rem;
+    font-weight: 300;
+}
+
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-list a {
+    display: flex;
+    align-items: center;
+}
+.nav-icon {
+    height: 30px;
+    margin-right: 1rem;
+    width: 30px;
+}
+
+.nav-item {
+    margin-bottom: 48px;
+}
+
+.user-status {
+    font-size: 15px; /* .73vw for responsive text */
+    color: var(--primary-light-text-70);
+}
+
+.user-info {
+    margin-bottom: 55px;
+}
+
+#user-pic img {
+    width: 5.4rem;
+    height: 5.4rem;
+    border-radius: 50%;
+    box-shadow: 1px 1px 11px 3px rgba(25,30,46,0.63);
+}
+
+
+#user-pic {
+    margin-bottom: 1rem;
+}
+
+#logout-item:hover, #logout-item:focus {
+    opacity: .9;
+}
+
+#logout-item a{
+    color: var(--primary-negative-text);
     font-weight: 500;
-    font-size: 20px;
-    color: #edf0f1;
     text-decoration: none;
 }
 
-header {
-    box-sizing: border-box;
-    display: flex;
-    background-color: #010B13;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    margin: -10px;
-}
-
-.hamburger {
-    display: none;
-}
-
-.nav-links {
-    list-style: none;
-}
-
-.nav-links li {
-    display: inline-block;
-    padding: 0 20px;
-}
-
-.nav-links li a {
-    transition: all 0.3s ease 0s;
-}
-
-button {
-    padding: 9px 25px;
-    background-color: rgb(0, 96, 169);
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-}
-
-button:hover {
-    background-color: #4b9aef;
-    transition: all 0.3s ease 0s;
-}
-
-@media (max-width: 650px) {
-    header {
-        display: none;
-    }
-    
-    .hamburger {
-        display: flex;
-        position: relative;
-        width: 50px;
-        height: 50px;
-        background: #000;
-        box-shadow: 
-            0 0 5px #0ef
-            0 0 10px #0ef
-            0 0 20px #0ef
-            0 0 40px #0ef;
-        border-radius: 10px;
-        cursor: pointer;
-        display: flex;
-    }
-
-    .hamburger-icon {
-        position: relative;
-        width: 30px;
-        height: 20px;
-        margin: auto;
-        display: flex;
-        transform: rotate(0);
-        transition: 1s;
-        align-items: center;
-    }
-
-    .hamburger.active .hamburger-icon {
-        transform: rotate(315deg);
-    }
-
-    .hamburger-icon span {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(45deg, #0ef, #000);
-        border: 2px solid #0ef;
-        border-radius: 5px;
-        box-shadow: 
-        0 0 5px #0ef
-        0 0 10px #0ef;
-        transition: 0.3s;
-        transition-delay: 1s;
-    }
-
-    .hamburger-icon span:nth-child(1) {
-        top: 0;
-        left: 0;
-        width: 50%;
-        transform: translateY(0);
-    }
-
-    .hamburger-icon span:nth-child(2) {
-        width: 100%;
-        transform: scaleX(1);
-        opacity: 1;
-    } 
-
-
-    .hamburger.active span:nth-child(1){
-        width: 100%;
-        transform: translateY(73px);
-        transition-delay: 0s;
-    }
-    .hamburger.active span:nth-child(2) {
-        transform: scaleX(0);
-        opacity: 0;
-        transition-delay: 0s;
-    }
-
-    .hamburger-icon span:nth-child(3) {
-        bottom: 0;
-        right: 0;
-        width: 50%;
-        transform: rotate(0);
-    }
-
-    .hamburger.active span:nth-child(3) {
-        width: 100%;
-        bottom: 10px;
-        transform: rotate(90deg);
-        transition-delay: 0s;
-    }
+#logout-icon {
+    fill: var(--warning);
 }
