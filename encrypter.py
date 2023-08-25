@@ -10,7 +10,7 @@ KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
     # Initialization Function
-    def __init__(self, max_chars=None, key_path='./encrypter_key.json') -> None:
+    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False) -> None:
         """
         Encryption Algorithm Code Snippet:
 
@@ -22,6 +22,7 @@ class AEA:
         """
         self.DataMaker = data.DataMaker()
         self.max_chars = max_chars
+        self.write_to_file = write_to_file
         self.key_path, self.key_name = self.set_keys(key_path)
         self.encrypter_setup()
 
@@ -38,6 +39,7 @@ class AEA:
             if original == KEY_INORDER:
                 # print("Original copy is correct!!")
                 pass
+
             maximum_chars = self.get_max_characters(shuffled)
             if self.max_chars == None:
                 self.max_chars = maximum_chars
@@ -134,8 +136,10 @@ class AEA:
         with open(file_path + file_name + extension, 'r') as encryption_file:
             file_data = encryption_file.read()
             encrypted_data = self.encrypt_text(file_data)
-            with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
-                encrypted_file.write(encrypted_data)
+            if self.write_to_file:
+                with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
+                    encrypted_file.write(encrypted_data)
+            return encrypted_data
     def decrypt_file(self, file_path):
         path_object = self.DataMaker.make_path(file_path, file_path=False)
         file_path = path_object.path
@@ -146,11 +150,14 @@ class AEA:
             for i in range(0, 1):
                 max_characters = len(self.final_key[i])
             decrypted_data = self.decrypt_text(file_data)
-            with open(file_path + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
-                decrypted_file.write(decrypted_data)
+            if self.write_to_file:
+                with open(file_path + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
+                    decrypted_file.write(decrypted_data)
+            return decrypted_data
+
 
 if __name__ == '__main__':
-    encrypter = AEA(40)
+    encrypter = AEA(256)
     encrypter.save_key()
     text = input("Enter a message to encrypt: ")
     encryption = encrypter.encrypt_text(text)

@@ -213,7 +213,7 @@ class FileSearcher():
     def all(self, mode='files') -> tuple:
         """
         All items in a given path are extracted
-
+        
         :return: item_names: list, Containing strings of names of all items
         :return: item_objects: list, Containing NexusFolderPathObjects of each given item in item_names
         """
@@ -269,3 +269,4 @@ if __name__ == '__main__':
         folders, final_time = search_instance.search()
         print("FOLDER OBJECT:", folders)
         print("TIME:", final_time)
+        
