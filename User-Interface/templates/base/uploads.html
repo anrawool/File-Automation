@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{% static 'css/base/navbar.css' }">
-    <link rel="stylesheet" href="{% static 'css/base/upload.css' %}"> 
     <script src="{% static 'js/base/table.js' %}"></script>
     <title>Upload and Download | Nexus</title>
 </head>
@@ -16,7 +13,6 @@
     {% include 'base/navigation.html' %}
     <main>
         <div class="wrapper">
-            <h1>Uploaded Files</h1>
             <table class="table">
                 <caption class="table-heading">Available Files</caption> 
                 <div class="main-content">
@@ -28,25 +24,29 @@
                             <th>Available Until</th>
                             <th>File Size</th>
                             <th>Download</th>
-                            <th>Options</th>
                         </tr>
                     </thead>
                     
                     {% for file, size in items %}
                     <tr>
-                        <td data-cell="id"> {{forloop.counter}} </td>
+                        <td data-cell="id">{{forloop.counter}} </td>
                         <td data-cell="file-name"> {{file.name}} </td>
                         <td data-cell="owner"> {{file.owner}} </td>
                         <td data-cell="availability"> {{file.available_until}} </td>
                         <td data-cell="file-size" class="file-size">{{size}}</td>
-                        <td class="download"><b><a href="{% url 'download' file_id=file.id %}">Download</a></b></td>
-                        <td>
-                    
-                            Hello World
-                    
-                        </td>
+                        <td class="download"><b><a href="{% url 'download' file_id=file.id %}" class="download-link">Download</a></b></td>
                     </tr>
                     {% endfor %}
+                    {% if items|length == 0 %}
+                    <tr>
+                        <td data-cell="id">1</td>
+                        <td data-cell="file-name">No File Uploaded</td>
+                        <td data-cell="owner">System</td>
+                        <td data-cell="availability">New file is Uploaded</td>
+                        <td data-cell="file-size" class="file-size">Not Enough</td>
+                        <td class="download"><b><p style="color: #FF495C;" class="download-link">N/A</p></b></td>
+                    </tr>
+                    {% endif %}
                     <tr class="upload-col">
                         <td colspan=7 class="upload"><a href="{% url 'upload-file' %}" id="newFile"> + Add New File</a></td>
                     </tr>
