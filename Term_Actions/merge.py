@@ -143,8 +143,8 @@ class RepoMerger:
 
 path = os.path.abspath(os.getcwd())
 github = Github(Github_Token)
-merge_branch, repo_name, merge_to_branch = get_shell_input(
-    0, sys.argv, ['head', '', 'master'])
+merge_to_branch, repo_name, merge_branch = get_shell_input(
+    0, sys.argv, ['master', '', 'head'])
 
 if repo_name == '':
     repo_name = get_repository(path)
