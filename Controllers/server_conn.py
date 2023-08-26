@@ -1,11 +1,12 @@
+import __meta
 import paramiko
-from Managers.Password_Manager.password import PasswordManager
+from Controllers.Password_Manager.password import PasswordManager
 from encrypter import *
 from getpass import getpass
 class SSH_Connection:
     def __init__(self, username, ip='auto', password='auto') -> None:
-        self.manager =  PasswordManager(db_path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Managers/Password_Manager/passwords.sqlite', key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Managers/Password_Manager/passwords_key.json')
-        self.AEA = AEA(key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Managers/Password_Manager/passwords_key.json')
+        self.manager =  PasswordManager(db_path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords.sqlite', key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords_key.json')
+        self.AEA = AEA(key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords_key.json')
         if ip == 'auto':
             ip = '192.168.1.58'
         if password == 'auto':

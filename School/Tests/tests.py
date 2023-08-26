@@ -4,7 +4,7 @@ import sys
 path = os.path.join(os.path.abspath('../../'))
 sys.path.append(path)
 from settings import *
-from Managers.database_manager import DBManager
+from Controllers.database_manager import DBManager
 import datetime as dt
 
 def create_new_test(conn, cur, subject, date, type='CR'):

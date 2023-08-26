@@ -1,14 +1,12 @@
-import sys
-import os
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
+import __meta
+import os, sys
 from settings import *
 from github import Github
 from github.GithubException import GithubException
 from github.GithubException import GithubException
 from itertools import combinations
 import json
-from info import Github_Token, Github_User
+from PvtInfo.info import Github_Token, Github_User
 
 
 def get_repository(path):
@@ -145,8 +143,8 @@ class RepoMerger:
 
 path = os.path.abspath(os.getcwd())
 github = Github(Github_Token)
-merge_branch, repo_name, merge_to_branch = get_shell_input(
-    0, sys.argv, ['head', '', 'master'])
+merge_to_branch, repo_name, merge_branch = get_shell_input(
+    0, sys.argv, ['master', '', 'head'])
 
 if repo_name == '':
     repo_name = get_repository(path)

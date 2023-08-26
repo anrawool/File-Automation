@@ -1,6 +1,7 @@
-from tracker import track
-import os
-from data import *
+import __meta
+import os 
+from Controllers.tracker import track
+from Controllers.data import *
 import re
 from settings import ROOT_DIR
 

@@ -1,3 +1,4 @@
+import __meta
 import os
 from dataclasses import dataclass
 

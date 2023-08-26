@@ -1,11 +1,12 @@
 import os
 import sys
-path = os.path.join(os.path.abspath('../../'))
+import __meta
+path = os.path.join(os.path.abspath(__meta.absolute_current_path + '../../'))
 sys.path.append(path)
 import encrypter
 from sqlite3 import OperationalError
-from Managers.database_manager import DBManager
-from data import *
+from Controllers.database_manager import DBManager
+from Controllers.data import *
 from getpass import getpass
 
 class PasswordManager:
