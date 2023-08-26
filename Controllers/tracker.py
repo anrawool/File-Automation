@@ -1,4 +1,4 @@
-import os
+import __meta
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler

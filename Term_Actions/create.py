@@ -1,6 +1,6 @@
+import __meta
 from search import *
-import sys
-import os
+import sys, os
 from project_maker import Project_Maker
 import json
 

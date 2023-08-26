@@ -1,16 +1,17 @@
 import random
+import __meta
 import string
 import time
 import json
 import os
-import data
+import Controllers.data as data
 
 ALL_CHARACTERS = list(string.punctuation + string.ascii_letters + string.digits + " " + "\n" + '\t')
 KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
     # Initialization Function
-    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False) -> None:
+    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False, save_key: bool = True) -> None:
         """
         Encryption Algorithm Code Snippet:
 
@@ -23,6 +24,7 @@ class AEA:
         self.DataMaker = data.DataMaker()
         self.max_chars = max_chars
         self.write_to_file = write_to_file
+        self.save_key_to_file = save_key
         self.key_path, self.key_name = self.set_keys(key_path)
         self.encrypter_setup()
 
@@ -112,20 +114,37 @@ class AEA:
     
     # Text Encrypters
 
-    def encrypt_text(self, text, characters=ALL_CHARACTERS):
+    def encrypt_text(self, text, characters=ALL_CHARACTERS, encryption_parent=False):
         cipher = ''
         for index, character in enumerate(text):
             character_encryption = self.final_key[characters.index(character)]
             cipher += character_encryption
+        if not encryption_parent and self.write_to_file:
+            path_object = self.DataMaker.make_path(file_path, file_path=False)
+            file_path = path_object.path
+            file_name = path_object.file
+            extension = path_object.ext
+            with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
+                encrypted_file.write(cipher)
+        if self.save_key_to_file:
+            self.save_key()
         return cipher
 
-    def decrypt_text(self, text, all_characters=ALL_CHARACTERS):
+    def decrypt_text(self, text, all_characters=ALL_CHARACTERS, decryption_parent=False):
         chunks = [text[i:i+self.max_chars] for i in range(0, len(text), self.max_chars)]
         decipher_text = ''
         for chunk in chunks:
             index = self.final_key.index(chunk)
             decipher_text += all_characters[index]
-        
+        if not decryption_parent and self.write_to_file:
+            path_object = self.DataMaker.make_path(file_path, file_path=False)
+            file_path = path_object.path
+            file_name = path_object.file
+            extension = path_object.ext
+            with open(file_path + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
+                decrypted_file.write(decipher_text)
+        if self.save_key_to_file:
+            self.save_key()
         return decipher_text
 
     def encrypt_file(self, file_path):
@@ -133,26 +152,34 @@ class AEA:
         file_path = path_object.path
         file_name = path_object.file
         extension = path_object.ext
+        encryption_parent = True # Declares that the request came from a parent function and there is no need for the encrypt_text function to create a new instance due to self.write_to_file being set to true
         with open(file_path + file_name + extension, 'r') as encryption_file:
             file_data = encryption_file.read()
-            encrypted_data = self.encrypt_text(file_data)
+            encrypted_data = self.encrypt_text(file_data, encryption_parent=encryption_parent)
             if self.write_to_file:
                 with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
                     encrypted_file.write(encrypted_data)
+            if self.save_key_to_file:
+                self.save_key()
+
             return encrypted_data
+
     def decrypt_file(self, file_path):
         path_object = self.DataMaker.make_path(file_path, file_path=False)
         file_path = path_object.path
         file_name = path_object.file
         extension = path_object.ext
+        decryption_parent = True # Declares that the request came from a parent function and there is no need for the decrypt_text function to create a new instance due to self.write_to_file being set to true
         with open(file_path + file_name + extension, 'r') as decryption_file:
             file_data = decryption_file.read()
             for i in range(0, 1):
                 max_characters = len(self.final_key[i])
-            decrypted_data = self.decrypt_text(file_data)
+            decrypted_data = self.decrypt_text(file_data, decryption_parent=decryption_parent)
             if self.write_to_file:
                 with open(file_path + file_name + '_decrypted' + extension, 'w+') as decrypted_file:
                     decrypted_file.write(decrypted_data)
+            if self.save_key_to_file:
+                self.save_key()
             return decrypted_data
 
 

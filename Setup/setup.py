@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from data import *
+from Controllers.data import *
 
 # Currently in Development
 

@@ -1,14 +1,12 @@
-import sys
-import os
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
+import __meta
+import os, sys
 from settings import *
 from github import Github
 from github.GithubException import GithubException
 from github.GithubException import GithubException
 from itertools import combinations
 import json
-from info import Github_Token, Github_User
+from PvtInfo.info import Github_Token, Github_User
 
 
 def get_repository(path):

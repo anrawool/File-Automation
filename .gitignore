@@ -9,4 +9,4 @@ test_file.txt
 User-Interface/media/uploads/
 User-Interface/databases/*.sqlite3
 User-interface/static/fonts/
-github_token.txt
+PvtInfo
