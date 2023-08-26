@@ -1,10 +1,8 @@
 import os
-import sys
 from sys import argv
-path = os.path.join(os.path.abspath('../'))
-print(path)
-sys.path.append(path)
-from data import *
+import __meta
+import copy
+from Controllers.data import *
 import re
 from pathlib import Path
 import settings
@@ -12,7 +10,7 @@ from settings import get_shell_input
 import time
 
 class FileSearcher():
-    def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False, posix_path: bool = False) -> None:
+    def __init__(self, folder: str, target: str = '', mode: str = '', file_path: bool = True, record_time : bool = False, posix_path: bool = False, absolute : bool = False) -> None:
         """
         Initiation of global variables
         :param folder: str, Folder to use path of
@@ -20,13 +18,14 @@ class FileSearcher():
         :param mode: str, Type of preset mode available [folder/other]
         :param file_path: bool, Decides whether final result name should be included in the complete path to the item
         :param record_time: bool, Records time if True        
+        :param absolute: bool, Enables absolute name matching for files and folders
         """
         self.record_time = record_time
         if self.record_time == True:
             self.start = time.time()
         # Initializing inputs along with preformatting
         # Unused Variables to be used in the future
-        self.inputs = [self.sterilize(folder), target.lower(), mode, file_path, posix_path]
+        self.inputs = [self.sterilize(folder), target.lower(), mode, file_path, posix_path, absolute]
         self.DataMaker = DataMaker()
         # Setting function variable
         self.function = self.get_function(self.inputs[1])
@@ -67,8 +66,7 @@ class FileSearcher():
             return temp_files
         self.ignore_folders = ['Public', 'opt', 'Library', 'Application Data', 'Local Settings', 'Cookies', 'Pictures', 'Music', 'Sites']
         # List comprehension for getting all folders not in the ignore list
-        temp_folds = [
-            folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
+        temp_folds = [folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
         return temp_folds
 
     def sterilize(self, ster_str: str) -> str:
@@ -139,10 +137,17 @@ class FileSearcher():
 
         :return: bool, True for match found and vice-versa
         """
-        if self.sterilize(object) == self.sterilize(target):
-            return True
+        if self.inputs[5] == False:
+            if self.sterilize(object) in self.sterilize(target):
+                return True
+            else:
+                return False
         else:
-            return False
+            if self.sterilize(object) == self.sterilize(target):
+                return True
+            else:
+                return False
+
 
     def change_for_results(self, object: NexusFolderPathObject, result_name: str):
         """
@@ -153,11 +158,18 @@ class FileSearcher():
 
         :return: object: NexusFolderPathObject
         """
-        object.path = Path(os.path.join(object.path, result_name))
-        if self.inputs[-1] != True:
-            object.path = str(object.path)
-        object.folder = result_name
-        return object
+        # print("\n IN CHANGE FOR RESULTS \n")
+        # print(object)
+        temp_object = copy.deepcopy(object)
+
+        temp_object.path = Path(os.path.join(temp_object.path, result_name))
+        if self.inputs[4] != True:
+            temp_object.path = str(temp_object.path)
+        temp_object.folder = result_name
+        # print(temp_object)
+        # print("\n LEAVING CHANGE FO RESULTS\n")
+        return temp_object
+
 
     # Search Functions
     def search_folder(self) -> list:
@@ -166,8 +178,7 @@ class FileSearcher():
 
         :return: results: list, Containing NexusFolderPathObjects
         """
-        self.folders = os.scandir(
-            f'{settings.ROOT_DIR}/')  # Root Directory Scan
+        self.folders = os.scandir(f'{settings.ROOT_DIR}/')  # Root Directory Scan
         self.folders = self.convert_scan(self.folders, 'folders') # Folder Extraction
         # Checking Parent Exceptions
         self.check_parents(self.folders)
@@ -175,19 +186,32 @@ class FileSearcher():
             try:
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
-                    rectories = self.convert_scan(subdirectories, 'folders')
+                    something = NexusFolderPathObject(path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects', file=None, ext=None, folder='Programming_Projects')
+                    subdirectories = self.convert_scan(subdirectories, 'folders')
                     for sub_directory in subdirectories:
+                        # print("SUBDIRS:", sub_directory)
                         sterilized_search = self.sterilize(sub_directory)
+                        # if sub_directory == "Automation":
+                            # print(sterilized_search)
                         if self.check_with_result(self.inputs[0], sterilized_search):
+                            # print("MATCH FOUND")
+                            # print("INIT PARENT", parent_dir)
                             # Result Formatting Function
+                            # if sub_directory == 'Automation_Dev' or parent_dir == 'Automation_Dev':
+                            #     print("YAY")
+                            #     print(sub_directory)
+                            #     print(parent_dir)
+                            # print("CURRENT PARENT", parent_dir)
                             each_folder_changed = self.change_for_results(parent_dir, sub_directory)
+
+                            # print("FOLDER CHANGED:", each_folder_changed)
                             self.results.append(each_folder_changed)
-                        self.sub_folders.append(self.DataMaker.make_folder_path(
-                            f'{parent_dir.path}/{sub_directory}', file_path=self.inputs[3]))
+                        self.sub_folders.append(self.DataMaker.make_folder_path(f'{parent_dir.path}/{sub_directory}', file_path=self.inputs[3]))
                 self.folders = self.sub_folders  # Setting up for next iteration
                 self.sub_folders = []  # Resetting the Sub folders list for easy transition
             except Exception as e:
-                #         pass
+                # print(e)
+                #### Place for investigation in case of folder not found ####
                 self.control = True
         return self.results
     
@@ -200,12 +224,11 @@ class FileSearcher():
         """
         item_names = []
         item_objects = []
-        target = self.inputs[1]
         paths = [object.path for object in self.results]
         for path in paths:
             items = self.convert_scan(list(os.scandir(path)), 'all')
             for item in items:
-                if target in self.sterilize(item):
+                if self.check_with_result(self.inputs[1], item):
                     item_names.append(item)
                     item_objects.append(self.DataMaker.make_folder_path(
                         f'{path}/{item}', file_path=self.inputs[3]))
@@ -214,7 +237,7 @@ class FileSearcher():
     def all(self, mode='files') -> tuple:
         """
         All items in a given path are extracted
-
+        
         :return: item_names: list, Containing strings of names of all items
         :return: item_objects: list, Containing NexusFolderPathObjects of each given item in item_names
         """
@@ -234,6 +257,7 @@ class FileSearcher():
     # Search Controller
     def search(self):
         results = self.search_folder()
+        print("RESULTS ARRIVED")
         if self.inputs[2] == 'folder':
             if self.record_time == True:
                 final_time = time.time() - self.start
@@ -253,20 +277,26 @@ class FileSearcher():
 
 
 if __name__ == '__main__':
-    folder, target = get_shell_input(1, argv, exceptions=[''])
-    if target == '':
+    folder, target, flag = get_shell_input(1, argv, exceptions=['', '-n'])
+    if flag == '-a' or target == '-a':
+        absolute_search = True
+    else:
+        absolute_search = False
+    if target == '' or target == '-a':
         mode = 'folder'
     else:
         mode = ''
     if mode == '':
-        search_instance = FileSearcher(folder, target, record_time=True)
+        print("HFJDL:")
+        search_instance = FileSearcher(folder, target, record_time=True, absolute=absolute_search)
         files, objects, final_time = search_instance.search()
         print("FILES:", files, '\n')
 
         print('OBJECTS:', objects, '\n')
         print("TIME:", final_time)
     else:
-        search_instance = FileSearcher(folder, mode=mode, record_time=True)
+        search_instance = FileSearcher(folder, mode=mode, record_time=True, absolute=absolute_search)
         folders, final_time = search_instance.search()
         print("FOLDER OBJECT:", folders)
         print("TIME:", final_time)
+        

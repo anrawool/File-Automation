@@ -1,11 +1,10 @@
 import os
 import sys
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
+import __meta
 from github import Github
 from search import *
 import json
-from info import Github_Token
+from PvtInfo.info import Github_Token
 from settings import *
 
 

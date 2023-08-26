@@ -1,7 +1,6 @@
 import os
 import sys
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
+import __meta
 from search import *
 from sys import argv
 from settings import get_shell_input

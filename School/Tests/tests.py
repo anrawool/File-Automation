@@ -4,7 +4,7 @@ import sys
 path = os.path.join(os.path.abspath('../../'))
 sys.path.append(path)
 from settings import *
-from Managers.database_manager import DBManager
+from Controllers.database_manager import DBManager
 import datetime as dt
 
 def create_new_test(conn, cur, subject, date, type='CR'):
@@ -56,8 +56,7 @@ if __name__ == '__main__':
     date  = f"{day} {month}, {year}"
     converted_date = dt.datetime.strptime(date, '%d %B, %Y')
     final_date = dt.datetime.strftime(converted_date, '%Y-%m-%d')
-
-    path = '/home/nexus/Documents/Nexus/School/Tests/test.sqlite'
+    path = '/home/sarthak/Documents/Automation/School/Tests/test.sqlite'
     if not os.path.exists(path):
         DBM = DBManager(path)
         conn, cur = DBM.get_connection

@@ -1,12 +1,10 @@
-import os
-import sys
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
+import __meta
+import os, sys
 import json
 from github import Github
 import shutil
 from settings import ROOT_DIR
-from info import Github_Token
+from PvtInfo.info import Github_Token
 
 sure = input("Are you sure? [Y/n]: ")
 if sure != "Y":

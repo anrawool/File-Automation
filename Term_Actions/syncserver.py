@@ -1,8 +1,7 @@
 import os
 import sys
-path = os.path.join(os.path.abspath('../'))
-sys.path.append(path)
-from server_conn import *
+import __meta
+from Controllers.server_conn import *
 
 connector = SSH_Connection('sarthak')
 commands = ['cd Public/Automation', 'git switch Nexus', 'git pull Nexus', 'systemctl restart nginx gunicorn']

@@ -1,3 +1,4 @@
+import __meta
 import sqlite3
 
 class DBManager:
