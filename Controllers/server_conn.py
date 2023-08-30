@@ -1,7 +1,7 @@
 import __meta
 import paramiko
 from Controllers.Password_Manager.password import PasswordManager
-from encrypter import *
+from Controllers.encrypter import *
 from getpass import getpass
 class SSH_Connection:
     def __init__(self, username, ip='auto', password='auto') -> None:

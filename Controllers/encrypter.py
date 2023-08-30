@@ -1,7 +1,6 @@
 import random
 import __meta
 import string
-import time
 import json
 import os
 import Controllers.data as data
@@ -69,7 +68,6 @@ class AEA:
         return key, original_copy
 
     def get_max_characters(self, key):
-        char_len = []
         max_cur_length = 0
         for item in key:
             length_of_character = len(item)
@@ -185,7 +183,6 @@ class AEA:
 
 if __name__ == '__main__':
     encrypter = AEA(256)
-    encrypter.save_key()
     text = input("Enter a message to encrypt: ")
     encryption = encrypter.encrypt_text(text)
     with open('test_file.txt', 'w+') as write_file:
