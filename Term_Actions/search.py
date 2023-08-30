@@ -158,16 +158,12 @@ class FileSearcher():
 
         :return: object: NexusFolderPathObject
         """
-        # print("\n IN CHANGE FOR RESULTS \n")
-        # print(object)
         temp_object = copy.deepcopy(object)
 
         temp_object.path = Path(os.path.join(temp_object.path, result_name))
         if self.inputs[4] != True:
             temp_object.path = str(temp_object.path)
         temp_object.folder = result_name
-        # print(temp_object)
-        # print("\n LEAVING CHANGE FO RESULTS\n")
         return temp_object
 
 
@@ -186,25 +182,11 @@ class FileSearcher():
             try:
                 for parent_dir in self.folders:
                     subdirectories = os.scandir(f'{parent_dir.path}/')
-                    something = NexusFolderPathObject(path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects', file=None, ext=None, folder='Programming_Projects')
                     subdirectories = self.convert_scan(subdirectories, 'folders')
                     for sub_directory in subdirectories:
-                        # print("SUBDIRS:", sub_directory)
                         sterilized_search = self.sterilize(sub_directory)
-                        # if sub_directory == "Automation":
-                            # print(sterilized_search)
                         if self.check_with_result(self.inputs[0], sterilized_search):
-                            # print("MATCH FOUND")
-                            # print("INIT PARENT", parent_dir)
-                            # Result Formatting Function
-                            # if sub_directory == 'Automation_Dev' or parent_dir == 'Automation_Dev':
-                            #     print("YAY")
-                            #     print(sub_directory)
-                            #     print(parent_dir)
-                            # print("CURRENT PARENT", parent_dir)
                             each_folder_changed = self.change_for_results(parent_dir, sub_directory)
-
-                            # print("FOLDER CHANGED:", each_folder_changed)
                             self.results.append(each_folder_changed)
                         self.sub_folders.append(self.DataMaker.make_folder_path(f'{parent_dir.path}/{sub_directory}', file_path=self.inputs[3]))
                 self.folders = self.sub_folders  # Setting up for next iteration
@@ -257,7 +239,6 @@ class FileSearcher():
     # Search Controller
     def search(self):
         results = self.search_folder()
-        print("RESULTS ARRIVED")
         if self.inputs[2] == 'folder':
             if self.record_time == True:
                 final_time = time.time() - self.start
@@ -287,11 +268,9 @@ if __name__ == '__main__':
     else:
         mode = ''
     if mode == '':
-        print("HFJDL:")
         search_instance = FileSearcher(folder, target, record_time=True, absolute=absolute_search)
         files, objects, final_time = search_instance.search()
         print("FILES:", files, '\n')
-
         print('OBJECTS:', objects, '\n')
         print("TIME:", final_time)
     else:

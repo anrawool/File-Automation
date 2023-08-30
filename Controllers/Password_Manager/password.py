@@ -3,7 +3,7 @@ import sys
 import __meta
 path = os.path.join(os.path.abspath(__meta.absolute_current_path + '../../'))
 sys.path.append(path)
-import encrypter
+import Controllers.encrypter as encrypter
 from sqlite3 import OperationalError
 from Controllers.database_manager import DBManager
 from Controllers.data import *
