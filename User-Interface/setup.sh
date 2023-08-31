@@ -32,7 +32,7 @@ echo "Going ahead with setup"
 cd static/fonts/
 # Currently in Static/Fonts Folder
 mkdir Poppins
-cd Poppings
+cd Poppins
 # Currently in Static/Fonts/Poppins Folder
 wget -O poppins.zip "https://fonts.google.com/download?family=Poppins"
 unzip poppins.zip
