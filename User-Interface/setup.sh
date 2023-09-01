@@ -27,6 +27,7 @@ mkdir media/profile_pics
 mkdir media/uploads
 pip install virtualenv
 virtualenv ../Server
+chmod +x ../Server/bin/activate
 source ../Server/bin/activate
 pip install django gunicorn
 python3 manage.py makemigrations
