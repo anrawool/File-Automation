@@ -1,6 +1,5 @@
 #!/bin/sh
 
-pip3 install -r ../requirements.txt
 # Currently in User-Interface
 cd ../User-Interface/
 chmod +x setup.sh

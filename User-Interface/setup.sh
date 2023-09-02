@@ -25,18 +25,25 @@ mkdir databases
 mkdir media
 mkdir media/profile_pics
 mkdir media/uploads
-pip install virtualenv
+pip3 install virtualenv
 virtualenv ../Server
 chmod +x ../Server/bin/activate
-source ../Server/bin/activate
-pip install django gunicorn
+if source ../Server/bin/activate; then
+    echo "Environment enabled"
+else
+    echo "Enter command:"
+    read user_command
+    eval "$user_command"
+fi
+pip3 install django gunicorn
+pip3 install -r ../requirements.txt
 python3 manage.py makemigrations
 python3 manage.py migrate
 
 # Check if the font directory exists
 if [ ! -d "static/fonts" ]; then
     # If the directory doesn't exist, create it
-    mkdir -p "$font_directory"
+    mkdir static/fonts 
     echo "Font directory created."
 else
     echo "Font directory already exists."
