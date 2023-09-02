@@ -1,6 +1,5 @@
 #!/bin/sh
 
-pip3 install -r ../requirements.txt
 # Currently in User-Interface
 cd ../User-Interface/
 chmod +x setup.sh
@@ -9,7 +8,8 @@ chmod +x setup.sh
 cd ../Setup/
 deactivate
 echo "Opening gunicorn.socket file"
-sudo vim /etc/systemd/system/gunicorn.socket
+sudo touch /etc/systemd/system/gunicorn.socket
+sudo touch /etc/systemd/system/gunicorn.service
 
 sudo cat <<EOF > /etc/systemd/system/gunicorn.socket
 [Unit]
@@ -23,7 +23,7 @@ sudo cat <<EOF > /etc/systemd/system/gunicorn.service
 User=sarthak
 Group=www-data
 WorkingDirectory=/home/sarthak/Public/Automation/User-Interface
-ExecStart=/home/sarthak/Public/Automation/User-Interface/Server/bin/gunicorn \
+ExecStart=/home/sarthak/Public/Automation/Server/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
