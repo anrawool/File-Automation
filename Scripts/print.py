@@ -40,13 +40,14 @@ class Printer:
     def created(self, event):
         datamaker = DataMaker()
         path_obj = datamaker.make_path(path=event.src_path, file_path=False)
-        # Chekcing if Printer is working
+        # Checking if Printer is working
         try:
             final_file = self.file_name_change(path_obj)
             # Making Path Compatible For Printing
             os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Print/")
             if self.compatible_file == True:
                 os.system(f"lpr {final_file}")
+                print("Added to Print Queue")
                 # print("Added to Printing Queue")
             else:
                 # print("This File Is Incompatible")

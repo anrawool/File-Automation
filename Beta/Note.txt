@@ -1,0 +1,5 @@
+Any file present in this folder is likely to have some bugs or incomplete code. This file is strictly for editing purposes only and the code is not ready for production.
+
+Any file that is to be used from this folder must be checked to ensure proper use. Please note that all files in the current folder may not have mentioned comments about bugs or etc...
+
+Proceed only if proper code checking is to be done.

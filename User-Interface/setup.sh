@@ -12,7 +12,7 @@ sudo ufw allow 22
 sudo ufw allow 8022
 sudo ufw status
 sudo apt install python3-pip python3-dev nginx
-sudo pip3 install virtualenv
+sudo pip install virtualenv
 sudo mv File-Automation Automation 
 echo "File-Automation Folder Renamed"
 cd Automation
@@ -25,7 +25,7 @@ mkdir databases
 mkdir media
 mkdir media/profile_pics
 mkdir media/uploads
-pip3 install virtualenv
+pip install virtualenv
 virtualenv ../Server
 chmod +x ../Server/bin/activate
 if source ../Server/bin/activate; then
@@ -35,10 +35,10 @@ else
     read user_command
     eval "$user_command"
 fi
-pip3 install django gunicorn
-pip3 install -r ../requirements.txt
-python3 manage.py makemigrations
-python3 manage.py migrate
+pip install django gunicorn
+pip install -r ../requirements.txt
+python manage.py makemigrations
+python manage.py migrate
 
 # Check if the font directory exists
 if [ ! -d "static/fonts" ]; then

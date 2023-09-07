@@ -1,5 +1,6 @@
 import __meta
 import os
+from datetime import datetime
 from dataclasses import dataclass
 
 @dataclass
@@ -18,6 +19,16 @@ class NexusFolderPathObject(NexusPathObject):
     @property
     def list_return(self):
         return self.path, self.file, self.ext, self.folder
+
+@dataclass
+class NexusEmailObject():
+    sender_address : str
+    receiver_address : str
+    date : datetime 
+    subject : str
+    body: str
+    has_attachment : bool
+
 
 class DataMaker:
     def make_path(self, path, file='auto', ext='auto', file_path=True):

@@ -6,8 +6,11 @@ info.py
 train.csv
 test_file.txt
 *.json
-*.sqlite
+*.sqlite3
 User-Interface/media/uploads/
 User-Interface/databases/*.sqlite3
 User-interface/static/fonts/
 PvtInfo
+attachments
+databases
+keys
