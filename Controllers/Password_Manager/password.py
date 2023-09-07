@@ -1,16 +1,13 @@
-import os
-import sys
 import __meta
-path = os.path.join(os.path.abspath(__meta.absolute_current_path + '../../'))
-sys.path.append(path)
 import Controllers.encrypter as encrypter
 from sqlite3 import OperationalError
 from Controllers.database_manager import DBManager
 from Controllers.data import *
 from getpass import getpass
 
+absolute_current_path = __meta.absolute_current_path
 class PasswordManager:
-    def __init__(self, max_characters=None, db_path='./passwords.sqlite', key_path='./passwords_key.json') -> None:
+    def __init__(self, max_characters=None, db_path=f'{absolute_current_path}../../databases/passwords.sqlite', key_path=f'{absolute_current_path}../../keys/passwords_key.json') -> None:
         self.DataMaker = DataMaker()
         db_path, db_name, key_path, key_name = self.set_paths(db_path, key_path)
         self.DBM = DBManager(db_path=f'{db_path}{db_name}')

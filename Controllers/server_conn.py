@@ -3,10 +3,13 @@ import paramiko
 from Controllers.Password_Manager.password import PasswordManager
 from Controllers.encrypter import *
 from getpass import getpass
+
+absolute_current_path = __meta.absolute_current_path
 class SSH_Connection:
-    def __init__(self, username, ip='auto', password='auto') -> None:
-        self.manager =  PasswordManager(db_path = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords.sqlite', key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords_key.json')
-        self.AEA = AEA(key_path='/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation_Dev/Controllers/Password_Manager/passwords_key.json')
+    def __init__(self, username, ip='auto', password='auto', port=22) -> None:
+        self.manager =  PasswordManager(db_path = f'{absolute_current_path}databases/passwords.sqlite', key_path=f'{absolute_current_path}keys/passwords_key.json')
+        self.AEA = AEA(key_path=f'{absolute_current_path}../keys/passwords_key.json')
+        self.port = port
         if ip == 'auto':
             ip = '192.168.1.58'
         if password == 'auto':
@@ -21,7 +24,10 @@ class SSH_Connection:
         self.connection = paramiko.SSHClient()
         self.connection.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.connection.get_host_keys()
-        self.connection.connect(ip, username=username, password=password)
+        try:
+            self.connection.connect(ip, username=username, password=password, port=self.port)
+        except:
+            print("Something went wrong... Try to check the port configuration on your device")
     
     def exec_command(self, command):
         results = []
@@ -30,7 +36,12 @@ class SSH_Connection:
             results.append(line.strip('\n'))
         print("The command was executed flawlessly!!!")
         return stdin, results, stderr
-    
+
+    def transfer_object(self, local_path, remote_path):
+        sftp = self.connection.open_sftp()
+        sftp.put(local_path, remote_path)
+        sftp.close()
+
     def close_channel(self):
         self.connection.close()
             
