@@ -3,3 +3,4 @@ watchdog==2.2.1
 django==4.2.3
 Pillow==9.5.0
 paramiko
+pytube
