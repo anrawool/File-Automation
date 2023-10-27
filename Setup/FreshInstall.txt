@@ -1,17 +1,5 @@
-The following things are to be setup before usage:
-- Main Folder
-1. __meta.py
-2. keys - folder
-3. databases - folder
-4. PvtInfo - folder
-5. Server - virtualenv
-- User-Interface Folder
-1. databases - folder
-2. media - folder
-3. media/profile_pics - folder
-4. media/uploads - folder
-- PvtInfo Folder
-1. Gmail backup codes
-2. Github Token
-3. Google Token
-4. info.py
+Make a virtualenv called Server in the main directory (File-Automation / Automation)
+Activate that virtualenv and run the following commands:
+1. cd setup
+2. python3 setup.py
+3. Just follow the steps
