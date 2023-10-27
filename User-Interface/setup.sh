@@ -12,7 +12,6 @@ sudo ufw allow 22
 sudo ufw allow 8022
 sudo ufw status
 sudo apt install python3-pip python3-dev nginx
-sudo pip install virtualenv
 sudo mv File-Automation Automation 
 echo "File-Automation Folder Renamed"
 cd Automation

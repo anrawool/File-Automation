@@ -17,7 +17,7 @@ path = os.path.join(os.path.abspath(absolute_current_path + '../'))
 sys.path.append(path)
 
     """
-    with open(path + '/' + '__meta.py', 'w+') as file:
+    with open(path + '__meta.py', 'w+') as file:
         file.write(__meta_code)
 
 exit()

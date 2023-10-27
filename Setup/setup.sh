@@ -26,10 +26,10 @@ elif [[ $confirmation =~ ^[Nn]$ ]]; then
     echo "You chose not to continue."
     exit
 else
-    echo "Invalid choice. Please enter 'y' for Yes or 'n' for No."
+    echo "Invalid choice. Please enter 'Y' for Yes or 'n' for No."
 fi
 
-read -p "Please enter your login username which is used in the server: " username
+# read -p "Please enter your login username which is used in the server: " username
 # Currently in User-Interface
 
 
@@ -55,56 +55,5 @@ chmod +x setup.sh
 # Currently in Setup
 cd ../Setup/
 deactivate
-echo "Opening gunicorn.socket file"
-sudo touch /etc/systemd/system/gunicorn.socket
-sudo touch /etc/systemd/system/gunicorn.service
 
-sudo cat <<EOF > /etc/systemd/system/gunicorn.socket
-[Unit]
-Description=gunicorn daemon
-Requires=gunicorn.socket
-After=network.target
-EOF
-
-sudo cat <<EOF > /etc/systemd/system/gunicorn.service
-[Service]
-User=$username
-Group=www-data
-WorkingDirectory=$current_directory
-
-
-
-ExecStart=$main_directory/Server/bin/gunicorn \
-          --access-logfile - \
-          --workers 3 \
-          --bind unix:/run/gunicorn.sock \
-          $assistname.wsgi:application
-
-Restart=always
-RestartSec=3
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo systemctl start gunicorn.socket
-sudo systemctl enable gunicorn.socket
-sudo cat <<EOF > /etc/nginx/sites-available/NexusUI
-server {
-    listen $port;
-    server_name ${assist}home.ai;
-
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-        root $current_directory;
-    }
-
-    location / {
-        include proxy_params;
-        proxy_pass http://unix:/run/gunicorn.sock;
-    }
-}
-EOF
-
-sudo ln -s /etc/nginx/sites-available/NexusUI /etc/nginx/sites-enabled/
-sudo systemctl restart nginx
-sudo systemctl restart gunicorn
+python3 server_file.py
