@@ -1,34 +1,40 @@
-import pyaudio
+import subprocess
+import sounddevice as sd
 import numpy as np
+import pandas as pd
+import json
 
-# Initialize PyAudio and audio stream
-p = pyaudio.PyAudio()
-stream = p.open(
-    format=pyaudio.paInt16,
-    channels=1,
-    rate=44100,
-    input=True,
-    frames_per_buffer=1024
-)
+input_device_id = 2
+duration = 0.5  # Duration of each audio sample in seconds
+samplerate = 48000  # Sample rate (samples per second)
+current_amplitude = []
+datacollected = []
+current_data_input = []
 
-try:
-    while True:
-        # Read audio data from the stream
-        data = stream.read(1024)
-        # Convert the binary audio data to a NumPy array
-        audio_signal = np.frombuffer(data, dtype=np.int16)
-        # Calculate the root mean square (RMS) of the audio signal
-        rms = np.sqrt(np.mean(np.square(audio_signal)))
-        # Convert RMS to decibels (dB)
-        db = 20 * np.log10(rms)
+def callback(indata, frames, time, status):
+    # Calculate the average amplitude value
+    average_amplitude = np.mean(np.abs(indata))
+    # print(f"Average Amplitude Value: {average_amplitude:.6f}")
+    if len(current_amplitude) >= 4:
+        myseries = pd.Series(current_amplitude)
+        datacollected.append(myseries)
+        del current_amplitude[0]
+    current_amplitude.append(average_amplitude)
+    print(current_amplitude)
 
-        print(f"Decibel level: {db:.2f} dB")
 
-except KeyboardInterrupt:
-    pass
 
-# Close the audio stream and terminate PyAudio
-stream.stop_stream()
-stream.close()
-p.terminate()
-
+# Start streaming audio input
+with sd.InputStream(samplerate=samplerate, channels=1, callback=callback, blocksize=int(samplerate * duration)):
+    try:
+        print("Average Amplitude Values (Press Ctrl+C to stop)")
+        while True:
+            output = subprocess.check_output(["osascript", "-e", "output volume of (get volume settings)"])
+            current_volume = int(output.strip())
+            print(f"Current Volume Level: {current_volume}")
+            
+            pass
+    except KeyboardInterrupt:
+        datacollected = pd.DataFrame(datacollected)
+        datacollected.to_csv('./test_csv.csv')
+        print("\nStopped by user")

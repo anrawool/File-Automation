@@ -64,7 +64,7 @@ class FileSearcher():
         if mode != 'folders':
             temp_files = [file.name for file in item_list if '.' in file.name and not file.name.startswith('.')]
             return temp_files
-        self.ignore_folders = ['Public', 'opt', 'Library', 'Application Data', 'Local Settings', 'Cookies', 'Pictures', 'Music', 'Sites']
+        self.ignore_folders = ['Public', 'opt', 'Library', 'Application Data', 'Local Settings', 'Cookies', 'Pictures', 'Music', 'Sites', 'anaconda3', 'bin']
         # List comprehension for getting all folders not in the ignore list
         temp_folds = [folder.name for folder in item_list if '.' not in folder.name and folder.name not in self.ignore_folders]
         return temp_folds

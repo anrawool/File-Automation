@@ -25,16 +25,6 @@ mkdir databases
 mkdir media
 mkdir media/profile_pics
 mkdir media/uploads
-pip install virtualenv
-virtualenv ../Server
-chmod +x ../Server/bin/activate
-if source ../Server/bin/activate; then
-    echo "Environment enabled"
-else
-    echo "Enter command:"
-    read user_command
-    eval "$user_command"
-fi
 pip install django gunicorn
 pip install -r ../requirements.txt
 python manage.py makemigrations

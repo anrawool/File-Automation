@@ -10,7 +10,7 @@ KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
     # Initialization Function
-    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False, save_key: bool = True) -> None:
+    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False, file_path = None ,save_key: bool = True) -> None:
         """
         Encryption Algorithm Code Snippet:
 
@@ -112,8 +112,10 @@ class AEA:
     
     # Text Encrypters
 
-    def encrypt_text(self, text, characters=ALL_CHARACTERS, encryption_parent=False):
+    def encrypt_text(self, text, file_path=None, characters=ALL_CHARACTERS, encryption_parent=False):
         cipher = ''
+        if file_path == None and self.write_to_file:
+            raise Exception("You need to mention a file path to save to!!!")
         for index, character in enumerate(text):
             character_encryption = self.final_key[characters.index(character)]
             cipher += character_encryption
