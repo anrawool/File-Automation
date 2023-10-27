@@ -55,17 +55,23 @@ server {
 }
 """
 
-with open("/etc/systemd/system/gunicorn.socket", 'w+') as file:
+with open("./gunicorn.socket", 'w+') as file:
     file.write(Gunicorn_Socket)
 
-with open("/etc/systemd/system/gunicorn.service", 'w+') as file:
+os.system("sudo mv ./gunicorn.socket /etc/systemd/system/gunicorn.socket")
+
+with open("./gunicorn.service", 'w+') as file:
     file.write(Gunicorn_Service)
+
+os.system("sudo mv ./gunicorn.service /etc/systemd/system/gunicorn.service")
 
 os.system("sudo systemctl start gunicorn.socket")
 os.system("sudo systemctl enable gunicorn.socket")
 
-with open(f"/etc/nginx/sites-available/{assist}UI", "w+") as file:
+with open(f"./{assist}UI", "w+") as file:
     file.write(Nginx_Service)
+
+os.system(f"sudo mv ./{assist}UI /etc/nginx/sites-available/{assist}UI")
 
 os.system(f"sudo ln -s /etc/nginx/sites-available/{assist}UI /etc/nginx/sites-enabled/")
 os.system("sudo systemctl restart nginx")
