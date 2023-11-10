@@ -38,10 +38,8 @@
 #         datacollected = pd.DataFrame(datacollected)
 #         datacollected.to_csv('./test_csv.csv')
 #         print("\nStopped by user")
-from Controllers.encrypter import AEA
+# from Controllers import server_conn
 
-decoder = AEA(key_path='./PvtInfo/important_key.json')
-github = decoder.decrypt_file('./PvtInfo/github_token.txt')
-google= decoder.decrypt_file('./PvtInfo/google_token.txt')
-print(github)
-print(google)
+# connector = server_conn.SSH_Connection('sarthak', ip='192.168.1.64')
+# connector.transfer_object('./downloads/audio/Attention.mp3', '/home/sarthak/Downloads/Music/Attention.mp3')
+# connector.close_channel()

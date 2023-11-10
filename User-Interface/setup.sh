@@ -10,6 +10,7 @@ sudo ufw status
 sudo ufw enable
 sudo ufw allow 22
 sudo ufw allow 8022
+sudo ufw allow 53
 sudo ufw status
 sudo apt install python3-pip python3-dev nginx
 sudo mv File-Automation Automation 
@@ -26,6 +27,7 @@ mkdir media/profile_pics
 mkdir media/uploads
 pip install django gunicorn
 pip install -r ../requirements.txt
+python -m pip install Pillow
 python manage.py makemigrations
 python manage.py migrate
 
