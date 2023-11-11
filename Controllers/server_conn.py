@@ -11,7 +11,7 @@ class SSH_Connection:
         self.AEA = AEA(key_path=f'{absolute_current_path}../keys/passwords_key.json')
         self.port = port
         if ip == 'auto':
-            ip = '192.168.1.58'
+            ip = '192.168.1.64'
         if password == 'auto':
             results = self.manager.retrieve_password(ip)
             if len(results) == 0:
@@ -46,6 +46,6 @@ class SSH_Connection:
         self.connection.close()
             
 
-# connector = SSH_Connection('sarthak', ip='192.168.1.58')
+# connector = SSH_Connection('sarthak', ip='192.168.1.64')
 # final = connector.exec_command("cd Documents/Automation/ && git pull")
 # connector.close_channel()

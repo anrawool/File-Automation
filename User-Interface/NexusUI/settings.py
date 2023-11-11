@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*nuy^)^t7mm^yl2as!1jy+g-#+te70#=$v&73q#e@9&$8b^%m9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.58', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.64', '127.0.0.1']
 
 
 # Application definition
@@ -119,11 +119,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = str(BASE_DIR) + '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATIC_URL = '/static/'
 
+# The absolute filesystem path to the directory that will hold static files.
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024 

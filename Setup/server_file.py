@@ -12,30 +12,37 @@ if assist == '':
 
 Gunicorn_Socket = """
 [Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+"""
+
+Gunicorn_Service = f"""
+[Unit]
 Description=gunicorn daemon
 Requires=gunicorn.socket
 After=network.target
 
-"""
-
-Gunicorn_Service = f"""
 [Service]
 User={username}
 Group=www-data
 WorkingDirectory={main_directory}
 
-
-
-ExecStart={main_directory}/Server/bin/gunicorn \
-          --access-logfile - \
-          --workers 3 \
-          --bind unix:/run/gunicorn.sock \
-          {assist}.wsgi:application
+ExecStart={main_directory}/Server/bin/gunicorn \\
+          --access-logfile - \\
+          --workers 3 \\
+          --bind unix:/run/gunicorn.sock \\
+          {assist}UI.wsgi:application
 
 Restart=always
 RestartSec=3
 [Install]
 WantedBy=multi-user.target
+
 """
 
 Nginx_Service = """

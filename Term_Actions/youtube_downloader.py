@@ -9,6 +9,7 @@ url, mode, save_path = get_shell_input(1, argv, exceptions=['-v', None])
 
 class YoutubeDownloader:
     def __init__(self, url, mode, save_path):
+        self.mode = mode
         self.video_url = url
         self.save_path = save_path
         if ROOT_DIR not in self.save_path:
@@ -17,7 +18,6 @@ class YoutubeDownloader:
             self.yt = YouTube(self.video_url)
         except Exception:
             raise Exception("This link does not exist on YouTube")
-        self.mode = mode
         try:
             if self.mode == '-v':
                 stream = self.download_video()
@@ -30,7 +30,7 @@ class YoutubeDownloader:
         except Exception as e:
             print(e)
             raise Exception("The inputs given are invalid")
-        stream.download(output_path=self.save_path)
+        stream.download(output_path=self.save_path, filename=f'{self.yt.title}.mp3')
 
     def download_video(self, audio=True):
         if audio:
