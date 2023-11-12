@@ -1,31 +1,27 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 
-# Replace 'url' with the URL of the webpage you want to scrape
-url = 'https://fiitjee-eschool.com/timetable.html'
-response = requests.get(url)
+# Assuming you have a WebDriver instance (e.g., ChromeDriver)
+driver = webdriver.Firefox()
+
+# Navigate to the webpage with the dropdown
+driver.get('https://fiitjee-eschool.com/timetable.html')
+
+# Locate the dropdown element by its HTML attribute (e.g., 'id' or 'name')
+dropdown_element = driver.find_element_by_class_name('form_control')
+
+# Create a Select object
+dropdown = Select(dropdown_element)
 
 
+# or Select by value attribute
+dropdown.select_by_value('FeSCF327A1R')
 
-if response.status_code == 200:
-    soup = BeautifulSoup(response.text, 'html.parser')
-    dropdown = soup.find('select', {'class': 'form-control'})
-    selected_option_value = 'FeSCF327A1R'
-    if dropdown:
-        option_to_select = dropdown.find('option', {'value': selected_option_value})
+# or Select by index (0-based)
+# dropdown.select_by_index(index)
 
-        if option_to_select:
-            option_to_select['selected'] = True
+# Perform other actions or submit the form if needed
+# ...
 
-    table = soup.find('table', class_='table')
-    if table:
-        # Process the table data
-        rows = table.find_all('tr')
-        print(rows)
-        for row in rows:
-            columns = row.find_all('td')
-            print(columns)
-            for column in columns:
-                print(column.text)
-else:
-    print(f"Failed to fetch the webpage. Status code: {response.status_code}")
+# Close the browser window
+driver.quit()
