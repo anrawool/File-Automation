@@ -19,7 +19,11 @@ class RFID_Action:
             _ = connection.exec_command("open -a iTerm.app")
 
             connection.close_channel()
-            
+        elif self.id == 703856054596:
+            print("Sure Sir!!")
+            _ = connection.exec_command("open -a Firefox")
+            _ = connection.exec_command("open -a \"Visual Studio Code.app\"")
+            _ = connection.exec_command("open -a iTerm.app")
 
 action = RFID_Action()
 action.home_action_selector()
