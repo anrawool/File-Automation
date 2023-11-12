@@ -1,5 +1,6 @@
 # File for experimentation
 import __meta
+from Middleware import path_manager
 from pytube import YouTube
 from settings import get_shell_input, ROOT_DIR
 from sys import argv
@@ -45,11 +46,11 @@ class YoutubeDownloader:
 
 if __name__ == "__main__":
     if save_path == None and mode == '-v':
-        save_path =f'{__meta.absolute_current_path}../downloads/videos'
+        save_path =f'{path_manager.HOME_DIRECTORY}downloads/videos'
     elif save_path == None and mode == '-a':
-        save_path =f'{__meta.absolute_current_path}../downloads/audio'
+        save_path =f'{path_manager.HOME_DIRECTORY}downloads/audio'
     elif save_path == None and mode == '-m':
-        save_path =f'{__meta.absolute_current_path}../downloads/videos/only_video'
+        save_path =f'{path_manager.HOME_DIRECTORY}downloads/videos/only_video'
     else:
-        save_path =f'{__meta.absolute_current_path}../downloads/videos'
+        save_path =f'{path_manager.HOME_DIRECTORY}downloads/videos'
     downloader = YoutubeDownloader(url, mode, save_path)
