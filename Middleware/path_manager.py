@@ -1,1 +1,1 @@
-HOME_DIRECTORY = '/Users/abhijitrawool/Documents/Sarthak/Programming_Projects/Automation/'
+HOME_DIRECTORY = '/home/sarthak/Public/Automation/'
