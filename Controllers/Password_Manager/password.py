@@ -6,7 +6,6 @@ from Controllers.database_manager import DBManager
 from Controllers.data import *
 from getpass import getpass
 
-absolute_current_path = __meta.absolute_current_path
 
 class PasswordManager:
     def __init__(self, max_characters=None, db_path=f'{path_manager.HOME_DIRECTORY}databases/passwords.sqlite', key_path=f'{path_manager.HOME_DIRECTORY}keys/passwords_key.json') -> None:

@@ -1,14 +1,14 @@
 import __meta
+from Middleware import path_manager
 import paramiko
 from Controllers.Password_Manager.password import PasswordManager
 from Controllers.encrypter import *
 from getpass import getpass
 
-absolute_current_path = __meta.absolute_current_path
 class SSH_Connection:
     def __init__(self, username, ip='auto', password='auto', port=22) -> None:
-        self.manager =  PasswordManager(db_path = f'{absolute_current_path}databases/passwords.sqlite', key_path=f'{absolute_current_path}keys/passwords_key.json')
-        self.AEA = AEA(key_path=f'{absolute_current_path}../keys/passwords_key.json')
+        self.manager =  PasswordManager(db_path = f'{path_manager.HOME_DIRECTORY}databases/passwords.sqlite', key_path=f'{path_manager.HOME_DIRECTORY}keys/passwords_key.json')
+        self.AEA = AEA(key_path=f'{path_manager.HOME_DIRECTORY}keys/passwords_key.json')
         self.port = port
         if ip == 'auto':
             ip = '192.168.1.64'
