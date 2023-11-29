@@ -122,7 +122,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # The absolute filesystem path to the directory that will hold static files.
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024 
