@@ -17,3 +17,4 @@ keys
 downloads
 logs/
 User-Interface/base/migrations/
+path_manager.py
