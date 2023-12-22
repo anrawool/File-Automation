@@ -10,7 +10,7 @@ KEY_INORDER = ALL_CHARACTERS.copy()
 
 class AEA:
     # Initialization Function
-    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False, file_path = None ,save_key: bool = True) -> None:
+    def __init__(self, max_chars=None, key_path='./encrypter_key.json', write_to_file=False, save_key: bool = True) -> None:
         """
         Encryption Algorithm Code Snippet:
 
@@ -149,13 +149,14 @@ class AEA:
 
     def encrypt_file(self, file_path):
         path_object = self.DataMaker.make_path(file_path, file_path=False)
+        org_file_path = file_path
         file_path = path_object.path
         file_name = path_object.file
         extension = path_object.ext
         encryption_parent = True # Declares that the request came from a parent function and there is no need for the encrypt_text function to create a new instance due to self.write_to_file being set to true
         with open(file_path + file_name + extension, 'r') as encryption_file:
             file_data = encryption_file.read()
-            encrypted_data = self.encrypt_text(file_data, encryption_parent=encryption_parent)
+            encrypted_data = self.encrypt_text(file_data, encryption_parent=encryption_parent, file_path=org_file_path)
             if self.write_to_file:
                 with open(file_path + file_name + '_encrypted' + extension, 'w+') as encrypted_file:
                     encrypted_file.write(encrypted_data)
