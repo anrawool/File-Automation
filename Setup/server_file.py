@@ -1,14 +1,13 @@
-
 import os
 
 main_directory = os.path.abspath("../")
 username = input("Please enter your login username which is used in the server: ")
 assist = input("What would you like to name your home assistant? [Default is Nexus] ")
 port = input("What is the port at which the server will run? [Default is 8022]")
-if port == '':
+if port == "":
     port = 8022
-if assist == '':
-    assist = 'Nexus'
+if assist == "":
+    assist = "Nexus"
 
 Gunicorn_Socket = """
 [Unit]
@@ -45,14 +44,21 @@ WantedBy=multi-user.target
 
 """
 
-Nginx_Service = """
+Nginx_Service = (
+    """
 server {
-    listen """ + str(port) + """;
-    server_name """ + assist + """home.ai;
+    listen """
+    + str(port)
+    + """;
+    server_name """
+    + assist
+    + """home.ai;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root """ + main_directory + """;
+        root """
+    + main_directory
+    + """;
     }
 
     location / {
@@ -61,13 +67,14 @@ server {
     }
 }
 """
+)
 
-with open("./gunicorn.socket", 'w+') as file:
+with open("./gunicorn.socket", "w+") as file:
     file.write(Gunicorn_Socket)
 
 os.system("sudo mv ./gunicorn.socket /etc/systemd/system/gunicorn.socket")
 
-with open("./gunicorn.service", 'w+') as file:
+with open("./gunicorn.service", "w+") as file:
     file.write(Gunicorn_Service)
 
 os.system("sudo mv ./gunicorn.service /etc/systemd/system/gunicorn.service")

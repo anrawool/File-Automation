@@ -6,5 +6,3 @@ if final != "Y":
     exit()
 else:
     os.system("sudo shutdown -h now")
-
-

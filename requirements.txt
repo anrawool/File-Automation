@@ -31,3 +31,4 @@ urllib3==2.0.6
 virtualenv==20.24.5
 watchdog==2.2.1
 wrapt==1.15.0
+html2text

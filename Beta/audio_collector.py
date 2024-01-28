@@ -23,7 +23,6 @@
 #     print(current_amplitude)
 
 
-
 # # Start streaming audio input
 # with sd.InputStream(samplerate=samplerate, channels=1, callback=callback, blocksize=int(samplerate * duration)):
 #     try:
@@ -32,7 +31,7 @@
 #             output = subprocess.check_output(["osascript", "-e", "output volume of (get volume settings)"])
 #             current_volume = int(output.strip())
 #             print(f"Current Volume Level: {current_volume}")
-            
+
 #             pass
 #     except KeyboardInterrupt:
 #         datacollected = pd.DataFrame(datacollected)

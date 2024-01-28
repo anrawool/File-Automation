@@ -12,7 +12,7 @@ class RFID_Instance:
             return self.id, self.description
         finally:
             self.end_cycle()
-    
+
     def write_card(self, text):
         try:
             self.reader.write(text)

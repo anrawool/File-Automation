@@ -15,8 +15,7 @@ else:
 delete_obj = sys.argv[1]
 
 
-class Delete_Project():
-
+class Delete_Project:
     def __init__(self, project_delete, token):
         self.project_delete = project_delete
         self.Github_Token = token
@@ -24,28 +23,27 @@ class Delete_Project():
     def delete(self):
         try:
             os.chdir(
-                f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_delete}")
-            with open('.folder_details.json') as f:
+                f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/{self.project_delete}"
+            )
+            with open(".folder_details.json") as f:
                 data = json.load(f)
-                repo_name = data['repo_name']
-                repo_exists = data['github_repo']
-                if repo_exists == 'true':
+                repo_name = data["repo_name"]
+                repo_exists = data["github_repo"]
+                if repo_exists == "true":
                     # Login
                     github = Github(self.Github_Token)
-                    user = github.get_user('anrawool')
+                    user = github.get_user("anrawool")
                     print("Logged into Github Account")
                     authed = github.get_user()
                     print("Verification Completed")
                     repo = authed.get_repo(repo_name)
                     repo.delete()
                     print("Repository Deleted")
-                    os.chdir(
-                        f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
+                    os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
                     shutil.rmtree(f"{self.project_delete}")
                     print("Folder Deleted")
                 else:
-                    os.chdir(
-                        f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
+                    os.chdir(f"{ROOT_DIR}/Documents/Sarthak/Programming_Projects/")
                     shutil.rmtree(f"{self.project_delete}")
                     print("Folder Deleted")
         except Exception as e:

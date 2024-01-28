@@ -20,31 +20,49 @@ Github_User= '{github_id}'
 Email_Address = '{email_id}'
 """
 
-encrypterObj = encrypter.AEA(save_key=True, key_path='../PvtInfo/important_key.json', write_to_file=True)
+encrypterObj = encrypter.AEA(
+    save_key=True, key_path="../PvtInfo/important_key.json", write_to_file=True
+)
 
-encrypted_github_token = encrypterObj.encrypt_text(github_token, file_path='../PvtInfo/github_token.txt')
-encrypted_google_token = encrypterObj.encrypt_text(google_token, file_path='../PvtInfo/google_token.txt')
+encrypted_github_token = encrypterObj.encrypt_text(
+    github_token, file_path="../PvtInfo/github_token.txt"
+)
+encrypted_google_token = encrypterObj.encrypt_text(
+    google_token, file_path="../PvtInfo/google_token.txt"
+)
 
 print("Thank you very much, this may take a moment...")
 
-with open("../PvtInfo/info.py", 'w+') as file:
+with open("../PvtInfo/info.py", "w+") as file:
     file.write(info_code)
 
-confirmation_env = input("Would you like to setup a environment for latest stable version? [Y/n]: ")
-if confirmation_env.lower() == 'y':
+confirmation_env = input(
+    "Would you like to setup a environment for latest stable version? [Y/n]: "
+)
+if confirmation_env.lower() == "y":
     print("Okay, this may take a moment...")
     os.system("pip install virtualenv")
     os.system("virtualenv ../LatestEnv")
 else:
     print("Okay, thank you...")
 
-github_repo = input("Do you have a online github repository you want to connect this folder to? [y/n]: ")
-if github_repo.lower() == 'y':
+github_repo = input(
+    "Do you have a online github repository you want to connect this folder to? [y/n]: "
+)
+if github_repo.lower() == "y":
     github_repo_name = input("Please enter then name of your github repository: ")
     with open("../.folder_details.json", "w+") as json_file:
-        repo_information = {"repo_name": github_repo_name, "project_name": "Automation", "github_repo": "true"}
+        repo_information = {
+            "repo_name": github_repo_name,
+            "project_name": "Automation",
+            "github_repo": "true",
+        }
         json.dump(repo_information, json_file)
 else:
     with open("../.folder_details.json", "w+") as json_file:
-        repo_information = {"repo_name": "", "project_name": "Automation", "github_repo": "false"}
+        repo_information = {
+            "repo_name": "",
+            "project_name": "Automation",
+            "github_repo": "false",
+        }
         json.dump(repo_information, json_file)

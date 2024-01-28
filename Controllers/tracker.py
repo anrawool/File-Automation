@@ -16,7 +16,10 @@ Having the event parameter is necessary to work
 
 """
 
-def track(path, created_func=None, moved_func=None, deleted_func=None, modified_func=None):
+
+def track(
+    path, created_func=None, moved_func=None, deleted_func=None, modified_func=None
+):
     event_handler = FileSystemEventHandler()
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)

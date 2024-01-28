@@ -1,14 +1,30 @@
 import os
 
 
-main_path = os.path.abspath('../')
+main_path = os.path.abspath("../")
 
 
-_meta_paths = ['./', '../', '../User-Interface', '../Term_Actions', '../Scripts', '../School/StudyPlanner', '../School/Tests', '../PvtInfo', '../logs', '../keys', '../downloads', '../databases', '../Controllers', '../Controllers/Password_Manager', '../Beta']
+_meta_paths = [
+    "./",
+    "../",
+    "../User-Interface",
+    "../Term_Actions",
+    "../Scripts",
+    "../School/StudyPlanner",
+    "../School/Tests",
+    "../PvtInfo",
+    "../logs",
+    "../keys",
+    "../downloads",
+    "../databases",
+    "../Controllers",
+    "../Controllers/Password_Manager",
+    "../Beta",
+]
 
 for path in _meta_paths:
     path = os.path.abspath(path)
-    path += '/'
+    path += "/"
     __meta_code = f"""
 import os, sys
 
@@ -17,8 +33,7 @@ path = os.path.join(os.path.abspath(absolute_current_path + '../'))
 sys.path.append(path)
 
     """
-    with open(path + '__meta.py', 'w+') as file:
+    with open(path + "__meta.py", "w+") as file:
         file.write(__meta_code)
 
 exit()
-

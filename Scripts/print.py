@@ -1,5 +1,5 @@
 import __meta
-import os 
+import os
 from Controllers.tracker import track
 from Controllers.data import *
 import re
@@ -16,10 +16,12 @@ Printer terminal commands:
 
 """
 
+
 class Printer:
     def __init__(self):
-        self.compatible = ['.pdf', '.jpeg', '.jpg', '.png', '.txt', '.pages']
+        self.compatible = [".pdf", ".jpeg", ".jpg", ".png", ".txt", ".pages"]
         self.compatible_file = False
+
     def file_name_change(self, object):
         path, file, ext = [object.path, object.file, object.ext]
         # Checking if Path is valid or Ghost
@@ -32,7 +34,7 @@ class Printer:
         temp_file = file.replace(ext, "")
         temp_file = temp_file.replace(".", "_")
         temp_file = temp_file + ext
-        final_file = temp_file.replace(" ", '_')
+        final_file = temp_file.replace(" ", "_")
         final_file = re.sub("_+", "_", final_file)
         os.rename(file + ext, final_file)
         return final_file
@@ -56,6 +58,7 @@ class Printer:
             # print("The Printer May Be Offline...")
             # print(e)
             pass
+
 
 printer = Printer()
 track(f"{ROOT_DIR}/Documents/Sarthak/Print", created_func=printer.created)

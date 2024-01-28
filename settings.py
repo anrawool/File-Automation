@@ -1,9 +1,10 @@
 # CONSTANTS
-ROOT_DIR = '/Users/abhijitrawool'
+ROOT_DIR = "/Users/abhijitrawool"
 # Classes
 
+
 # Shell Input
-class ShellInput():
+class ShellInput:
     @property
     def req(self):
         return self.required
@@ -14,11 +15,11 @@ class ShellInput():
 
     def option_check(self, req):
         self.optional = self.args[req:]
-        for exception in self.exceptions[len(self.optional):]:
+        for exception in self.exceptions[len(self.optional) :]:
             self.optional.append(exception)
         return self.required + self.optional
 
-    def shell_input(self, req : int, args : list, exceptions : list = []):
+    def shell_input(self, req: int, args: list, exceptions: list = []):
         self.exceptions = exceptions
         self.args = args[1:]
         self.inputs = []
@@ -30,7 +31,8 @@ class ShellInput():
         inputs = self.option_check(req)
         return inputs
 
-def get_shell_input(req : int, args : list, exceptions : list = []):
+
+def get_shell_input(req: int, args: list, exceptions: list = []):
     shell_exec = ShellInput()
     inputs = shell_exec.shell_input(req, args, exceptions)
     return inputs
