@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+    <title>News</title>
+
+</head>
+<body>
+    <div class="articles">
+        <h1>Saved Titles:</h1>
+        {% for saved_article in saved_news %}
+        <div class="article">
+            <h2 class="title">{{saved_article.title|title}}</h2>
+            <div class="created">{{saved_article.created}}</div>
+            <h3 class="description"> {% if saved_article.created != "None" %} {{saved_article.description}} {% else %} No Information Available  {%endif%} </h3>
+            <p class="content">{{saved_article.content}}</p>
+            <div class="origin button"><a href="{{saved_article.origin}}" target="_blank">View Original Article</a></div>
+            <div class="remove button"><a href="{% url 'remove-article' saved_article.id %}">Remove Article</a></div>
+        </div>
+        {% endfor %}
+        <h1>New Titles:</h1>
+        {% for article in news %}         
+        <div class="article">
+            <h2 class="title">{{article.title|title}}</h2>
+            <div class="created">{{article.created}}</div>
+            <h3 class="description">{% if article.description != "None" %} {{article.description}} {% else %} No Information Available {%endif%} </h3>
+            <p class="content">{{article.content}}</p>
+            <div class="origin button"><a href="{{article.origin}}" target="_blank">View Original Article</a></div>
+            <div class="add button"><a href="{% url 'add-article' article.id %}">Add Article</a></div>
+        </div>
+        <br>
+
+        {% endfor %}
+    </div>
+    <div class="saved_articles"></div>
+
+</body>
+</html>

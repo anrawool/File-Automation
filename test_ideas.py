@@ -1,4 +1,4 @@
-import pyscreenshot
-pic = pyscreenshot.grab(bbox=(150, 150, 1600, 1600))
-pic.show()
-pic.save("ss.png")
+from Controllers import server_conn
+
+conn = server_conn.SSH_Connection('abhijitrawool', '192.168.1.13', 'sarthak09')
+conn.exec_command("cd ~/StatupScripts && sh backup_script.sh")

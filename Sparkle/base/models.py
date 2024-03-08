@@ -23,3 +23,21 @@ class Message(models.Model):
 
     def __str__(self):
         return self.body[:50]
+
+
+class NewsArticle(models.Model):
+    title = models.CharField(max_length=200, unique=True)
+    description = models.TextField(null=True, blank=True, unique=True)
+    content = models.TextField(null=True, unique=True)
+    origin = models.URLField(null=True)
+    dont_delete = models.BooleanField(default=False)
+    created = models.DateField(null=True)
+    updated = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-updated']
